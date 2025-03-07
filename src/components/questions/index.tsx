@@ -62,12 +62,12 @@ export function Questions() {
 
             <div className="mt-12 bg-gradient-to-r from-[#FF006F]/5 to-[#FFF2F8] p-6 rounded-2xl">
               <p className="text-[#6D243F] font-medium mb-3">Ainda tem dúvidas?</p>
-              <button className="text-[#FF006F] font-medium hover:text-[#6D243F] transition-colors">
+              <button className="text-[#FF006F] font-medium hover:text-[#6D243F] transition-colors hover:cursor-pointer">
                 Entre em contato com nosso suporte →
               </button>
             </div>
           </div>
-          
+
           <div className="lg:w-6/12">
             <Accordion.Root type="single" collapsible className="space-y-3">
               {questions.map((item, index) => (

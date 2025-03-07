@@ -35,7 +35,6 @@ export function Plans() {
             
             <div className="flex items-center text-center justify-center gap-2 bg-[#B42A76]/10 px-5 py-2 rounded-full">
               <span className="text-2xl font-bold text-[#FF006F]">15 dias</span>
-              <span className="text-base text-[#6D243F]">de teste grátis</span>
             </div>
           </motion.div>
 

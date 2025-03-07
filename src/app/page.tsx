@@ -12,7 +12,7 @@ import { Footer } from "@/components/footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center mt-[6rem]">
+    <div className="flex flex-col items-center justify-center mt-[8rem]">
       <div>
         <h1 className="flex text-8xl text-[#302d2d] max-w-4xl items-center justify-center text-center font-bold text-gradient-diamond">
           Pequenos sinais, grandes conexões
