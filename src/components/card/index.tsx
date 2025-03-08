@@ -99,7 +99,7 @@ export default function CardFunction() {
       )}
 
       <div className="w-full py-12 sm:py-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center">
           <motion.h2
             className="text-4xl md:text-5xl text-[#B42A76] max-w-4xl font-bold mb-6 text-center"
             initial={{ opacity: 0 }}
@@ -205,7 +205,7 @@ export default function CardFunction() {
                       title: "Não perca seu relacionamento",
                       description: "Descubra mudanças sutis no seu relacionamento antes que virem problemas.",
                       icon: <Heart className="h-5 w-5 text-white" />,
-                      gradient: "from-[#FF006F] to-[#FF4E9E]",
+                      gradient: "from-[#6D243F] to-[#FF006F]",
                       delay: 0.1,
                     },
                     {
@@ -219,7 +219,7 @@ export default function CardFunction() {
                       title: "Comunicação sem ruídos",
                       description: "Receba insights para melhorar o diálogo e evitar conflitos desnecessários.",
                       icon: <MessageCircle className="h-5 w-5 text-white" />,
-                      gradient: "from-[#FF4E9E] to-[#FF006F]",
+                      gradient: "from-[#6D243F] to-[#FF006F]",
                       delay: 0.5,
                     },
                   ].map((benefit, index) => (

@@ -39,12 +39,12 @@ export function Plans() {
             </div>
           </motion.div>
 
-          <div className="flex flex-col justify-center gap-8 mt-[2rem] md:mt-[4rem] w-full mx-auto">
+          <div className="flex flex-col justify-center mt-[2rem] md:mt-[4rem] w-full mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col md:flex-row gap-8 justify-center w-full max-w-7xl"
+              className="flex flex-col md:flex-row  justify-center w-full max-w-7xl"
             >
               {/* Popular Plan */}
               <div className="w-full max-w-[400px] mx-auto">
@@ -231,12 +231,12 @@ export function Plans() {
 
                 <div className="flex-1 flex items-center justify-center p-6 md:p-8 bg-gradient-to-br from-[#FF006F]/20 to-[#FF006F]/5 rounded-2xl w-full mt-6 md:mt-0">
                   <div className="text-center space-y-4 md:space-y-6">
-                    <h3 className="text-xl md:text-2xl font-bold text-[#292929]">
+                    <h3 className="text-xl md:text-5xl font-bold text-[#292929]">
                       Economize <span className="text-[#FF006F]">40%</span>
                     </h3>
                     <div className="space-y-1 md:space-y-2">
                       <p className="text-gray-500 line-through text-sm md:text-base">R$49,90/mês</p>
-                      <p className="text-2xl md:text-3xl font-bold text-[#FF006F]">R$29,90/mês</p>
+                      <p className="text-2xl md:text-5xl font-bold text-[#FF006F]">R$29,90/mês</p>
                     </div>
                     <p className="text-xs md:text-sm text-[#6D243F]">+ Site personalizado grátis</p>
                   </div>

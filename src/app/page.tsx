@@ -13,9 +13,7 @@ import Link from "next/link"
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center md:mt-[8rem] mt-[3rem] overflow-hidden">
-      {/* Hero Section */}
       <div className="relative">
-        {/* Decorative elements */}
         <DecorativeGrid variant="pink" size="lg" position="left" className="top-0 opacity-30 hidden md:block" />
         <DecorativeDots variant="pink" rows={4} cols={4} className="absolute -right-12 top-1/4 hidden md:grid" />
 
@@ -37,7 +35,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* App Preview Section - Enhanced and more dynamic */}
       <div className="relative xl:mt-[8rem] mt-[3rem] w-full max-w-6xl mx-auto mb-[6rem] sm:mb-[8rem] px-2 sm:px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -61,9 +58,7 @@ export default function Home() {
         />
       </div>
 
-      {/* Benefits Section */}
       <div className="bg-[#F1DDE6] w-full py-16 mb-[1rem] relative">
-        {/* Decorative elements */}
         <DecorativeGrid variant="pink" size="md" position="left" className="top-12 opacity-30" />
         <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[10%] bottom-12 hidden md:grid" />
 
@@ -157,50 +152,42 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Section Divider */}
       <div className="w-full my-8 relative">
         <WavyLine variant="pink" className="opacity-50" />
         <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
       </div>
 
-      {/* Card Function Section */}
       <div className="relative w-full">
         <DecorativeDots variant="pink" rows={5} cols={2} className="absolute left-[5%] top-1/4 hidden lg:grid" />
         <DecorativeGrid variant="pink" size="md" position="right" className="top-3/4 opacity-30 hidden lg:block" />
         <CardFunction />
       </div>
 
-      {/* Section Divider */}
       <div className="w-full my-8 relative">
         <WavyLine variant="pink" className="opacity-50 transform rotate-180" />
         <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
       </div>
 
-      {/* Plans Section */}
       <div className="relative w-full">
         <DecorativeGrid variant="pink" size="md" position="left" className="top-1/4 opacity-30 hidden lg:block" />
         <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[5%] top-1/2 hidden lg:grid" />
         <Plans />
       </div>
 
-      {/* Section Divider */}
       <div className="w-full my-8 relative">
         <WavyLine variant="pink" className="opacity-50" />
         <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
       </div>
 
-      {/* Questions Section */}
       <div className="relative w-full">
         <DecorativeDots variant="pink" rows={4} cols={2} className="absolute left-[5%] top-1/3 hidden lg:grid" />
         <DecorativeGrid variant="pink" size="md" position="right" className="bottom-1/4 opacity-30 hidden lg:block" />
         <Questions />
       </div>
 
-      {/* Footer */}
       <div className="mt-[4rem] w-full flex">
         <Footer />
       </div>
     </div>
   )
 }
-

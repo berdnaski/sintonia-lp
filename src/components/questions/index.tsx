@@ -16,7 +16,7 @@ const questions = [
   },
   {
     question: "Quanto tempo leva para ver resultados?",
-    answer: "Muitos casais relatam melhorias na comunicação já nas primeiras semanas de uso. Com o uso consistente do Sintonia, você pode esperar mudanças positivas significativas em 1-2 meses, com benefícios crescentes ao longo do tempo."
+    answer: "Muitos casais relatam melhorias na comunicação já nas primeiras semanas de uso. Com o uso consistente do Sintonia, você pode esperar mudanças positivas significativas em 1-2 semanas, com benefícios crescentes ao longo do tempo."
   },
   {
     question: "Posso cancelar minha assinatura a qualquer momento?",
