@@ -3,6 +3,7 @@
 import { ArrowRight, Sparkles, Heart, MessageCircle, Zap } from "lucide-react"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import Link from "next/link"
 
 export default function CardFunction() {
   const [mounted, setMounted] = useState(false)
@@ -266,7 +267,9 @@ export default function CardFunction() {
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <span className="text-lg">Entrar na Lista de Espera</span>
+                <Link href='https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw' target="_blank">
+                  Entrar na Lista de Espera
+                </Link>
                   <ArrowRight className="h-5 w-5" />
                 </motion.button>
               </div>

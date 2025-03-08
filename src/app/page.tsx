@@ -1,50 +1,78 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import {
-  PlayIcon,
-} from "lucide-react";
-import { motion } from "framer-motion";
-import CardFunction from "@/components/card";
-import { Plans } from "@/components/plans";
-import { Questions } from "@/components/questions";
-import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
+import CardFunction from "@/components/card"
+import { Plans } from "@/components/plans"
+import { Questions } from "@/components/questions"
+import { Footer } from "@/components/footer"
+import { AppPreview } from "@/components/app-preview"
+import { DecorativeDots, DecorativeGrid, WavyLine } from "@/components/decorative"
+import Link from "next/link"
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center mt-[8rem]">
-      <div>
-        <h1 className="flex text-8xl text-[#302d2d] max-w-4xl items-center justify-center text-center font-bold text-gradient-diamond">
+    <div className="flex flex-col items-center justify-center md:mt-[8rem] mt-[3rem] overflow-hidden">
+      {/* Hero Section */}
+      <div className="relative">
+        {/* Decorative elements */}
+        <DecorativeGrid variant="pink" size="lg" position="left" className="top-0 opacity-30 hidden md:block" />
+        <DecorativeDots variant="pink" rows={4} cols={4} className="absolute -right-12 top-1/4 hidden md:grid" />
+
+        <h1 className="flex md:text-8xl text-4xl text-[#302d2d] max-w-4xl items-center justify-center text-center font-bold text-gradient-diamond">
           Pequenos sinais, grandes conexões
         </h1>
 
-        <p className="flex font-sans text-[#353434] text-xl max-w-2xl text-center mx-auto mt-[2rem]">
-          Detecte os sinais, resolva os problemas antes de crescerem. Sintonia:
-          onde a comunicação é o segredo, para o amor duradouro
+        <p className="flex font-sans text-[#353434] text-md md:text-xl max-w-2xl text-center mx-auto mt-[2rem]">
+          Detecte os sinais, resolva os problemas antes de crescerem. Sintonia: onde a comunicação é o segredo, para o
+          amor duradouro
         </p>
 
         <div className="relative mt-[2rem]">
           <Button className="font-semibold px-12 py-5 bg-[#FF006F] flex mx-auto z-10 hover:bg-[#FF005F] transition-all duration-300 transform hover:scale-105 shadow-glow">
-            Lista de Espera
+            <Link href='https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw' target="_blank">
+              Lista de Espera
+            </Link>
           </Button>
         </div>
       </div>
 
-      <div className="relative mt-[8rem] w-full max-w-3xl h-[450px] bg-black flex justify-center items-center rounded-xl shadow-lg mb-[8rem]">
-        <PlayIcon className="w-16 h-16 text-white" />
+      {/* App Preview Section - Enhanced and more dynamic */}
+      <div className="relative xl:mt-[8rem] mt-[3rem] w-full max-w-6xl mx-auto mb-[6rem] sm:mb-[8rem] px-2 sm:px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10"
+        >
+          <AppPreview />
+        </motion.div>
+        <DecorativeGrid
+          variant="light"
+          size="sm"
+          position="right"
+          className="bottom-[-5%] sm:bottom-[-10%] opacity-40 sm:size-md"
+        />
+        <DecorativeDots
+          variant="pink"
+          rows={3}
+          cols={3}
+          className="absolute left-[5%] top-1/4 hidden lg:grid opacity-40"
+        />
       </div>
 
-      <div className="bg-[#F1DDE6] w-full py-16 mb-[1rem]">
+      {/* Benefits Section */}
+      <div className="bg-[#F1DDE6] w-full py-16 mb-[1rem] relative">
+        {/* Decorative elements */}
+        <DecorativeGrid variant="pink" size="md" position="left" className="top-12 opacity-30" />
+        <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[10%] bottom-12 hidden md:grid" />
+
         <div className="flex flex-col justify-center max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Button className="w-[80px] text-white rounded-xl bg-[#B42A75] hover:bg-[#B42A76] transition-all duration-300">
               Benefícios
             </Button>
-            <h1 className="text-4xl md:text-5xl text-[#B42A76] max-w-4xl font-bold mt-4 text-start">
+            <h1 className="text-3xl md:text-5xl text-[#B42A76] max-w-4xl font-bold mt-4 text-start">
               Os Micro-Sinais já afetaram seu relacionamento e você nem percebeu!
             </h1>
           </motion.div>
@@ -61,7 +89,9 @@ export default function Home() {
                   Os <span className="text-[#B42A76] font-semibold">sinais</span> dentro do relacionamento
                 </p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-bold text-[#FF0000] flex items-center justify-center text-center">72%</span>
+                  <span className="text-3xl font-bold text-[#FF0000] flex items-center justify-center text-center">
+                    72%
+                  </span>
                   <span className="text-[#B42A76]">são ignorados</span>
                 </div>
               </div>
@@ -75,10 +105,12 @@ export default function Home() {
             >
               <div className="flex flex-col gap-2 items-center justify-center">
                 <p className="text-lg font-medium text-center ">
-                  Percebem <span className="text-[#B42A76] font-semibold">tarde demais</span>
+                  Quando percebem já é <span className="text-[#B42A76] font-semibold">tarde demais</span>
                 </p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-bold text-[#FF0000] flex items-center justify-center text-center">43%</span>
+                  <span className="text-3xl font-bold text-[#FF0000] flex items-center justify-center text-center">
+                    43%
+                  </span>
                   <span className="text-[#B42A76]">não notam</span>
                 </div>
               </div>
@@ -92,11 +124,13 @@ export default function Home() {
             >
               <div className="flex flex-col gap-2 items-center justify-center">
                 <p className="text-lg font-medium text-center ">
-                  Com o nosso <span className="text-[#B42A76] font-semibold">Sintonia</span>
+                  Com a <span className="text-[#B42A76] font-semibold">Sintonia</span>
                 </p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-bold text-[#18E05B] flex items-center justify-center text-center">67%</span>
-                  <span className="text-[#B42A76]">melhoram a comunicação</span>
+                  <span className="text-3xl font-bold text-[#18E05B] flex items-center justify-center text-center">
+                    67%
+                  </span>
+                  <span className="text-[#B42A76]">melhoram diálogo</span>
                 </div>
               </div>
             </motion.div>
@@ -112,7 +146,9 @@ export default function Home() {
                   Evite o <span className="text-[#B42A76] font-semibold">término</span>
                 </p>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-3xl font-bold text-[#18E05B] flex items-center justify-center text-center">81%</span>
+                  <span className="text-3xl font-bold text-[#18E05B] flex items-center justify-center text-center">
+                    81%
+                  </span>
                   <span className="text-[#B42A76]">Resolvem as crise</span>
                 </div>
               </div>
@@ -121,21 +157,50 @@ export default function Home() {
         </div>
       </div>
 
-      <div>
+      {/* Section Divider */}
+      <div className="w-full my-8 relative">
+        <WavyLine variant="pink" className="opacity-50" />
+        <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
+      </div>
+
+      {/* Card Function Section */}
+      <div className="relative w-full">
+        <DecorativeDots variant="pink" rows={5} cols={2} className="absolute left-[5%] top-1/4 hidden lg:grid" />
+        <DecorativeGrid variant="pink" size="md" position="right" className="top-3/4 opacity-30 hidden lg:block" />
         <CardFunction />
       </div>
 
-      <div>
+      {/* Section Divider */}
+      <div className="w-full my-8 relative">
+        <WavyLine variant="pink" className="opacity-50 transform rotate-180" />
+        <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
+      </div>
+
+      {/* Plans Section */}
+      <div className="relative w-full">
+        <DecorativeGrid variant="pink" size="md" position="left" className="top-1/4 opacity-30 hidden lg:block" />
+        <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[5%] top-1/2 hidden lg:grid" />
         <Plans />
       </div>
 
-      <div>
+      {/* Section Divider */}
+      <div className="w-full my-8 relative">
+        <WavyLine variant="pink" className="opacity-50" />
+        <DecorativeGrid variant="pink" size="sm" position="center" className="opacity-30 -mt-6" />
+      </div>
+
+      {/* Questions Section */}
+      <div className="relative w-full">
+        <DecorativeDots variant="pink" rows={4} cols={2} className="absolute left-[5%] top-1/3 hidden lg:grid" />
+        <DecorativeGrid variant="pink" size="md" position="right" className="bottom-1/4 opacity-30 hidden lg:block" />
         <Questions />
       </div>
 
+      {/* Footer */}
       <div className="mt-[4rem] w-full flex">
         <Footer />
       </div>
     </div>
-  );
+  )
 }
+
