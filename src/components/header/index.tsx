@@ -16,17 +16,18 @@ export function Header() {
     <header className="border-b border-[#636060] relative md:px-5">
       <div className="flex items-center justify-between max-w-[1600px] mx-auto h-[90px] px-4 sm:px-8 xl:px-0">
         <div className="flex gap-2 items-center text-center justify-center">
-          <img src="./logo.png" alt="" className="h-16 w-16" />
+          {/* Caminho correto para a imagem no diretório public */}
+          <img src="/logo.png" alt="Logo Sintonia" className="h-16 w-16" />
           <h1 className="font-black text-3xl">Sintonia</h1>
         </div>
         <div className="hidden xl:flex gap-4">
           <Link href='https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw' target="_blank">
-          <Button 
-            className="bg-[#FF708B] hover:bg-[#FA6B86] px-8 text-xl font-normal hover:cursor-pointer rounded-full group"
-          >
-            <Bell className="mr-2 h-5 w-5 group-hover:animate-bounce" />
-            Avise-me do lançamento
-          </Button>
+            <Button 
+              className="bg-[#FF708B] hover:bg-[#FA6B86] px-8 text-xl font-normal hover:cursor-pointer rounded-full group"
+            >
+              <Bell className="mr-2 h-5 w-5 group-hover:animate-bounce" />
+              Avise-me do lançamento
+            </Button>
           </Link>
         </div>
 
@@ -47,14 +48,12 @@ export function Header() {
         <div className="px-4 py-6 flex flex-col gap-6">
           <div className="flex flex-col gap-4 mt-2">
             <Button 
-
               className="bg-[#FF708B] hover:bg-[#FA6B86] py-6 text-xl font-normal hover:cursor-pointer rounded-full group"
             >
               <Bell className="mr-2 h-5 w-5 group-hover:animate-bounce" />
               Avise-me do lançamento
             </Button>
             <Button 
-
               className="text-xl text-[#FF708B] font-normal bg-transparent border border-[#FF708B] hover:bg-[#FFF2F8] hover:cursor-pointer rounded-full py-6"
             >
               Lista de espera
