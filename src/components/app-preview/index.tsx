@@ -7,7 +7,7 @@ export function AppPreview() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [typedText, setTypedText] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
   // Check if mobile
