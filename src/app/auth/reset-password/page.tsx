@@ -32,9 +32,9 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-b from-pink-50 to-white p-4 md:p-8">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
-        <Card className="w-full md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
+    <div className="flex min-h-screen item-center justify-center w-full bg-[#FF788D] p-4 md:p-8">
+      <div className="flex flex-col md:flex-row item-center justify-center w-full max-w-6xl mx-auto gap-8 items-center">
+        <Card className="w-full item-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2">
               <div className="flex items-center gap-2 mb-6">
@@ -99,23 +99,6 @@ export default function ResetPassword() {
             </div>
           </div>
         </Card>
-
-        <div className="hidden md:block w-full md:w-1/2">
-          <div className="relative rounded-2xl overflow-hidden shadow-lg">
-            <img
-              src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=1887&auto=format&fit=crop"
-              alt="Couple with heart"
-              className="w-full h-auto object-cover aspect-[4/3]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-          </div>
-          <div className="mt-4">
-            <h2 className="text-xl font-medium text-gray-800">Reconecte-se</h2>
-            <p className="text-gray-600 mt-1">
-              Recupere o acesso à sua conta e continue a construir conexões significativas.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )

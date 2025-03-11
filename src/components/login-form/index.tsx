@@ -24,7 +24,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-b from-pink-50 to-white p-4 md:p-8">
+    <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
         <Card className="w-full md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
