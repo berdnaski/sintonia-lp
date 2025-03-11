@@ -13,10 +13,9 @@ export function Header() {
   }
 
   return (
-    <header className="border-b border-[#636060] relative md:px-5">
+    <header className="border-b border-[#636060] fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
       <div className="flex items-center justify-between max-w-[1600px] mx-auto h-[90px] px-4 sm:px-8 xl:px-0">
         <div className="flex gap-2 items-center text-center justify-center">
-          {/* Caminho correto para a imagem no diretório public */}
           <img src="/logo.png" alt="Logo Sintonia" className="h-16 w-16" />
           <h1 className="font-black text-3xl">Sintonia</h1>
         </div>

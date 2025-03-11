@@ -1,6 +1,6 @@
-import { Header } from "@/components/header";
-import "../styles/globals.css";
-import type { Metadata } from "next";
+import { ClientLayout } from './client-layout';
+import '../styles/globals.css';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Sintonia | Pequenos sinais, grandes conexões",
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="pt-BR">
       <head>
@@ -58,9 +58,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`antialiased mx-auto`}>
-        <Header />
-        {children}
+      <body className="antialiased mx-auto">
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
