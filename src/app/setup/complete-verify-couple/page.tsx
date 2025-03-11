@@ -1,50 +1,51 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Send } from "lucide-react"
-import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Send } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function CompleteVerifyCouple() {
-  const [email, setEmail] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [progressWidth, setProgressWidth] = useState(0)
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progressWidth, setProgressWidth] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProgressWidth(100)
-    }, 300)
+      setProgressWidth(100);
+    }, 300);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email) {
-      toast.error("Por favor, insira seu endereço de email.")
-      return
+      toast.error("Por favor, insira seu endereço de email.");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     setTimeout(() => {
-      toast.success("Email enviado! Verifique sua caixa de entrada para redefinir sua senha.")
-      setIsSubmitting(false)
-    }, 1500)
-  }
+      toast.success("Email enviado! Verifique sua caixa de entrada para redefinir sua senha.");
+      setIsSubmitting(false);
+    }, 1500);
+  };
 
   return (
     <div
-      className="flex min-h-screen item-center justify-center w-full p-4 md:p-8"
+      className="flex min-h-screen items-center justify-center w-full p-4 md:p-8"
       style={{
         background: "linear-gradient(135deg, #FF788D, #E30224, #FF006F)",
         backgroundSize: "200% 200%",
       }}
     >
-      <div className="flex flex-col md:flex-row item-center justify-center w-full max-w-6xl mx-auto gap-8 items-center">
-        <Card className="w-full h-[50vh] item-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
+      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto gap-8">
+        <Card className="w-full h-[50vh] items-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2 relative">
               <div className="h-7 rounded-full bg-zinc-200 overflow-hidden relative">
@@ -53,7 +54,7 @@ export default function CompleteVerifyCouple() {
                   style={{ width: `${progressWidth}%` }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-medium">
-                  Etapa 2 de 3
+                  Etapa 3 de 3
                 </div>
               </div>
             </div>
@@ -63,25 +64,27 @@ export default function CompleteVerifyCouple() {
                 <div className="flex flex-col items-center justify-center text-center space-y-6">
                   <h1 className="font-bold text-3xl text-[#FF5FA4]">Agora vocês são um casal!</h1>
                   <h2 className="text-gray-600 font-semibold text-xl">
-                  Que essa nova fase seja cheia de amor e harmonia. Que o vínculo de vocês se fortaleça a cada dia!
+                    Que essa nova fase seja cheia de amor e harmonia. Que o vínculo de vocês se fortaleça a cada dia!
                   </h2>
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full h-11 hover:cursor-pointer bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-colors"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  {isSubmitting ? "Prosseguindo" : "Prosseguir"}
-                  {!isSubmitting && <Send size={16} />}
-                </span>
-              </Button>
+              <Link href="/dashboard" passHref>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-11 hover:cursor-pointer bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-colors"
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    {isSubmitting ? "Prosseguindo" : "Prosseguir"}
+                    {!isSubmitting && <Send size={16} />}
+                  </span>
+                </Button>
+              </Link>
             </form>
           </div>
         </Card>
       </div>
     </div>
-  )
+  );
 }
