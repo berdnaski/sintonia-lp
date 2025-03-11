@@ -28,15 +28,9 @@ export function middleware(request: NextRequest) {
   if (authToken && publicRoute && publicRoute.whenAuthenticated === 'redirect') {
     const redirectUrl = request.nextUrl.clone();
 
-    redirectUrl.pathname = 'auth/login';
+    redirectUrl.pathname = '/dashboard';
 
     return NextResponse.redirect(redirectUrl)
-  }
-
-  if (authToken && !publicRoute) {
-    
-
-    return NextResponse.next();
   }
 
   return NextResponse.next();

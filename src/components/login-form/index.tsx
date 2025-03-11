@@ -2,26 +2,39 @@
 
 import type React from "react"
 
-import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { authRepository, LoginRequest, loginSchema } from "@/repositories/auth-repository"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { setAPIAuthToken } from "@/services/api"
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    // Simulação de login - implementar lógica real aqui
-    setTimeout(() => {
-      setIsSubmitting(false)
-      // Redirecionar após login bem-sucedido
-    }, 1500)
-  }
+  const router = useRouter()
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginRequest>({
+    resolver: zodResolver(loginSchema)
+  });
+
+  const handleLogin = handleSubmit(async (data) => {
+    try {
+      const { token } = await authRepository.login(data)
+      setAPIAuthToken(token)
+      Cookies.set('token', token)
+
+      router.push('/dashboard')
+    } catch (error) {
+      setError("root", {
+        message: "Email ou senha inválidos"
+      })
+    }
+  })
 
   return (
     <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
@@ -33,23 +46,20 @@ export default function LoginForm() {
               <p className="text-gray-600">Pequenos sinais, grandes conexões. Faça login para continuar sua jornada.</p>
             </div>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleLogin}>
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700">
                   Email
                 </Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Mail size={16} className="text-gray-400" />
-                  </div>
-                  <Input
-                    id="email"
-                    type="email"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
-                    placeholder="exemplo@email.com"
-                    required
-                  />
-                </div>
+                <Input
+                  id="email"
+                  type="email"
+                  className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                  placeholder="exemplo@email.com"
+                  {...register('email')}
+                    error={errors.email?.message}
+                    icon={Mail}
+                />
               </div>
 
               <div className="space-y-2">
@@ -64,17 +74,15 @@ export default function LoginForm() {
                     Esqueceu?
                   </Link>
                 </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <LockKeyhole size={16} className="text-gray-400" />
-                  </div>
                   <Input
                     id="password"
                     type="password"
                     className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                     required
+                    {...register('password')}
+                    error={errors.password?.message}
+                    icon={LockKeyhole}
                   />
-                </div>
               </div>
 
               <Button
@@ -93,6 +101,12 @@ export default function LoginForm() {
               </div>
             </form>
           </div>
+
+          {errors.root?.message && (
+            <div className="mt-2">
+              <p className="text-sm font-medium text-red-500">{errors.root.message}</p>
+            </div>
+          )}
         </Card>
 
         <div className="hidden md:block w-full md:w-1/2">
