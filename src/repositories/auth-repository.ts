@@ -7,7 +7,7 @@ export const loginSchema = z.object({
   }).max(255).email({
     message: "Por favor, digite um endereço de e-mail válido"
   }),
-  password: z.string().min(3, {
+  password: z.string().min(6, {
     message: "Por favor, digite uma senha válida."
   }).max(255),
 })
@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 export const registerSchema = loginSchema.extend({
   name: z.string().min(3, {
     message: "Nome precisa ter pelo menos 3 letras"
-  }).max(255)
+  }).max(20)
 })
 
 export type RegisterRequest = z.infer<typeof registerSchema>
