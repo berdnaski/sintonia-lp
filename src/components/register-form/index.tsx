@@ -2,67 +2,88 @@
 
 import type React from "react"
 
-import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { LockKeyhole, Mail, User } from "lucide-react"
+import { LockKeyhole, Mail } from "lucide-react"
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { authRepository, LoginRequest, loginSchema, RegisterRequest, registerSchema } from "@/repositories/auth-repository"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { setAPIAuthToken } from "@/services/api"
+import Cookies from "js-cookie";
+import { AxiosError } from "axios"
 
-export default function LoginForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export default function RegisterForm() {
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    // Simulação de login - implementar lógica real aqui
-    setTimeout(() => {
-      setIsSubmitting(false)
-      // Redirecionar após login bem-sucedido
-    }, 1500)
-  }
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterRequest>({
+    resolver: zodResolver(registerSchema)
+  });
+
+  const handleRegister = handleSubmit(async (data) => {
+    try {
+      const { token } = await authRepository.register(data)
+      setAPIAuthToken(token)
+      Cookies.set('token', token)
+
+      router.push('/dashboard')
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.data.message === "Email already in use") {
+          setError("email", {
+            message: "Email já cadastrado"
+          })
+
+          return;
+        }
+      }
+
+      setError("root", {
+        message: "Email ou senha inválidos"
+      })
+    }
+  })
 
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-b from-pink-50 to-white p-4 md:p-8">
+    <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
         <Card className="w-full md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold text-gray-900">Bem-vindo de volta</h1>
-              <p className="text-gray-600">Pequenos sinais, grandes conexões. Faça login para continuar sua jornada.</p>
+              <p className="text-gray-600">Pequenos sinais, grandes conexões. Crie uma conta para continuar sua jornada.</p>
             </div>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleRegister}>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 flex items-center gap-2">
-                  <User size={16} className="text-pink-500" />
-                  Insira seu nome
-                </Label>
-                <Input
-                  id="name"
-                  type="name"
-                  className="h-12 bg-white/90 border-pink-300 focus:border-pink-500 focus:ring-pink-500 rounded-xl transition-all duration-300"
-                  placeholder="John Doe"
-                />
-              </div>
+                  <Label htmlFor="name" className="text-gray-700">
+                    Name
+                  </Label>
+                  <Input
+                    id="name"
+                    className="h-11 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                    placeholder="exemplo@email.com"
+                    {...register('name')}
+                    error={errors.name?.message}
+                  />
+                </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700">
                   Email
                 </Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <Mail size={16} className="text-gray-400" />
-                  </div>
-                  <Input
-                    id="email"
-                    type="email"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
-                    placeholder="exemplo@email.com"
-                    required
-                  />
-                </div>
+                <Input
+                  id="email"
+                  type="email"
+                  className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                  placeholder="exemplo@email.com"
+                  {...register('email')}
+                    error={errors.email?.message}
+                    icon={Mail}
+                />
               </div>
 
               <div className="space-y-2">
@@ -70,24 +91,16 @@ export default function LoginForm() {
                   <Label htmlFor="password" className="text-gray-700">
                     Senha
                   </Label>
-                  <Link
-                    href="/auth/reset-password"
-                    className="text-pink-500 hover:text-pink-600 text-sm font-medium transition-colors"
-                  >
-                    Esqueceu?
-                  </Link>
                 </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <LockKeyhole size={16} className="text-gray-400" />
-                  </div>
                   <Input
                     id="password"
                     type="password"
                     className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                     required
+                    {...register('password')}
+                    error={errors.password?.message}
+                    icon={LockKeyhole}
                   />
-                </div>
               </div>
 
               <Button
@@ -99,13 +112,19 @@ export default function LoginForm() {
               </Button>
 
               <div className="text-center text-gray-600 pt-2">
-                Não tem uma conta?{" "}
-                <Link href="/auth/register" className="text-pink-500 hover:text-pink-600 font-medium transition-colors">
-                  Cadastrar
+                Ja tem uma conta?{" "}
+                <Link href="/auth/login" className="text-pink-500 hover:text-pink-600 font-medium transition-colors">
+                  Faça login
                 </Link>
               </div>
             </form>
           </div>
+
+          {errors.root?.message && (
+            <div className="mt-2">
+              <p className="text-sm font-medium text-red-500">{errors.root.message}</p>
+            </div>
+          )}
         </Card>
 
         <div className="hidden md:block w-full md:w-1/2">

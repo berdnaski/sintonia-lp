@@ -16,8 +16,8 @@ import { setAPIAuthToken } from "@/services/api"
 import Cookies from "js-cookie";
 
 export default function LoginForm() {
-
   const router = useRouter()
+
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginRequest>({
     resolver: zodResolver(loginSchema)
   });
