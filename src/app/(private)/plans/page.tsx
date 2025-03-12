@@ -4,14 +4,24 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FaCircleCheck } from "react-icons/fa6"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useAuth } from "@/hooks/use-auth";
 
 export default function PlansPage() {
   const [loading, setLoading] = useState(false)
+  const { user } = useAuth();
 
-  const userId = "6ee473c0-0746-4b81-9052-f17a5ea850e0"
+  const userId = user?.id;
+
+  console.log('teee', userId);
+
 
   const handleMonthlyPlanClick = async () => {
+    if (!userId) {
+      console.log('Você precisa estar logado para comprar planos.')
+      return;
+    }
+
     setLoading(true)
     try {
       const response = await fetch(`/api/checkout/${userId}`, {
