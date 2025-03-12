@@ -12,11 +12,11 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { authRepository, LoginRequest, loginSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setAPIAuthToken } from "@/services/api"
-import Cookies from "js-cookie";
+import { useAuth } from "@/hooks/use-auth"
 
 export default function LoginForm() {
   const router = useRouter()
+  const { authenticate } = useAuth()
 
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginRequest>({
     resolver: zodResolver(loginSchema)
@@ -24,9 +24,9 @@ export default function LoginForm() {
 
   const handleLogin = handleSubmit(async (data) => {
     try {
-      const { token } = await authRepository.login(data)
-      setAPIAuthToken(token)
-      Cookies.set('token', token)
+      const { user, token } = await authRepository.login(data)
+
+      authenticate(user, token)
 
       router.push('/dashboard')
     } catch (error) {

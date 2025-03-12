@@ -10,14 +10,14 @@ import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { authRepository, LoginRequest, loginSchema, RegisterRequest, registerSchema } from "@/repositories/auth-repository"
+import { authRepository, RegisterRequest, registerSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setAPIAuthToken } from "@/services/api"
-import Cookies from "js-cookie";
 import { AxiosError } from "axios"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function RegisterForm() {
   const router = useRouter()
+  const { authenticate } = useAuth()
 
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterRequest>({
     resolver: zodResolver(registerSchema)
@@ -25,9 +25,8 @@ export default function RegisterForm() {
 
   const handleRegister = handleSubmit(async (data) => {
     try {
-      const { token } = await authRepository.register(data)
-      setAPIAuthToken(token)
-      Cookies.set('token', token)
+      const { user,   token } = await authRepository.register(data)
+      authenticate(user, token)
 
       router.push('/plans')
     } catch (error) {

@@ -5,13 +5,11 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FaCircleCheck } from "react-icons/fa6"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 
 export default function PlansPage() {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const userId = "6ee473c0-0746-4b81-9052-f17a5ea850e0"  
+  const userId = "6ee473c0-0746-4b81-9052-f17a5ea850e0"
 
   const handleMonthlyPlanClick = async () => {
     setLoading(true)
