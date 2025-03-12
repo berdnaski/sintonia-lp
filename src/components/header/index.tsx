@@ -45,10 +45,10 @@ export function Header() {
 
   return (
     <header
-      className={`fixed border-b border-[#636060] top-0 left-0 right-0 z-50 bg-white ${isScrolled ? "shadow-md" : ""} transition-all duration-300`}
+      className={`border-b border-[#636060] top-0 left-0 right-0 z-50 bg-white ${isScrolled ? "shadow-md" : ""} transition-all duration-300`}
     >
       <div className="flex items-center justify-between max-w-[1600px] mx-auto h-[90px] px-4 sm:px-8 xl:px-0">
-        <div className="flex gap-2 items-center text-center justify-center">
+      <div className="flex gap-2 items-center text-center justify-center">
           <img src="/logo.png" alt="Logo Sintonia" className="h-16 w-16" />
           <h1 className="font-black text-3xl">Sintonia</h1>
         </div>
