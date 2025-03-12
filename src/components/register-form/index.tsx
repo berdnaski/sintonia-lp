@@ -29,7 +29,7 @@ export default function RegisterForm() {
       setAPIAuthToken(token)
       Cookies.set('token', token)
 
-      router.push('/dashboard')
+      router.push('/plans')
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.data.message === "Email already in use") {
@@ -59,17 +59,17 @@ export default function RegisterForm() {
 
             <form className="space-y-5" onSubmit={handleRegister}>
               <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-700">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    className="h-11 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
-                    placeholder="exemplo@email.com"
-                    {...register('name')}
-                    error={errors.name?.message}
-                  />
-                </div>
+                <Label htmlFor="name" className="text-gray-700">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  className="h-11 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                  placeholder="exemplo@email.com"
+                  {...register('name')}
+                  error={errors.name?.message}
+                />
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700">
@@ -81,8 +81,8 @@ export default function RegisterForm() {
                   className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                   placeholder="exemplo@email.com"
                   {...register('email')}
-                    error={errors.email?.message}
-                    icon={Mail}
+                  error={errors.email?.message}
+                  icon={Mail}
                 />
               </div>
 
@@ -92,15 +92,15 @@ export default function RegisterForm() {
                     Senha
                   </Label>
                 </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
-                    required
-                    {...register('password')}
-                    error={errors.password?.message}
-                    icon={LockKeyhole}
-                  />
+                <Input
+                  id="password"
+                  type="password"
+                  className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                  required
+                  {...register('password')}
+                  error={errors.password?.message}
+                  icon={LockKeyhole}
+                />
               </div>
 
               <Button
@@ -112,7 +112,7 @@ export default function RegisterForm() {
               </Button>
 
               <div className="text-center text-gray-600 pt-2">
-                Ja tem uma conta?{" "}
+                Já tem uma conta?{" "}
                 <Link href="/auth/login" className="text-pink-500 hover:text-pink-600 font-medium transition-colors">
                   Faça login
                 </Link>
@@ -147,4 +147,3 @@ export default function RegisterForm() {
     </div>
   )
 }
-
