@@ -1,59 +1,64 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Bell, Menu, X } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Bell, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
+      const target = event.target as HTMLElement;
       if (isMenuOpen && !target.closest("header")) {
-        setIsMenuOpen(false)
+        setIsMenuOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isMenuOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <header
-      className={`border-b border-[#636060] top-0 left-0 right-0 z-50 bg-white ${isScrolled ? "shadow-md" : ""} transition-all duration-300`}
+      className={`border-b border-[#636060] top-0 left-0 right-0 z-50 bg-white ${
+        isScrolled ? "shadow-md" : ""
+      } transition-all duration-300`}
     >
-      <div className="flex items-center justify-between max-w-[1600px] mx-auto h-[90px] px-4 sm:px-8 xl:px-0">
-      <div className="flex gap-2 items-center text-center justify-center">
+      <div className="flex items-center justify-between max-w-[1600px] mx-5 h-[90px] px-4 sm:px-8 xl:px-0">
+        <div className="flex gap-2 items-center text-center justify-center">
           <img src="/logo.png" alt="Logo Sintonia" className="h-16 w-16" />
           <h1 className="font-black text-3xl">Sintonia</h1>
         </div>
         <div className="hidden xl:flex gap-4">
-          <Link href="https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw" target="_blank">
+          <Link
+            href="https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw"
+            target="_blank"
+          >
             <Button className="bg-[#FF708B] hover:bg-[#FA6B86] px-8 text-xl font-normal hover:cursor-pointer rounded-full group">
               <Bell className="mr-2 h-5 w-5 group-hover:animate-bounce" />
               Avise-me do lançamento
@@ -80,12 +85,17 @@ export function Header() {
 
       <div
         className={`absolute top-[90px] left-0 right-0 bg-[#FFF2F8] z-50 shadow-lg transition-all duration-300 ease-in-out ${
-          isMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+          isMenuOpen
+            ? "max-h-[400px] opacity-100"
+            : "max-h-0 opacity-0 pointer-events-none"
         } overflow-hidden xl:hidden`}
       >
         <div className="px-4 py-6 flex flex-col gap-6">
           <div className="flex flex-col gap-4 mt-2">
-            <Link href="https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw" target="_blank">
+            <Link
+              href="https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw"
+              target="_blank"
+            >
               <Button className="bg-[#FF708B] hover:bg-[#FA6B86] py-6 text-xl font-normal hover:cursor-pointer rounded-full group w-full">
                 <Bell className="mr-2 h-5 w-5 group-hover:animate-bounce" />
                 Avise-me do lançamento
@@ -98,6 +108,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
-
