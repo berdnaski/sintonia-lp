@@ -18,6 +18,8 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { useMobile } from "@/hooks/use-mobile"
+import { useAuth } from "@/hooks/use-auth"
+import { emitter } from "@/lib/mitt"
 
 const navItems = [
   { icon: Home, label: "Início", href: "/dashboard" },
@@ -29,8 +31,11 @@ const navItems = [
 export function Header() {
   const pathname = usePathname()
   const [isHovered, setIsHovered] = useState<string | null>(null)
-  const isMobile = useMobile()
   const [hasNotification, setHasNotification] = useState(true)
+
+  const handleLogout = () => {
+    emitter.emit("logout")
+  }
 
   return (
     <div>
@@ -118,7 +123,7 @@ export function Header() {
                 <span>Ajustes</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem className="text-red-600 transition-all cursor-pointer" onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Sair</span>
               </DropdownMenuItem>
@@ -191,7 +196,7 @@ export function Header() {
                   <Settings className="mr-2 h-4 w-4" />
                   Ajustes
                 </Button>
-                <Button variant="destructive" className="w-full justify-start">
+                <Button variant="destructive" className="w-full justify-start" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Sair
                 </Button>
