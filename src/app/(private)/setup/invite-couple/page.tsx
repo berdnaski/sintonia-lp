@@ -7,12 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Send, User } from "lucide-react";
 import { toast } from "react-hot-toast";
-import Link from "next/link"; // Importação do Link
+import { useAuth } from "@/hooks/use-auth";
+import { inviteRepository } from "@/repositories/invite.couple-repository";
 
 export default function InviteCouple() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progressWidth, setProgressWidth] = useState(0);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,18 +27,31 @@ export default function InviteCouple() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!email) {
-      toast.error("Por favor, insira seu endereço de email.");
+      toast.error("Por favor, insira o nome e o endereço de email.");
       return;
     }
-
+  
     setIsSubmitting(true);
+  
+    try {
+      const response = await inviteRepository.inviteUser({
+        inviterId: user?.id ?? "",  
+        inviteeEmail: email,
+      });
 
-    setTimeout(() => {
-      toast.success("Email enviado! Verifique sua caixa de entrada para redefinir sua senha.");
+      if (response && response.token) {
+        const inviteToken = response.token;
+        toast.success("Convite enviado com sucesso!");
+      } else {
+        throw new Error("Resposta inesperada: token não encontrado.");
+      }
+    } catch (error) {
+      toast.error("Erro ao enviar convite. Tente novamente.");
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -71,18 +87,6 @@ export default function InviteCouple() {
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <User size={16} className="text-gray-400" />
-                  </div>
-                  <Input
-                    id="partner-name"
-                    type="text"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
-                    placeholder="Insira o nome do parceiro(a)"
-                    required
-                  />
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Mail size={16} className="text-gray-400" />
                   </div>
                   <Input
@@ -97,21 +101,16 @@ export default function InviteCouple() {
                 </div>
               </div>
 
-              <Link
-                href="/setup/verify-invite-couple" 
-                passHref 
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-11 bg-pink-500 hover:cursor-pointer hover:bg-pink-600 text-white rounded-lg transition-colors"
               >
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full h-11 bg-pink-500 hover:cursor-pointer hover:bg-pink-600 text-white rounded-lg transition-colors"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    {isSubmitting ? "Enviando..." : "Enviar convite"}
-                    {!isSubmitting && <Send size={16} />}
-                  </span>
-                </Button>
-              </Link>
+                <span className="flex items-center justify-center gap-2">
+                  {isSubmitting ? "Enviando..." : "Enviar convite"}
+                  {!isSubmitting && <Send size={16} />}
+                </span>
+              </Button>
             </form>
           </div>
         </Card>

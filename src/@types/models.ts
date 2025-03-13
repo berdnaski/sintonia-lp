@@ -12,6 +12,14 @@ interface User {
   stripeSubscriptionId?: string;
 }
 
+interface Invite {
+  id?: string,
+  inviterId: string,
+  inviteeEmail: string,
+  token: string,
+  expiresIn: number,
+}
+
 enum StatusPlan {
   NoPlan = "NoPlan",
   Activated = "Activated",
