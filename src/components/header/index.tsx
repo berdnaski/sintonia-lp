@@ -145,7 +145,6 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-5 w-5 text-gray-500" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#FF006F] rounded-full" />
           </Button>
 
           <Sheet>
