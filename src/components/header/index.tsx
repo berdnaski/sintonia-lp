@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
-import { useMobile } from "@/hooks/use-mobile"
-import { useAuth } from "@/hooks/use-auth"
 import { emitter } from "@/lib/mitt"
 
 const navItems = [
@@ -137,7 +135,7 @@ export function Header() {
         </div>
       </aside>
 
-      <header className="block xl:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm border-b border-gray-100 flex items-center justify-between px-4 z-40 shadow-sm">
+      <header className="xl:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm border-b border-gray-100 flex items-center justify-between px-4 z-40 shadow-sm">
         <Link href="/dashboard">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF006F] to-[#FF708B] flex items-center justify-center shadow-md">
