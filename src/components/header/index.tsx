@@ -106,7 +106,7 @@ export function Header() {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" align="start" className="w-56">
+            <DropdownMenuContent side="right" align="start" className="w-56 bg-white mb-10">
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium">Ana & Pedro</p>
