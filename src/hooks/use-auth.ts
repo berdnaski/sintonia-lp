@@ -11,7 +11,7 @@ interface AuthStore {
 }
 
 export const useAuth = create<AuthStore>((set, get) => ({
-  user: {} as User,
+  user: null,
   authenticate: (user: User, token: string) => {
     setAPIAuthToken(token)
     Cookies.set('token', token)

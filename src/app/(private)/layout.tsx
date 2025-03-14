@@ -1,13 +1,15 @@
 "use client"
 
 import { useAuth } from "@/hooks/use-auth"
+import { useCouple } from "@/hooks/use-couple";
 import { emitter } from "@/lib/mitt"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react"
 
 export default function PrivateLayout({ children }: { children: React.ReactNode}) {
   const { user, fetchUser, clearUser } = useAuth();
-   const router = useRouter()
+  const { couple, fetchCouple } = useCouple();
+  const router = useRouter()
 
   useEffect(() => {
     fetchUser();
@@ -23,7 +25,13 @@ export default function PrivateLayout({ children }: { children: React.ReactNode}
     if (!user) {
       router.push('/auth/login')
     }
+
+    fetchCouple()
   }, [user])
+
+  useEffect(() => {
+    console.log({ couple })
+  }, [couple])
 
   if (!user) {
     return null;

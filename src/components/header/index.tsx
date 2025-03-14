@@ -18,6 +18,11 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { emitter } from "@/lib/mitt"
+import { useCouple } from "@/hooks/use-couple"
+import { useAuth } from "@/hooks/use-auth"
+import { dateDiff } from "@/lib/date-fns"
+import { Duration, formatDuration } from "date-fns"
+import { ptBR } from 'date-fns/locale'
 
 const navItems = [
   { icon: Home, label: "Início", href: "/dashboard" },
@@ -28,11 +33,40 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname()
+  const { user } = useAuth();
+  const { couple } = useCouple();
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const [hasNotification, setHasNotification] = useState(true)
+  const diff = dateDiff(couple?.createdAt, new Date())
 
   const handleLogout = () => {
     emitter.emit("logout")
+  }
+
+  const getFormatOptions = (duration: Duration) => {
+    if (diff.years) {
+      return 'years'
+    }
+
+    if (diff.months) {
+      return 'months'
+    }
+
+    if (diff.days) {
+      return 'days'
+    }
+
+    if (diff.hours) {
+      return 'hours'
+    }
+
+    if (diff.minutes) {
+      return 'minutes'
+    }
+  }
+
+  if (!user) {
+    return null;
   }
 
   return (
@@ -100,15 +134,33 @@ export function Header() {
               <Button variant="ghost" className="w-full h-12 rounded-xl p-0 hover:bg-gray-50">
                 <Avatar className="h-8 w-8 ring-2 ring-[#FF006F]/20">
                   <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>AP</AvatarFallback>
+                  <AvatarFallback>
+                    {user && !couple && user.name[0]}
+                    {user && couple && couple.user1.name[0] + couple.user2.name[0]}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" align="start" className="w-56 bg-white mb-10">
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium">Ana & Pedro</p>
-                  <p className="text-xs text-gray-500">2 anos juntos</p>
+                  {user && !couple && (
+                    <p className="text-sm font-medium">{user.name}</p>
+                  )}
+
+                  {user && couple && (
+                    <p className="text-sm font-medium">{couple.user1.name} & {couple.user2.name}</p>
+                  )}
+
+                  {couple && (
+                    <p className="text-xs text-gray-500">
+                      {formatDuration(diff, {
+                        format: [getFormatOptions(diff)],
+                        locale: ptBR
+                      })}
+                      {' '} juntos
+                    </p>
+                  )}
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -148,7 +200,13 @@ export function Header() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF006F] to-[#FF708B] flex items-center justify-center shadow-md">
               <Heart className="h-5 w-5 text-white" />
             </div>
-            <span className="font-semibold text-gray-800">Ana & Pedro</span>
+            {user && !couple && (
+              <span className="font-semibold text-gray-800">{user.name}</span>
+            )}
+
+            {user && couple && (
+              <span className="font-semibold text-gray-800">{couple.user1.name} & {couple.user2.name}</span>
+            )}
           </div>
         </Link>
 
@@ -171,10 +229,19 @@ export function Header() {
               <div className="flex items-center gap-3 mb-6 p-3 bg-gray-50">
                 <Avatar className="h-10 w-10 ring-2 ring-[#FF006F]/20">
                   <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>AP</AvatarFallback>
+                  <AvatarFallback>
+                    {user && !couple && user.name[0]}
+                    {user && couple && couple.user1.name[0] + couple.user2.name[0]}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">Ana & Pedro</p>
+                 {user && !couple && (
+                    <p className="font-medium">{user.name}</p>
+                  )}
+
+                  {user && couple && (
+                    <p className="font-medium">{couple.user1.name} & {couple.user2.name}</p>
+                  )}
                   <p className="text-xs text-gray-500">2 anos juntos</p>
                 </div>
               </div>

@@ -19,8 +19,6 @@ export interface InviteResponse {
   createdAt: string;
 }
 
-const resource = '/couples/invite'
-
 export const inviteMessages: Message = {
   error: {
     "There is already a pending invitation for that email.": "Já existe um convite pendente para esse e-mail.",
@@ -33,6 +31,8 @@ export const inviteMessages: Message = {
     invited: "Convite enviado com sucesso!",
   }
 }
+
+const resource = '/couples/invite'
 
 export const inviteRepository = {
   invite: async (data: InviteRequest) => {

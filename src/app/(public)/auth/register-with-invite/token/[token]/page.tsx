@@ -10,12 +10,12 @@ import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { authMessages, authRepository, RegisterRequest, registerSchema, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
+import { authMessages, authRepository, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios"
 import { useAuth } from "@/hooks/use-auth"
-import { inviteMessages, inviteRepository } from "@/repositories/invite-couple-repository"
 import { useResponseMessages } from "@/hooks/use-response-messages"
+import { inviteMessages } from "@/repositories/couple-repository"
+import { inviteRepository } from "@/repositories/invite-couple-repository"
 
 export default function RegisterWithInvite({
   params
@@ -42,7 +42,7 @@ export default function RegisterWithInvite({
     try {
       const invite = await inviteRepository.findByToken(inviteToken)
 
-      if (!invite) {
+      if (!invite || invite.used) {
         router.push('/auth/login');
         return;
       }
