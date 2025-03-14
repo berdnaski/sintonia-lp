@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Bell, Home, Layers, Heart, Image, User, Settings, LogOut, Menu } from "lucide-react"
+import { Bell, Home, Layers, Heart, Image, User, Settings, LogOut, Menu, Plus } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -119,6 +119,13 @@ export function Header() {
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Ajustes</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link className="flex gap-4 cursor-pointer hover:text-pink-600 items-center" href="/setup/invite-couple">
+                  <Plus className="h-4 w-4" />
+                  <span>Convidar parceiro (a)</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600 transition-all cursor-pointer" onClick={handleLogout}>

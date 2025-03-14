@@ -57,8 +57,8 @@ export default function LoginForm() {
                   className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                   placeholder="exemplo@email.com"
                   {...register('email')}
-                    error={errors.email?.message}
-                    icon={Mail}
+                  error={errors.email?.message}
+                  icon={Mail}
                 />
               </div>
 

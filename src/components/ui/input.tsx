@@ -12,24 +12,23 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, icon: Icon, ...props}, ref) => {
     return (
       <div>
-        <div className="relative">
-          { Icon && (
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Icon size={16} className="text-gray-400" />
+        <div className="relative group">
+          {Icon && (
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors">
+              <Icon size={16} className="text-gray-400 group-focus-within:text-pink-400" />
             </div>
           )}
           <input
             type={type}
             className={cn(
-              "border-input file:text-foreground placeholder:text-gray-300 selection:bg-primary selection:text-primary-foreground flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-              "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+              "border-input file:text-foreground placeholder:text-gray-300 flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+              "focus-visible:border-pink-600 focus-visible:ring-pink-600/50 focus-visible:ring-2",
               "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
               className
             )}
             ref={ref}
             {...props}
           />
-
         </div>
 
         {error && (

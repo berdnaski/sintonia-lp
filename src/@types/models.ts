@@ -20,6 +20,11 @@ interface Invite {
   expiresIn: number,
 }
 
+enum InviteStatus {
+  Active = "active",
+  Pending = "pending"
+}
+
 enum StatusPlan {
   NoPlan = "NoPlan",
   Activated = "Activated",
