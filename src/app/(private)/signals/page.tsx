@@ -39,15 +39,15 @@ const SignalCard = () => (
     <h3 className="text-lg font-medium mb-2">Menos mensagens ao longo do dia</h3>
     <p className="text-gray-600 mb-3">"Percebi que estamos conversando menos por mensagem. Algo mudou?"</p>
     <div className="flex flex-wrap gap-2 items-center">
-      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+      <Button className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-700 hover:text-white hover:bg-blue-400 hover:border-[#638dff]">
         😢 Triste
-      </span>
-      <span className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-orange-700">
+      </Button>
+      <Button className="inline-flex items-center px-3 py-1 rounded-full bg-orange-100 text-orange-700 hover:text-white hover:bg-orange-400 hover:border-[#ff9a64]">
         Moderado
-      </span>
-      <span className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-gray-700">
+      </Button>
+      <Button className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 hover:text-white hover:bg-green-400 hover:border-[#67ff8b]">
         Comunicação
-      </span>
+      </Button>
       <span className="ml-auto text-sm text-gray-500">02 de Março de 2025</span>
     </div>
   </div>
@@ -57,9 +57,9 @@ export default function Signals() {
   const [date, setDate] = useState<Date | undefined>();
 
   return (
-    <div className="max-w-[1500px] items-center justify-center flex flex-col gap-4 mt-[5rem]">
+    <div className="max-w-[1500px] items-center justify-center flex flex-col gap-4 mt-10">
       <Metrics />
-      <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem]">
+      <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-[2rem]">
         {/* Left Column - Signal Registration */}
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
@@ -130,22 +130,22 @@ export default function Signals() {
             <Textarea placeholder="Escreva seu sinal" className="min-h-[120px]" />
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3 pt-4">
-              <Button variant="outline">Cancelar</Button>
-              <Button>Registrar</Button>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button variant="outline" className="rounded-xl">Cancelar</Button>
+              <Button className="bg-[#ff6aaa] hover:bg-[#FF8CBE] rounded-xl transition-all duration-300">Registrar</Button>
             </div>
           </div>
 
           {/* Reflection Questions */}
           <div className="mt-8 border-t pt-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-xl font-semibold">Perguntas para Reflexão</h3>
               <span className="text-sm text-gray-500">2 restantes</span>
             </div>
             <p className="text-gray-700 mb-3">Como você se sente sobre a comunicação no relacionamento?</p>
             <Textarea placeholder="Responder à pergunta..." className="min-h-[100px] mb-4" />
             <div className="flex justify-end">
-              <Button>Enviar</Button>
+              <Button className="bg-[#ff6aaa] hover:bg-[#FF8CBE] transition-all duration-300 rounded-xl">Enviar</Button>
             </div>
           </div>
         </div>
