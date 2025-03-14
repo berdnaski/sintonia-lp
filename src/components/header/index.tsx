@@ -21,7 +21,7 @@ import { emitter } from "@/lib/mitt"
 
 const navItems = [
   { icon: Home, label: "Início", href: "/dashboard" },
-  { icon: Layers, label: "Sinais", href: "/sinais" },
+  { icon: Layers, label: "Sinais", href: "/signals" },
   { icon: Heart, label: "Saúde", href: "/saude" },
   { icon: Image, label: "Memórias", href: "/memorias" },
 ]

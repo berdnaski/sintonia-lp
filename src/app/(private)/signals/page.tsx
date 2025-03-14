@@ -57,7 +57,7 @@ export default function Signals() {
   const [date, setDate] = useState<Date | undefined>();
 
   return (
-    <div className="max-w-[1500px] mx-auto flex flex-col gap-4 mt-[2rem]">
+    <div className="max-w-[1500px] items-center justify-center flex flex-col gap-4 mt-[5rem]">
       <Metrics />
       <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem]">
         {/* Left Column - Signal Registration */}
@@ -151,7 +151,7 @@ export default function Signals() {
         </div>
 
         {/* Right Column - Recent Signals */}
-        <div>
+        <div className="mx-5">
           <h2 className="text-2xl font-bold mb-6">Últimos Sinais</h2>
           <div className="space-y-4">
             <SignalCard />
