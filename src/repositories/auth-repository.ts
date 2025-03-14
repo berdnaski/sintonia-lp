@@ -1,3 +1,4 @@
+import { Message } from "@/hooks/use-response-messages";
 import api from "@/services/api";
 import { z } from "zod";
 
@@ -18,7 +19,12 @@ export const registerSchema = loginSchema.extend({
   }).max(20)
 })
 
+export const registerWithInviteSchema = registerSchema.omit({
+  email: true
+})
+
 export type RegisterRequest = z.infer<typeof registerSchema>
+export type RegisterWithInviteRequest = z.infer<typeof registerWithInviteSchema>
 export type LoginRequest = z.infer<typeof loginSchema>
 
 interface AuthResponse {
@@ -28,6 +34,13 @@ interface AuthResponse {
 
 const resource = '/auth'
 
+export const authMessages: Message = {
+  error: {
+    "Email already in use.": "Já existe uma conta com esse e-mail.",
+    default: "Email ou senha inválidos"
+  },
+}
+
 export const authRepository = {
   register: async (data: RegisterRequest) => {
     const { data: response } = await api.post<AuthResponse>(`${resource}/register`, data)
@@ -36,6 +49,11 @@ export const authRepository = {
   },
   login: async (data: LoginRequest) => {
     const { data: response } = await api.post<AuthResponse>(`${resource}/login`, data)
+
+    return response
+  },
+  registerWithInvite: async (data: RegisterWithInviteRequest, inviteToken: string) => {
+    const { data: response } = await api.post<AuthResponse>(`${resource}/register-with-invite/token/${inviteToken}`, data)
 
     return response
   },

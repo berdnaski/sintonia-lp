@@ -4,7 +4,6 @@ import { useAuth } from "@/hooks/use-auth"
 import { emitter } from "@/lib/mitt"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react"
-import { Toaster } from "react-hot-toast";
 
 export default function PrivateLayout({ children }: { children: React.ReactNode}) {
   const { user, fetchUser, clearUser } = useAuth();
@@ -32,10 +31,6 @@ export default function PrivateLayout({ children }: { children: React.ReactNode}
 
   return (
     <div>
-    <Toaster
-  position="top-right"
-  reverseOrder={false}
-/>
       {children}
     </div>
   );

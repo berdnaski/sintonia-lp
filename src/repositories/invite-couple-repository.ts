@@ -1,7 +1,6 @@
+import { Message } from "@/hooks/use-response-messages";
 import api from "@/services/api";
 import { z } from "zod";
-
-const resource = '/couple'
 
 export const inviteSchema = z.object({
   email: z.string().min(3, {
@@ -20,21 +19,14 @@ export interface InviteResponse {
   createdAt: string;
 }
 
-type InviteMessages = {
-  error: {
-    [key: string]: string;
-    default: string;
-  };
-  success: {
-    [key: string]: string;
-  };
-};
+const resource = '/couples/invite'
 
-export const inviteMessages: InviteMessages = {
+export const inviteMessages: Message = {
   error: {
     "There is already a pending invitation for that email.": "Já existe um convite pendente para esse e-mail.",
     "You cannot invite yourself.": "Você não pode convidar a si mesmo",
     "Already have a pending invitation.": "Você já tem um convite pendente",
+    NOT_FOUND: "Convite não encontrado",
     default: "Erro ao enviar convite. Tente novamente"
   },
   success: {
@@ -44,7 +36,12 @@ export const inviteMessages: InviteMessages = {
 
 export const inviteRepository = {
   invite: async (data: InviteRequest) => {
-    const { data: response} = await api.post<InviteResponse>(`${resource}/invite`, data);
+    const { data: response} = await api.post<InviteResponse>(`${resource}`, data);
+
+    return response;
+  },
+  findByToken: async (token: string) => {
+    const { data: response} = await api.get<Invite>(`${resource}/token/${token}`);
 
     return response;
   }

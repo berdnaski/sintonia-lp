@@ -138,7 +138,7 @@ export default function RegisterForm() {
           <div className="mt-4">
             <h2 className="text-xl font-medium text-gray-800">Conecte-se</h2>
             <p className="text-gray-600 mt-1">
-              Faça login para descobrir conexões significativas e compartilhar momentos especiais.
+              Faça seu cadastro para descobrir conexões significativas e compartilhar momentos especiais.
             </p>
           </div>
         </div>
