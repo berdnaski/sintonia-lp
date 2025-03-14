@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import type React from "react"
+import React from "react"
 
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -15,18 +15,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios"
 import { useAuth } from "@/hooks/use-auth"
 
-export default function RegisterForm() {
+export default function RegisterWithInvite({
+  params
+}: {
+  params: {
+    id: string
+  }
+}) {
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterRequest>({
     resolver: zodResolver(registerSchema)
   });
-  
+
+  const { id } = params
+
   return (
     <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
         <Card className="w-full md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-gray-900">Bem vindo a Sintonia</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Bem vindo a Sintonia {id}</h1>
               <p className="text-gray-600">Pequenos sinais, grandes conexões. Crie uma conta para continuar sua jornada.</p>
             </div>
 

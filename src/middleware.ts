@@ -4,6 +4,7 @@ const publicRoutes = [
   { path: '/auth/register', whenAuthenticated: 'redirect' },
   { path: '/auth/login', whenAuthenticated: 'redirect' },
   { path: '/auth/reset-password', whenAuthenticated: 'redirect' },
+  { path: '/auth/register-with-invite/token', whenAuthenticated: 'redirect' },
   { path: '/', whenAuthenticated: 'redirect' },
 ];
 
@@ -11,7 +12,7 @@ const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/auth/register";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const publicRoute = publicRoutes.find(route => route.path === path);
+  const publicRoute = publicRoutes.find(route => path.startsWith(route.path));
   const authToken = request.cookies.get('token');
 
   if (!authToken && publicRoute) {
