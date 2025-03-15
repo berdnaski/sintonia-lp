@@ -34,7 +34,7 @@ export const inviteMessages: InviteMessages = {
   error: {
     "There is already a pending invitation for that email.": "Já existe um convite pendente para esse e-mail.",
     "You cannot invite yourself.": "Você não pode convidar a si mesmo",
-    "Already have a pending invitation.": "Você já tem um pendente",
+    "Already have a pending invitation.": "Você já tem um convite pendente",
     default: "Erro ao enviar convite. Tente novamente"
   },
   success: {
