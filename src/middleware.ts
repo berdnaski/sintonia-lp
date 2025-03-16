@@ -1,8 +1,10 @@
 import { NextResponse, type MiddlewareConfig, type NextRequest } from "next/server";
+import { Routes } from "./constants/routes";
 
 const publicRoutes = [
   { path: '/auth/register', whenAuthenticated: 'redirect' },
   { path: '/auth/login', whenAuthenticated: 'redirect' },
+  { path: '/auth/login/:id', whenAuthenticated: 'redirect' },
   { path: '/auth/reset-password', whenAuthenticated: 'redirect' },
   { path: '/auth/register-with-invite/token/:id', whenAuthenticated: 'redirect' },
   { path: '/', whenAuthenticated: 'redirect' },
@@ -52,8 +54,9 @@ export function middleware(request: NextRequest) {
   }
 
   if (authToken && isPublic) {
+    console.log('aqui')
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = '/dashboard';
+    redirectUrl.pathname = Routes.DASHBOARD;
     return NextResponse.redirect(redirectUrl);
   }
 

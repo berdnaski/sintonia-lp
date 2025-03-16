@@ -9,7 +9,9 @@ export function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const hideHeaderPages = ["/auth/login", "/auth/register", "/auth/reset-password", "/setup/invite-couple", "/setup/verify-invite-couple", "/setup/complete-verify-couple", "auth/register-with-invite/token"];
+  const hideHeaderPages = [
+    "/auth/login", "/auth/register", "/auth/reset-password", "/setup/invite-couple", "/setup/verify-invite-couple", "/setup/complete-verify-couple", "auth/register-with-invite/token", "/couple/invite/accept"
+  ];
   const shouldHideHeader = hideHeaderPages.find(route => pathname.startsWith(route));
 
   return (

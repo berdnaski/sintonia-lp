@@ -22,7 +22,6 @@ export const useCouple = create<AuthStore>((set, get) => ({
         return
       }
 
-      console.log({ user })
       const couple = await coupleRepository.findByUser(user.id)
 
       set({ couple })

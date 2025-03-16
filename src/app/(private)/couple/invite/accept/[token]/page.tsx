@@ -1,26 +1,43 @@
-"use client";
+'use client'
 
-import React from "react";
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import InviteForm from "./_components/invite-form";
-import { randomUUID } from "crypto";
-import VerifyInvite from "./_components/verify-invite";
+import React, { useEffect, useState } from "react"
+
+import { Card } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { LockKeyhole, Mail } from "lucide-react"
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { authMessages, authRepository, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/hooks/use-auth"
+import { useResponseMessages } from "@/hooks/use-response-messages"
+import { inviteMessages } from "@/repositories/couple-repository"
+import { inviteRepository } from "@/repositories/invite-couple-repository"
+import AcceptInvite from "./_components/_components/accept-invite"
+import InviteAccepted from "./_components/_components/invite-accepted"
 
 const steps = [
   {
     id: 1,
-    component: InviteForm
+    component: AcceptInvite
   },
   {
     id: 2,
-    component: VerifyInvite
+    component: InviteAccepted
   }
 ]
 
-export default function InviteCouple() {
-  const router = useRouter();
+export default function RegisterWithInvite({
+  params,
+}: {
+  params: Promise<{ token: string }>
+}) {
+  const router = useRouter()
+  const { toastError } = useResponseMessages()
+  const { token: inviteToken } = React.use(params)
+
   const [step, setStep] = useState(1);
   const percentagePerStep = 100 / steps.length;
   const [progressWidth, setProgressWidth] = useState(0);
@@ -32,6 +49,28 @@ export default function InviteCouple() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const validateIfInviteExists = async () => {
+    try {
+      const invite = await inviteRepository.findByToken(inviteToken)
+
+      if (!invite || invite.used) {
+        // router.push('/dashboard');
+        return;
+      }
+    } catch (error) {
+      toastError(error, inviteMessages);
+      // router.push('/dashboard');
+    }
+  };
+
+  useEffect(() => {
+    const load = async () => {
+      await validateIfInviteExists()
+    }
+
+    load()
+  }, [])
 
   const handleNextStep = () => {
     if (step === steps.length) {
@@ -73,5 +112,5 @@ export default function InviteCouple() {
         </Card>
       </div>
     </div>
-  );
+  )
 }
