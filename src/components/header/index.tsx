@@ -37,30 +37,35 @@ export function Header() {
   const { couple } = useCouple();
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const [hasNotification, setHasNotification] = useState(true)
-  const diff = dateDiff(couple?.createdAt, new Date())
+
+  const diff = couple && dateDiff(couple.createdAt, new Date())
 
   const handleLogout = () => {
     emitter.emit("logout")
   }
 
   const getFormatOptions = (duration: Duration) => {
-    if (diff.years) {
+    if (!duration) {
+      return null;
+    }
+
+    if (duration.years) {
       return 'years'
     }
 
-    if (diff.months) {
+    if (duration.months) {
       return 'months'
     }
 
-    if (diff.days) {
+    if (duration.days) {
       return 'days'
     }
 
-    if (diff.hours) {
+    if (duration.hours) {
       return 'hours'
     }
 
-    if (diff.minutes) {
+    if (duration.minutes) {
       return 'minutes'
     }
   }
@@ -152,7 +157,7 @@ export function Header() {
                     <p className="text-sm font-medium">{couple.user1.name} & {couple.user2.name}</p>
                   )}
 
-                  {couple && (
+                  {getFormatOptions(diff) && (
                     <p className="text-xs text-gray-500">
                       {formatDuration(diff, {
                         format: [getFormatOptions(diff)],

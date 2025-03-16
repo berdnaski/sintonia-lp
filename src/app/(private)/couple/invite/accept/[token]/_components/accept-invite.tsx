@@ -1,14 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/form/input";
+import { useCoupleInvite } from "@/hooks/use-couple-invite";
 import { useResponseMessages } from "@/hooks/use-response-messages";
-import { inviteRepository, inviteMessages, InviteRequest, inviteSchema } from "@/repositories/invite-couple-repository";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Send } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { inviteRepository, inviteMessages } from "@/repositories/invite-couple-repository";
+import { userRepository } from "@/repositories/user-repository";
+import { Send } from "lucide-react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 interface AcceptInviteProps {
@@ -18,11 +16,40 @@ interface AcceptInviteProps {
 export default function AcceptInvite({
   onNextStep
 }: AcceptInviteProps) {
+  const { toastError } = useResponseMessages()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const inviterName = 'Leoanrdo Lopes'
+  const { invite } = useCoupleInvite()
+  const [inviter, setInviter] = useState<User>(null);
 
-  const handleAcceptInvite = () => {
-    onNextStep()
+  const findInviter = async () => {
+    const inviter =  await userRepository.findByIdOrEmail(invite.inviterId)
+    setInviter(inviter)
+  }
+
+  useEffect(() => {
+    if (!invite) {
+      return
+    }
+
+    findInviter()
+  }, [invite])
+
+  const handleAcceptInvite = async () => {
+    if (!invite) {
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      await inviteRepository.acceptInvite(invite.token)
+      onNextStep()
+      toast.success(inviteMessages.success.inviteAccepted)
+
+    } catch (error) {
+      toastError(error, inviteMessages);
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -36,7 +63,7 @@ export default function AcceptInvite({
                 Aqui começa o caminho para a Sintonia, entre o casal. Onde a união e entendimento é o principal
               </p>
               <p className="text-lg">
-                <span className="text-[#FF5FA4] font-medium">{inviterName}</span> convidou você para formar um casal
+                <span className="text-[#FF5FA4] font-medium">{inviter?.name}</span> convidou você para formar um casal
               </p>
             </div>
           </div>

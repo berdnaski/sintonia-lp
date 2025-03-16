@@ -1,17 +1,14 @@
-import { setAPIAuthToken } from "@/services/api";
 import { create } from "zustand"
-import Cookies from "js-cookie";
-import { userRepository } from "@/repositories/user-repository";
 import { coupleRepository } from "@/repositories/couple-repository";
 import { useAuth } from "./use-auth";
 
-interface AuthStore {
+interface CoupleStore {
   couple: Couple | null;
   fetchCouple: () => void;
   cleanCouple: () => void
 }
 
-export const useCouple = create<AuthStore>((set, get) => ({
+export const useCouple = create<CoupleStore>((set, get) => ({
   couple: null,
   fetchCouple: async () => {
     try {

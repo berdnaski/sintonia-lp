@@ -14,8 +14,9 @@ import { authMessages, authRepository, RegisterWithInviteRequest, registerWithIn
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth"
 import { useResponseMessages } from "@/hooks/use-response-messages"
-import { inviteMessages } from "@/repositories/couple-repository"
-import { inviteRepository } from "@/repositories/invite-couple-repository"
+import { inviteMessages, inviteRepository } from "@/repositories/invite-couple-repository"
+import { userRepository } from "@/repositories/user-repository"
+import { Routes } from "@/constants/routes"
 
 export default function RegisterWithInvite({
   params
@@ -43,14 +44,21 @@ export default function RegisterWithInvite({
       const invite = await inviteRepository.findByToken(inviteToken)
 
       if (!invite || invite.used) {
-        router.push('/auth/login');
+        router.push(Routes.LOGIN());
         return;
+      }
+
+      const userAlreadyExists =  await userRepository.findByIdOrEmail(invite.inviterId)
+
+      if (userAlreadyExists?.id) {
+        router.push(Routes.LOGIN(inviteToken))
+        return
       }
 
       setInvite(invite)
     } catch (error) {
       toastError(error, inviteMessages);
-      router.push('/auth/login');
+      router.push(Routes.LOGIN());
     }
   };
 

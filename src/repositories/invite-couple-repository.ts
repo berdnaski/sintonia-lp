@@ -19,16 +19,17 @@ export interface InviteResponse {
   createdAt: string;
 }
 
-export const inviteMessages: Message = {
+export const inviteMessages = {
   error: {
     "There is already a pending invitation for that email.": "Já existe um convite pendente para esse e-mail.",
     "You cannot invite yourself.": "Você não pode convidar a si mesmo",
     "Already have a pending invitation.": "Você já tem um convite pendente",
     NOT_FOUND: "Convite não encontrado",
-    default: "Erro ao enviar convite. Tente novamente"
+    default: "Algo deu errado, atualize a página e tente novamente."
   },
   success: {
     invited: "Convite enviado com sucesso!",
+    inviteAccepted: "Convite aceito com sucesso!"
   }
 }
 
@@ -44,7 +45,12 @@ export const inviteRepository = {
     const { data: response} = await api.get<Invite>(`${resource}/token/${token}`);
 
     return response;
-  }
+  },
+  acceptInvite: async (token: string) => {
+    const { data: response} = await api.post<InviteResponse>(`${resource}/accept/${token}`);
+
+    return response;
+  },
 };
 
 

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useCouple } from "@/hooks/use-couple";
 import Link from "next/link";
 
 interface InviteAcceptedProps {
@@ -8,7 +9,10 @@ interface InviteAcceptedProps {
 export default function InviteAccepted({
   onNextStep
 }: InviteAcceptedProps) {
-  const handleNextStep = () => {
+  const { fetchCouple } = useCouple()
+
+  const handleNextStep = async () => {
+    fetchCouple()
     onNextStep()
   }
 

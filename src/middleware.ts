@@ -10,7 +10,7 @@ const publicRoutes = [
   { path: '/', whenAuthenticated: 'redirect' },
 ];
 
-const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/auth/register";
+const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = Routes.REGISTER;
 
 function isPublicRoute(currentPath: string) {
   return publicRoutes.some(route => {
@@ -54,7 +54,6 @@ export function middleware(request: NextRequest) {
   }
 
   if (authToken && isPublic) {
-    console.log('aqui')
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = Routes.DASHBOARD;
     return NextResponse.redirect(redirectUrl);

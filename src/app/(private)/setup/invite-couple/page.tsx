@@ -52,7 +52,7 @@ export default function InviteCouple() {
       }}
     >
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto gap-8">
-        <Card className="w-full h-[50vh] items-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
+        <Card className="w-full min-h-fit max-h-[50vh] items-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2 relative">
               <div className="h-7 rounded-full bg-zinc-200 overflow-hidden relative">

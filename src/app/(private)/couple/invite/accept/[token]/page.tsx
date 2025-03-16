@@ -3,20 +3,13 @@
 import React, { useEffect, useState } from "react"
 
 import { Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { LockKeyhole, Mail } from "lucide-react"
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { authMessages, authRepository, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/hooks/use-auth"
 import { useResponseMessages } from "@/hooks/use-response-messages"
-import { inviteMessages } from "@/repositories/couple-repository"
-import { inviteRepository } from "@/repositories/invite-couple-repository"
-import AcceptInvite from "./_components/_components/accept-invite"
-import InviteAccepted from "./_components/_components/invite-accepted"
+import { inviteMessages } from "@/repositories/invite-couple-repository"
+import AcceptInvite from "./_components/accept-invite"
+import InviteAccepted from "./_components/invite-accepted"
+import { Routes } from "@/constants/routes"
+import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
 const steps = [
   {
@@ -36,45 +29,44 @@ export default function RegisterWithInvite({
 }) {
   const router = useRouter()
   const { toastError } = useResponseMessages()
+  const { findInviteByToken } = useCoupleInvite()
   const { token: inviteToken } = React.use(params)
 
   const [step, setStep] = useState(1);
   const percentagePerStep = 100 / steps.length;
   const [progressWidth, setProgressWidth] = useState(0);
 
+  const validateIfInviteExists = async () => {
+    try {
+      const invite = await findInviteByToken(inviteToken)
+
+      if (!invite || invite.used) {
+        router.push(Routes.DASHBOARD);
+        return;
+      }
+    } catch (error) {
+      toastError(error, inviteMessages);
+      router.push(Routes.DASHBOARD);
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgressWidth(percentagePerStep);
     }, 300);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  const validateIfInviteExists = async () => {
-    try {
-      const invite = await inviteRepository.findByToken(inviteToken)
-
-      if (!invite || invite.used) {
-        // router.push('/dashboard');
-        return;
-      }
-    } catch (error) {
-      toastError(error, inviteMessages);
-      // router.push('/dashboard');
-    }
-  };
-
-  useEffect(() => {
     const load = async () => {
       await validateIfInviteExists()
     }
 
     load()
+
+    return () => clearTimeout(timer);
   }, [])
 
   const handleNextStep = () => {
     if (step === steps.length) {
-      router.push("/dashboard");
+      router.push(Routes.DASHBOARD);
       return;
     }
 
@@ -91,7 +83,7 @@ export default function RegisterWithInvite({
       }}
     >
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto gap-8">
-        <Card className="w-full h-[50vh] items-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
+        <Card className="w-full min-h-fit max-h-[50vh] items-center justify-center flex flex-col md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
           <div className="space-y-6 max-w-md mx-auto">
             <div className="space-y-2 relative">
               <div className="h-7 rounded-full bg-zinc-200 overflow-hidden relative">
@@ -106,7 +98,7 @@ export default function RegisterWithInvite({
             </div>
 
             { React.createElement(steps.find(s => s.id === step).component, {
-                onNextStep: handleNextStep
+                onNextStep: handleNextStep,
             })}
           </div>
         </Card>

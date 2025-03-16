@@ -13,9 +13,6 @@ export default function PlansPage() {
 
   const userId = user?.id;
 
-  console.log('teee', userId);
-
-
   const handleMonthlyPlanClick = async () => {
     if (!userId) {
       console.log('Você precisa estar logado para comprar planos.')

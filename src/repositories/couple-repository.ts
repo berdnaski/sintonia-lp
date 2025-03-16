@@ -1,13 +1,12 @@
 import { Message } from "@/hooks/use-response-messages";
 import api from "@/services/api";
 
-export const inviteMessages: Message = {
+export const coupleMessages: Message = {
   error: {
     NOT_FOUND: "Casal não encontrado",
-    default: "Erro ao enviar convite. Tente novamente"
+    default: "Algo deu errado. Recarregue a página e tente novamente"
   },
   success: {
-    invited: "Convite enviado com sucesso!",
   }
 }
 

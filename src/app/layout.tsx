@@ -60,7 +60,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased mx-auto">
-      <Toaster
+        <Toaster
           position="top-right"
           reverseOrder={false}
         />
