@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -14,9 +13,9 @@ import { authMessages, authRepository, RegisterWithInviteRequest, registerWithIn
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth"
 import { useResponseMessages } from "@/hooks/use-response-messages"
-import { inviteMessages, inviteRepository } from "@/repositories/invite-couple-repository"
-import { userRepository } from "@/repositories/user-repository"
+import { inviteMessages } from "@/repositories/invite-couple-repository"
 import { Routes } from "@/constants/routes"
+import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
 export default function RegisterWithInvite({
   params
@@ -26,36 +25,32 @@ export default function RegisterWithInvite({
   }
 }) {
   const router = useRouter()
-  const { toastError } = useResponseMessages()
   const { authenticate } = useAuth()
+  const { toastError } = useResponseMessages()
+  const { invite, verifyIfInvitedAlreadyExists, findInviteByToken } = useCoupleInvite()
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterWithInviteRequest>({
     resolver: zodResolver(registerWithInviteSchema),
   });
 
-  const [invite, setInvite] = useState({
-    inviteeEmail: ""
-  } as Invite)
-
   // @ts-ignore:next-line
   const { token: inviteToken } = React.use(params)
 
-  const validateIfInviteExists = async () => {
+  const validateInvite = async () => {
     try {
-      const invite = await inviteRepository.findByToken(inviteToken)
+      const invite = await findInviteByToken(inviteToken)
 
       if (!invite || invite.used) {
         router.push(Routes.LOGIN());
         return;
       }
 
-      const userAlreadyExists =  await userRepository.findByIdOrEmail(invite.inviterId)
+      const userAlreadyExists = await verifyIfInvitedAlreadyExists(invite.inviteeEmail)
 
-      if (userAlreadyExists?.id) {
+      if (userAlreadyExists) {
         router.push(Routes.LOGIN(inviteToken))
         return
       }
 
-      setInvite(invite)
     } catch (error) {
       toastError(error, inviteMessages);
       router.push(Routes.LOGIN());
@@ -64,7 +59,7 @@ export default function RegisterWithInvite({
 
   useEffect(() => {
     const load = async () => {
-      await validateIfInviteExists()
+      await validateInvite()
     }
 
     load()
@@ -81,6 +76,10 @@ export default function RegisterWithInvite({
       toastError(error, authMessages);
     }
   })
+
+  if (!invite) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">

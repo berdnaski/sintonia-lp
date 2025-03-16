@@ -57,6 +57,7 @@ export function middleware(request: NextRequest) {
   if (authToken && isPublic) {
     if (path.startsWith(Routes.LOGIN())) {
       const token = path.split('/')[3];
+
       const redirectUrl = request.nextUrl.clone();
 
       redirectUrl.pathname = Routes.COUPLE_ACCEPT_INVITE(token);
