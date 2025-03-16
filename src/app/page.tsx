@@ -9,10 +9,50 @@ import { Footer } from "@/components/footer"
 import { AppPreview } from "@/components/app-preview"
 import { DecorativeDots, DecorativeGrid, WavyLine } from "@/components/decorative"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
-    <div className="flex flex-col items-center justify-center md:mt-[8rem] mt-[3rem] overflow-hidden">
+    <div className="flex flex-col items-center justify-center overflow-hidden">
+      <header
+        className={`w-full py-4 transition-all duration-300 ${
+          isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
+        }`}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-3 group">
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+                <img src="./logo.png" alt="Sintonia Logo" className="w-[42px] h-[42px] md:w-[48px] md:h-[48px]" />
+              </motion.div>
+              <h1 className="font-bold text-xl md:text-2xl bg-gradient-to-r from-[#FF006F] to-[#B42A76] bg-clip-text text-transparent">
+                Sintonia
+              </h1>
+            </Link>
+
+            <Button
+              className="bg-[#FF006F] hover:bg-[#FF005F] text-white font-medium px-4 py-2 h-auto transition-all duration-300 transform hover:scale-105 shadow-sm hidden sm:flex"
+              size="sm"
+            >
+              <Link href="https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw" target="_blank">
+                Lista de Espera
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+
       <div className="relative">
         <DecorativeGrid variant="pink" size="lg" position="left" className="top-0 opacity-30 hidden md:block" />
         <DecorativeDots variant="pink" rows={4} cols={4} className="absolute -right-12 top-1/4 hidden md:grid" />

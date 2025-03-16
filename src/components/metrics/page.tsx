@@ -56,7 +56,7 @@ const metrics = [
 
 export function Metrics() {
   return (
-    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
+    <div className="flex flex-col sm:flex-row mt-10 flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
       {metrics.map((metric, index) => (
         <motion.button
           key={index}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useAuth } from "@/hooks/use-auth"
 import { Metrics } from "@/components/metrics/page"
@@ -21,6 +21,5 @@ export default function Dashboard() {
         <Metrics />
       </div>
     </div>
-  )
+  );
 }
-
