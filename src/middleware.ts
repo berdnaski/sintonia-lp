@@ -44,6 +44,7 @@ function isPublicRoute(currentPath: string) {
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
+
   const authToken = request.cookies.get('token');
   const isPublic = isPublicRoute(path);
 
@@ -54,6 +55,15 @@ export function middleware(request: NextRequest) {
   }
 
   if (authToken && isPublic) {
+    if (path.startsWith(Routes.LOGIN())) {
+      const token = path.split('/')[3];
+      const redirectUrl = request.nextUrl.clone();
+
+      redirectUrl.pathname = Routes.COUPLE_ACCEPT_INVITE(token);
+
+      return NextResponse.redirect(redirectUrl);
+    }
+
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = Routes.DASHBOARD;
     return NextResponse.redirect(redirectUrl);
