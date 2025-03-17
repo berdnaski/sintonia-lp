@@ -1,24 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Metrics } from "@/components/metrics/page";
-
-const categories = [
-  { value: "amor", label: "Amor" },
-  { value: "amizade", label: "Amizade" },
-  { value: "familia", label: "Família" },
-  { value: "trabalho", label: "Trabalho" },
-];
-
-const emotions = [
-  { value: "feliz", label: "Feliz" },
-  { value: "triste", label: "Triste" },
-  { value: "ansioso", label: "Ansioso" },
-  { value: "calmo", label: "Calmo" },
-];
+import { useResponseMessages } from "@/hooks/use-response-messages";
+import { useForm, Controller } from "react-hook-form";
+import { signalMessages, signalRepository, signalSchema, type SignalRequest } from "@/repositories/signals-repository";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { useAuth } from "@/hooks/use-auth";
+import { useCouple } from "@/hooks/use-couple";
 
 const SignalCard = () => (
   <div className="bg-white rounded-lg p-4 shadow-sm border-zinc-200 border mb-4">
@@ -39,9 +32,48 @@ const SignalCard = () => (
   </div>
 );
 
-export default function Signals() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedEmotion, setSelectedEmotion] = useState<string>("");
+export default function SignalForm() {
+  const { toastError } = useResponseMessages();
+
+  const { user } = useAuth();
+  const { couple } = useCouple();
+  const form = useForm<SignalRequest>({
+    resolver: zodResolver(signalSchema),
+    defaultValues: {
+      emotion: "",
+      note: "",
+    },
+  });
+
+  const { control, handleSubmit, formState: { isSubmitting, errors }, watch, reset } = form;
+
+  const handleCreateSignal = async (data: SignalRequest) => {
+    if (!user || !couple) {
+      toast.error("Usuário ou casal não encontrado.");
+      return;
+    }
+
+    try {
+      const signalData = {
+        ...data,
+        userId: user.id,
+        coupleId: couple.id
+      };
+
+      await signalRepository.createSignal(signalData);
+      reset(); 
+      toast.success("Sinal enviado com sucesso!");
+    } catch (error) {
+      toastError(error, signalMessages);
+    }
+  };
+
+  const emotions = [
+    { value: "feliz", label: "Feliz" },
+    { value: "triste", label: "Triste" },
+    { value: "ansioso", label: "Ansioso" },
+    { value: "calmo", label: "Calmo" },
+  ];
 
   return (
     <div className="w-full xl:max-w-[1600px] md:max-w-[1300px] mx-auto px-4 md:px-6 lg:px-8 py-10">
@@ -53,46 +85,52 @@ export default function Signals() {
           <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm">
             <h2 className="text-2xl font-bold mb-6">Registrar sinal</h2>
 
-            <div className="space-y-4">
+            <form onSubmit={handleSubmit(handleCreateSignal)} className="space-y-4">
               <div className="flex flex-col md:flex-row gap-3">
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-full md:w-auto rounded-lg border-2 border-zinc-300 shadow-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    <SelectValue placeholder="Categoria" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white rounded-md shadow-lg border-2 border-zinc-300 mt-1 w-full max-w-xs p-2 transition-opacity duration-300 ease-in-out">
-                    {categories.map((category) => (
-                      <SelectItem key={category.value} value={category.value} className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer transition-colors">
-                        {category.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={selectedEmotion} onValueChange={setSelectedEmotion}>
-                  <SelectTrigger className="w-full md:w-auto rounded-lg border-2 border-zinc-300 shadow-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
-                    <SelectValue placeholder="Emoção" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white rounded-md shadow-lg border-2 border-zinc-300 mt-1 w-full max-w-xs p-2 transition-opacity duration-300 ease-in-out">
-                    {emotions.map((emotion) => (
-                      <SelectItem key={emotion.value} value={emotion.value} className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer transition-colors">
-                        {emotion.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="emotion"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value } }) => (
+                    <Select onValueChange={onChange} value={value || ""}>
+                      <SelectTrigger className="w-full md:w-auto rounded-lg border-2 border-zinc-300 shadow-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                        <SelectValue placeholder="Emoção" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white rounded-md shadow-lg border-2 border-zinc-300 mt-1 w-full max-w-xs p-2">
+                        {emotions.map((emotion) => (
+                          <SelectItem key={emotion.value} value={emotion.value} className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer">
+                            {emotion.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
 
-              <Textarea placeholder="Escreva seu sinal" className="min-h-[120px] rounded-xl border-zinc-200 resize-none" />
+              <Controller
+                name="note"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    placeholder="Escreva seu sinal"
+                    className="min-h-[120px] rounded-xl border-zinc-200 resize-none"
+                  />
+                )}
+              />
 
               <div className="flex justify-end gap-3 pt-2">
-                <Button variant="ghost" className="rounded-full hover:cursor-pointer">
-                  Cancelar
-                </Button>
-                <Button className="bg-[#ff6aaa] hover:bg-[#FF8CBE] text-white hover:cursor-pointer rounded-full transition-all duration-300">
-                  Registrar
+                <Button 
+                  type="submit"
+                  className="bg-[#ff6aaa] hover:bg-[#FF8CBE] text-white hover:cursor-pointer rounded-full transition-all duration-300"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Enviando..." : "Registrar"}
                 </Button>
               </div>
-            </div>
+            </form>
 
             <div className="mt-8 border-t pt-6">
               <div className="flex items-center justify-between mb-2">
