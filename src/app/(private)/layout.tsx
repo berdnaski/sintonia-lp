@@ -1,14 +1,16 @@
 "use client"
 
+import { Routes } from "@/constants/routes";
 import { useAuth } from "@/hooks/use-auth"
+import { useCouple } from "@/hooks/use-couple";
 import { emitter } from "@/lib/mitt"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react"
-import { Toaster } from "react-hot-toast";
 
 export default function PrivateLayout({ children }: { children: React.ReactNode}) {
   const { user, fetchUser, clearUser } = useAuth();
-   const router = useRouter()
+  const { fetchCouple } = useCouple();
+  const router = useRouter()
 
   useEffect(() => {
     fetchUser();
@@ -21,9 +23,12 @@ export default function PrivateLayout({ children }: { children: React.ReactNode}
   }, [])
 
   useEffect(() => {
-    if (!user) {
-      router.push('/auth/login')
+    if (user === null) {
+      router.push(Routes.LOGIN())
+      return;
     }
+
+    fetchCouple()
   }, [user])
 
   if (!user) {
@@ -32,10 +37,6 @@ export default function PrivateLayout({ children }: { children: React.ReactNode}
 
   return (
     <div>
-    <Toaster
-  position="top-right"
-  reverseOrder={false}
-/>
       {children}
     </div>
   );

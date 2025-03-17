@@ -1,41 +1,72 @@
-"use client";
+'use client'
 
-import React from "react";
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import InviteForm from "./_components/invite-form";
-import { randomUUID } from "crypto";
-import VerifyInvite from "./_components/verify-invite";
+import React, { useEffect, useState } from "react"
+
+import { Card } from "@/components/ui/card"
 import { useRouter } from "next/navigation";
+import { useResponseMessages } from "@/hooks/use-response-messages"
+import { inviteMessages } from "@/repositories/invite-couple-repository"
+import AcceptInvite from "./_components/accept-invite"
+import InviteAccepted from "./_components/invite-accepted"
+import { Routes } from "@/constants/routes"
+import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
 const steps = [
   {
     id: 1,
-    component: InviteForm
+    component: AcceptInvite
   },
   {
     id: 2,
-    component: VerifyInvite
+    component: InviteAccepted
   }
 ]
 
-export default function InviteCouple() {
-  const router = useRouter();
+export default function RegisterWithInvite({
+  params,
+}: {
+  params: Promise<{ token: string }>
+}) {
+  const router = useRouter()
+  const { toastError } = useResponseMessages()
+  const { findInviteByToken } = useCoupleInvite()
+  const { token: inviteToken } = React.use(params)
+
   const [step, setStep] = useState(1);
   const percentagePerStep = 100 / steps.length;
   const [progressWidth, setProgressWidth] = useState(0);
+
+  const validateIfInviteExists = async () => {
+    try {
+      const invite = await findInviteByToken(inviteToken)
+
+      if (!invite || invite.used) {
+        router.push(Routes.DASHBOARD);
+        return;
+      }
+    } catch (error) {
+      toastError(error, inviteMessages);
+      router.push(Routes.DASHBOARD);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgressWidth(percentagePerStep);
     }, 300);
 
+    const load = async () => {
+      await validateIfInviteExists()
+    }
+
+    load()
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [])
 
   const handleNextStep = () => {
     if (step === steps.length) {
-      router.push("/dashboard");
+      router.push(Routes.DASHBOARD);
       return;
     }
 
@@ -67,11 +98,11 @@ export default function InviteCouple() {
             </div>
 
             { React.createElement(steps.find(s => s.id === step).component, {
-                onNextStep: handleNextStep
+                onNextStep: handleNextStep,
             })}
           </div>
         </Card>
       </div>
     </div>
-  );
+  )
 }

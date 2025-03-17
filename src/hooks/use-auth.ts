@@ -11,7 +11,7 @@ interface AuthStore {
 }
 
 export const useAuth = create<AuthStore>((set, get) => ({
-  user: {} as User,
+  user: undefined,
   authenticate: (user: User, token: string) => {
     setAPIAuthToken(token)
     Cookies.set('token', token)
@@ -25,7 +25,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
       if (token) {
         setAPIAuthToken(token)
 
-        const { user } = await userRepository.me()
+        const user = await userRepository.me()
 
         set({ user })
 

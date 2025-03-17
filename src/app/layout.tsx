@@ -1,6 +1,7 @@
 import { ClientLayout } from './client-layout';
 import '../styles/globals.css';
 import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: "Sintonia | Pequenos sinais, grandes conexões",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "Sintonia",
     images: [
       {
-        url: "/logo.png", 
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "Sintonia - Pequenos sinais, grandes conexões"
@@ -59,6 +60,10 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased mx-auto">
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

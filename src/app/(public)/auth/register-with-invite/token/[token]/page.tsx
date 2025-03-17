@@ -1,25 +1,86 @@
-"use client"
+'use client'
 
-import type React from "react"
+import React, { useEffect } from "react"
 
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { authRepository, RegisterRequest, registerSchema } from "@/repositories/auth-repository"
+import { authMessages, authRepository, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios"
 import { useAuth } from "@/hooks/use-auth"
+import { useResponseMessages } from "@/hooks/use-response-messages"
+import { inviteMessages } from "@/repositories/invite-couple-repository"
+import { Routes } from "@/constants/routes"
+import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
-export default function RegisterForm() {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterRequest>({
-    resolver: zodResolver(registerSchema)
+export default function RegisterWithInvite({
+  params
+}: {
+  params: {
+    id: string
+  }
+}) {
+  const router = useRouter()
+  const { authenticate } = useAuth()
+  const { toastError } = useResponseMessages()
+  const { invite, verifyIfInvitedAlreadyExists, findInviteByToken } = useCoupleInvite()
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterWithInviteRequest>({
+    resolver: zodResolver(registerWithInviteSchema),
   });
-  
+
+  // @ts-ignore:next-line
+  const { token: inviteToken } = React.use(params)
+
+  const validateInvite = async () => {
+    try {
+      const invite = await findInviteByToken(inviteToken)
+
+      if (!invite || invite.used) {
+        router.push(Routes.LOGIN());
+        return;
+      }
+
+      const userAlreadyExists = await verifyIfInvitedAlreadyExists(invite.inviteeEmail)
+
+      if (userAlreadyExists) {
+        router.push(Routes.LOGIN(inviteToken))
+        return
+      }
+
+    } catch (error) {
+      toastError(error, inviteMessages);
+      router.push(Routes.LOGIN());
+    }
+  };
+
+  useEffect(() => {
+    const load = async () => {
+      await validateInvite()
+    }
+
+    load()
+  }, [])
+
+  const handleRegister = handleSubmit(async (data) => {
+    try {
+      const { user, token } = await authRepository.registerWithInvite(data, inviteToken)
+
+      authenticate(user, token)
+
+      router.push('/dashboard')
+    } catch (error) {
+      toastError(error, authMessages);
+    }
+  })
+
+  if (!invite) {
+    return null;
+  }
+
   return (
     <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
@@ -30,7 +91,7 @@ export default function RegisterForm() {
               <p className="text-gray-600">Pequenos sinais, grandes conexões. Crie uma conta para continuar sua jornada.</p>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleRegister}>
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-gray-700">
                   Name
@@ -39,6 +100,8 @@ export default function RegisterForm() {
                   id="name"
                   className="h-11 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                   placeholder="exemplo@email.com"
+                  {...register('name')}
+                  error={errors.name?.message}
                 />
               </div>
 
@@ -51,7 +114,9 @@ export default function RegisterForm() {
                   type="email"
                   className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                   placeholder="exemplo@email.com"
+                  value={invite.inviteeEmail}
                   icon={Mail}
+                  disabled
                 />
               </div>
 
@@ -66,6 +131,8 @@ export default function RegisterForm() {
                   type="password"
                   className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                   icon={LockKeyhole}
+                  {...register('password')}
+                  error={errors.password?.message}
                 />
               </div>
 
@@ -93,7 +160,7 @@ export default function RegisterForm() {
           <div className="mt-4">
             <h2 className="text-xl font-medium text-gray-800">Conecte-se</h2>
             <p className="text-gray-600 mt-1">
-              Faça login para descobrir conexões significativas e compartilhar momentos especiais.
+              Faça seu cadastro para descobrir conexões significativas e compartilhar momentos especiais.
             </p>
           </div>
         </div>
