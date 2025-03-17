@@ -42,16 +42,6 @@ const metrics = [
     iconColor: "text-purple-500",
     shadowColor: "group-hover:shadow-purple-500/25",
   },
-  {
-    icon: Bell,
-    label: "1",
-    value: "",
-    color: "bg-orange-400/10",
-    hoverColor: "hover:bg-orange-400/20",
-    textColor: "text-orange-600",
-    iconColor: "text-orange-500",
-    shadowColor: "group-hover:shadow-orange-500/25",
-  }
 ];
 
 export function Metrics() {
