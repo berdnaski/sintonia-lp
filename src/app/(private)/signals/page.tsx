@@ -95,33 +95,35 @@ const SignalForm = () => {
   useEffect(() => {
     if (couple) {
       const fetchData = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-          const signalsData = await signalRepository.getSignals(couple.id, 6)
-
+          const signalsData = await signalRepository.getSignals(couple.id, 3);
+  
           if (signalsData.length > 0) {
-            const aiResponsesData = await signalRepository.getAiResponse(couple.id)
-
+            const signalIds = signalsData.map(signal => signal.id);
+            const aiResponsesData = await signalRepository.getAiResponse(couple.id, undefined, signalIds);
+  
             const signalsWithAI = signalsData.map((signal) => ({
               ...signal,
               advice: aiResponsesData.find((ai: AIResponse) => ai.signalId === signal.id)?.advice || null,
-            }))
-
-            setSignals(signalsWithAI)
+            }));
+  
+            setSignals(signalsWithAI);
           } else {
-            setSignals([])
+            setSignals([]);
           }
         } catch (error) {
-          console.error("Error fetching data:", error)
-          toast.error("Erro ao carregar os sinais. Por favor, tente novamente.")
+          console.error("Error fetching data:", error);
+          toast.error("Erro ao carregar os sinais. Por favor, tente novamente.");
         } finally {
-          setIsLoading(false)
+          setIsLoading(false);
         }
-      }
+      };
 
-      fetchData()
+      fetchData();
     }
-  }, [couple])
+  }, [couple]);
+  
 
   const form = useForm<SignalRequest>({
     resolver: zodResolver(signalSchema),
@@ -160,8 +162,10 @@ const SignalForm = () => {
       toast.success("Sinal enviado com sucesso!")
 
       if (couple) {
-        const signalsData = await signalRepository.getSignals(couple.id, 6)
-        const aiResponsesData = await signalRepository.getAiResponse(couple.id)
+        const signalsData = await signalRepository.getSignals(couple.id, 3)
+
+        const signalIds = signalsData.map(signal => signal.id)
+        const aiResponsesData = await signalRepository.getAiResponse(couple.id, undefined, signalIds)
 
         const signalsWithAI = signalsData.map((signal) => ({
           ...signal,

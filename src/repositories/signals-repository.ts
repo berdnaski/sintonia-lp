@@ -67,23 +67,33 @@ export const signalRepository = {
         params: {
           coupleId,
           limit,
+          orderBy: 'createdAt',
+          order: 'desc'  
         },
       });
-      return signals;
+      return signals.slice(0, limit);
     } catch (error) {
       console.error('Error fetching signals:', error);
       return [];
     }
   },
 
-  getAiResponse: async (coupleId: string) => {
+  getAiResponse: async (coupleId: string, limit?: number, signalIds?: string[]) => {
     try {
-      const { data: aiResponse } = await api.get<AIResponse[]>(`/ai-responses/${coupleId}`);
+      const { data: aiResponse } = await api.get<AIResponse[]>(`/ai-responses/${coupleId}`, {
+        params: {
+          coupleId,
+          limit,
+          signalIds: signalIds ? signalIds.join(',') : undefined,
+          orderBy: 'createdAt',
+          order: 'desc'
+        }
+      });
       return aiResponse;
     } catch (error) {
-      console.error('Error fetching AI responses:', error);
       return [];
     }
   }
+  
 };
 

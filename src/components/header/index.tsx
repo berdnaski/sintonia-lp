@@ -170,17 +170,21 @@ export function Header() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Perfil</span>
+                <Link href="/profile" className="hover:cursor-pointer flex flex-row">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Perfil</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Ajustes</span>
+                <Link href="/profile" className="hover:cursor-pointer flex flex-row">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Ajustes</span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-zinc-200" />
               <DropdownMenuItem>
-                <Link className="flex gap-4 cursor-pointer hover:text-pink-600 items-center" href="/setup/invite-couple">
-                  <Plus className="h-4 w-4" />
+                <Link className="flex cursor-pointer hover:text-pink-600 items-center" href="/setup/invite-couple">
+                  <Plus className="mr-2 h-4 w-4" />
                   <span>Convidar parceiro (a)</span>
                 </Link>
               </DropdownMenuItem>
