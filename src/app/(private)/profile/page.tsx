@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -9,7 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { DecorativeDots, DecorativeGrid } from "@/components/decorative"
-import { Heart, MessageCircle, Calendar, Settings, Bell, ChevronRight, Award, Zap } from "lucide-react"
+import { Heart, MessageCircle, Calendar, ChevronRight, Award, Zap } from "lucide-react"
+import { useCouple } from "@/hooks/use-couple"
+import { useAuth } from "@/hooks/use-auth"
+import api from "@/services/api"
 
 interface ProgressProps {
   value: number;
@@ -20,6 +23,28 @@ interface ProgressProps {
 export default function ProfilePage<T extends ProgressProps>(props: T) {
   const [connectionScore, setConnectionScore] = useState(78)
   const [activeTab, setActiveTab] = useState("overview")
+  const [relationshipDuration, setRelationshipDuration] = useState<{ months: number; days: number } | null>(null)
+  const { user } = useAuth()
+  const { couple } = useCouple()
+
+  useEffect(() => {
+    if (couple?.createdAt) {
+      const startDate = new Date(couple.createdAt)
+      const now = new Date()
+      const diffTime = Math.abs(now.getTime() - startDate.getTime())
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+      const diffMonths = Math.floor(diffDays / 30)
+      const remainingDays = diffDays % 30
+
+      setRelationshipDuration({ months: diffMonths, days: remainingDays })
+    }
+  }, [couple])
+
+  const handleRedirectToBillingPortal = async () => {
+    const response = await api.get(`/portal/stripe/${user.id}`);
+
+    window.location.href = response.data;
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -45,12 +70,18 @@ export default function ProfilePage<T extends ProgressProps>(props: T) {
             </motion.div>
 
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold text-[#302d2d]">Maria Carvalho</h1>
+              <h1 className="text-3xl font-bold text-[#302d2d]">{user.name}</h1>
               <p className="text-[#353434] mt-1">Buscando melhorar a comunicação no meu relacionamento</p>
 
               <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
-                <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">3 meses</Badge>
-                <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">Plano Premium</Badge>
+                <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
+                  {relationshipDuration !== null 
+                    ? relationshipDuration.months > 0 
+                      ? `${relationshipDuration.months} ${relationshipDuration.months === 1 ? 'mês' : 'meses'}` 
+                      : `${relationshipDuration.days} ${relationshipDuration.days === 1 ? 'dia' : 'dias'}`
+                    : "Relacionamento não iniciado"}
+                </Badge>
+                <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">{user.stripeSubscriptionStatus === "active" ? "Plano Premium" : "Plano Inativo"}</Badge>
                 <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">Comunicadora</Badge>
               </div>
             </div>
@@ -86,7 +117,6 @@ export default function ProfilePage<T extends ProgressProps>(props: T) {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20">
         <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-3 mb-8 bg-white shadow-md rounded-xl p-1">
@@ -334,7 +364,10 @@ export default function ProfilePage<T extends ProgressProps>(props: T) {
                       </div>
                     </div>
 
-                    <Button className="mt-6 bg-white text-[#FF006F] hover:bg-white/90">Gerenciar Assinatura</Button>
+                      <Button onClick={handleRedirectToBillingPortal} className="mt-6 hover:cursor-pointer bg-white text-[#FF006F] hover:bg-white/90">
+                        Gerenciar Assinatura
+                      </Button>
+
                   </div>
                 </CardContent>
               </Card>
