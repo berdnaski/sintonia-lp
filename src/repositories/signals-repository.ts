@@ -1,10 +1,9 @@
-import { Message } from "@/hooks/use-response-messages";
 import api from "@/services/api";
 import { z } from "zod";
 
 export const signalSchema = z.object({
-  userId: z.string().optional(),  // Make optional since we add it later
-  coupleId: z.string().optional(), // Make optional since we add it later
+  userId: z.string().optional(), 
+  coupleId: z.string().optional(),
   emotion: z.string().min(1, {
     message: "Por favor, selecione uma emoção"
   }),
@@ -23,6 +22,7 @@ export interface SignalResponse {
   coupleId: string;
   emotion: string;
   note: string | null;
+  advice: string | null;
 }
 
 export const signalMessages = {
@@ -42,21 +42,48 @@ export const signalMessages = {
   }
 };
 
-
 const resource = '/signals'
+
+export interface AIResponse {
+  id: string;
+  coupleId: string;
+  signalId: string;
+  summary: string;
+  advice: string;
+  challenge?: string;
+  createdAt: Date;
+  couple: Couple;
+}
 
 export const signalRepository = {
   createSignal: async (data: SignalRequest) => {
-    const { data: response} = await api.post<SignalResponse>(`${resource}`, data);
-
+    const { data: response } = await api.post<SignalResponse>(`${resource}`, data);
     return response;
   },
 
-  acceptInvite: async (token: string) => {
-    const { data: response} = await api.post<SignalResponse>(`${resource}/accept/${token}`);
-
-    return response;
+  getSignals: async (coupleId: string, limit: number = 3) => {
+    try {
+      const { data: signals } = await api.get<SignalResponse[]>(`${resource}`, {
+        params: {
+          coupleId,
+          limit,
+        },
+      });
+      return signals;
+    } catch (error) {
+      console.error('Error fetching signals:', error);
+      return [];
+    }
   },
+
+  getAiResponse: async (coupleId: string) => {
+    try {
+      const { data: aiResponse } = await api.get<AIResponse[]>(`/ai-responses/${coupleId}`);
+      return aiResponse;
+    } catch (error) {
+      console.error('Error fetching AI responses:', error);
+      return [];
+    }
+  }
 };
-
 
