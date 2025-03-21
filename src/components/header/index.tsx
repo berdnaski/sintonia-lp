@@ -24,6 +24,7 @@ import { dateDiff } from "@/lib/date-fns"
 import { Duration, formatDuration } from "date-fns"
 import { ptBR } from 'date-fns/locale'
 import { Routes } from "@/constants/routes"
+import { randomUUID } from "crypto"
 
 const navItems = [
   { icon: Home, label: "Início", href: "/dashboard" },
@@ -38,12 +39,23 @@ export function Header() {
   const { couple } = useCouple();
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const [hasNotification, setHasNotification] = useState(true)
+  const hideHeaderPages = [
+    "/auth/login", "/auth/register", "/auth/reset-password", Routes.INVITE_COUPLE, "auth/register-with-invite/token", "/couple/invite/accept"
+  ];
+  const shouldHideHeader = hideHeaderPages.find(route => pathname.startsWith(route));
 
   const diff = couple && dateDiff(couple.createdAt, new Date())
 
   const handleLogout = () => {
     emitter.emit("logout")
   }
+
+  const dropdownMenuItem = [
+    { icon: User, label: "Perfil", href: Routes.PROFILE },
+    { icon: Settings, label: "Ajustes", href: Routes.PROFILE },
+    { icon: Plus, label: "Convidar parceiro (a)", href: Routes.INVITE_COUPLE, hidden: !!couple, className: "items-center hover:text-pink-600 transition-all" },
+    { icon: LogOut, label: "Sair", onClick: handleLogout },
+  ]
 
   const getFormatOptions = (duration: Duration) => {
     if (!duration) {
@@ -71,7 +83,7 @@ export function Header() {
     }
   }
 
-  if (!user) {
+  if (!user || shouldHideHeader) {
     return null;
   }
 
@@ -170,30 +182,29 @@ export function Header() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href="/profile" className="hover:cursor-pointer flex flex-row">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Perfil</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/profile" className="hover:cursor-pointer flex flex-row">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Ajustes</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-zinc-200" />
-              <DropdownMenuItem>
-                <Link className="flex cursor-pointer hover:text-pink-600 items-center" href={Routes.INVITE_COUPLE}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  <span>Convidar parceiro (a)</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600 transition-all cursor-pointer" onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sair</span>
-              </DropdownMenuItem>
+              {dropdownMenuItem.map(({icon: Icon, ...item}) => {
+                if (item.hidden) {
+                  return
+                }
+
+                return item.href ? (
+                  <DropdownMenuItem key={item.label}>
+                    <Link href={item.href} className={`hover:cursor-pointer flex flex-row ${item.className ?? ''}`} onClick={item.onClick}>
+                      <Icon className="mr-2 h-4 w-4" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem
+                      className="text-red-600 transition-all cursor-pointer"
+                      onClick={handleLogout}
+                      key={item.label}
+                    >
+                      <Icon className="mr-2 h-4 w-4" />
+                      <span>{item.label}</span>
+                    </DropdownMenuItem>
+                )
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
 

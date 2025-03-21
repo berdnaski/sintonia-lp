@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/card";
 import InviteForm from "../../couple/invite/_components/invite-form";
 import VerifyInvite from "../../couple/invite/_components/verify-invite";
 import { useRouter } from "next/navigation";
+import { useCouple } from "@/hooks/use-couple";
+import { Routes } from "@/constants/routes";
 
 const steps = [
   {
@@ -19,6 +21,7 @@ const steps = [
 ]
 
 export default function InviteCouple() {
+  const { couple } = useCouple();
   const router = useRouter();
   const [step, setStep] = useState(1);
   const percentagePerStep = 100 / steps.length;
@@ -31,6 +34,12 @@ export default function InviteCouple() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (couple) {
+      return router.push(Routes.DASHBOARD);
+    }
+  }, [couple])
 
   const handleNextStep = () => {
     if (step === steps.length) {
