@@ -23,6 +23,7 @@ export interface SignalResponse {
   emotion: string;
   note: string | null;
   advice: string | null;
+  createdAt: Date;
 }
 
 export const signalMessages = {
@@ -61,7 +62,7 @@ export const signalRepository = {
     return response;
   },
 
-  getSignals: async (coupleId: string, limit: number = 3) => {
+  getSignals: async (coupleId: string, limit?: number) => {
     try {
       const { data: signals } = await api.get<SignalResponse[]>(`${resource}`, {
         params: {
@@ -71,7 +72,7 @@ export const signalRepository = {
           order: 'desc'  
         },
       });
-      return signals.slice(0, limit);
+      return limit ? signals.slice(0, limit) : signals; // Only slice if limit is provided
     } catch (error) {
       console.error('Error fetching signals:', error);
       return [];
