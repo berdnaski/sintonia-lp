@@ -22,7 +22,7 @@ const steps = [
   }
 ]
 
-export default function RegisterWithInvite({
+export default function AcceptInvitePage({
   params,
 }: {
   params: Promise<{ token: string }>

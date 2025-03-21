@@ -1,6 +1,7 @@
 'use client';
 
 import { Header } from "@/components/header";
+import { Routes } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 
 export function ClientLayout({
@@ -10,7 +11,7 @@ export function ClientLayout({
 }) {
   const pathname = usePathname();
   const hideHeaderPages = [
-    "/auth/login", "/auth/register", "/auth/reset-password", "/setup/invite-couple", "/setup/verify-invite-couple", "/setup/complete-verify-couple", "auth/register-with-invite/token", "/couple/invite/accept"
+    "/auth/login", "/auth/register", "/auth/reset-password", Routes.INVITE_COUPLE, "auth/register-with-invite/token", "/couple/invite/accept"
   ];
   const shouldHideHeader = hideHeaderPages.find(route => pathname.startsWith(route));
 

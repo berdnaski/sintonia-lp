@@ -3,9 +3,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import InviteForm from "./_components/invite-form";
-import { randomUUID } from "crypto";
-import VerifyInvite from "./_components/verify-invite";
+import InviteForm from "../../couple/invite/_components/invite-form";
+import VerifyInvite from "../../couple/invite/_components/verify-invite";
 import { useRouter } from "next/navigation";
 
 const steps = [

@@ -17,7 +17,7 @@ import api from "@/services/api"
 interface ProgressProps {
   value: number;
   className: string;
-  indicatorClassName?: string; 
+  indicatorClassName?: string;
 }
 
 export default function ProfilePage<T extends ProgressProps>(props: T) {
@@ -75,9 +75,9 @@ export default function ProfilePage<T extends ProgressProps>(props: T) {
 
               <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
                 <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
-                  {relationshipDuration !== null 
-                    ? relationshipDuration.months > 0 
-                      ? `${relationshipDuration.months} ${relationshipDuration.months === 1 ? 'mês' : 'meses'}` 
+                  {relationshipDuration !== null
+                    ? relationshipDuration.months > 0
+                      ? `${relationshipDuration.months} ${relationshipDuration.months === 1 ? 'mês' : 'meses'}`
                       : `${relationshipDuration.days} ${relationshipDuration.days === 1 ? 'dia' : 'dias'}`
                     : "Relacionamento não iniciado"}
                 </Badge>

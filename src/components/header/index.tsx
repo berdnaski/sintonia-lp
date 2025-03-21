@@ -23,6 +23,7 @@ import { useAuth } from "@/hooks/use-auth"
 import { dateDiff } from "@/lib/date-fns"
 import { Duration, formatDuration } from "date-fns"
 import { ptBR } from 'date-fns/locale'
+import { Routes } from "@/constants/routes"
 
 const navItems = [
   { icon: Home, label: "Início", href: "/dashboard" },
@@ -183,7 +184,7 @@ export function Header() {
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-zinc-200" />
               <DropdownMenuItem>
-                <Link className="flex cursor-pointer hover:text-pink-600 items-center" href="/setup/invite-couple">
+                <Link className="flex cursor-pointer hover:text-pink-600 items-center" href={Routes.INVITE_COUPLE}>
                   <Plus className="mr-2 h-4 w-4" />
                   <span>Convidar parceiro (a)</span>
                 </Link>
