@@ -71,10 +71,10 @@ export default function ProfilePage() {
         <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[5%] top-12 hidden md:grid" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          <ProfileHeader 
-            user={user} 
-            relationshipDuration={relationshipDuration} 
-            connectionScore={connectionScore} 
+          <ProfileHeader
+            user={user}
+            relationshipDuration={relationshipDuration}
+            connectionScore={connectionScore}
           />
         </div>
       </div>

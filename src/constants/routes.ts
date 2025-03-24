@@ -3,6 +3,7 @@ export const Routes = {
   REGISTER: '/auth/register',
   LANDING_PAGE: '/',
   DASHBOARD: '/dashboard',
-  COUPLE_ACCEPT_INVITE: (token: string) => `/couple/invite/accept/${token}`
-
+  INVITE_COUPLE: '/couple/invite',
+  COUPLE_ACCEPT_INVITE: (token: string) => `/couple/invite/accept/${token}`,
+  PROFILE: '/profile',
 };
