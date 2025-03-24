@@ -5,6 +5,7 @@ import { userRepository } from "@/repositories/user-repository";
 
 interface AuthStore {
   user: User | null;
+  token: string | null;
   authenticate: (user: User, token: string) => void;
   fetchUser: () => Promise<User | undefined>;
   clearUser: () => void;
@@ -12,11 +13,12 @@ interface AuthStore {
 
 export const useAuth = create<AuthStore>((set, get) => ({
   user: undefined,
+  token: Cookies.get('token') || null,
   authenticate: (user: User, token: string) => {
     setAPIAuthToken(token)
     Cookies.set('token', token)
 
-    set({ user })
+    set({ user, token })
   },
   fetchUser: async () => {
     try {
@@ -24,11 +26,8 @@ export const useAuth = create<AuthStore>((set, get) => ({
 
       if (token) {
         setAPIAuthToken(token)
-
         const user = await userRepository.me()
-
-        set({ user })
-
+        set({ user, token })
         return user
       } else {
         get().clearUser()
@@ -39,6 +38,6 @@ export const useAuth = create<AuthStore>((set, get) => ({
   },
   clearUser: () => {
     Cookies.remove('token')
-    set({ user: null })
+    set({ user: null, token: null })
   }
 }))
