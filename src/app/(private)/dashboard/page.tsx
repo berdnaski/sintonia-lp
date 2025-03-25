@@ -6,47 +6,38 @@ import { useCouple } from "@/hooks/use-couple";
 import { useState, type FormEvent } from "react";
 import axios from "axios";
 import { toast } from 'react-hot-toast';
+import api from "@/services/api";
 
 export default function Dashboard() {
-  const { user, token } = useAuth()  
+  const { user, token } = useAuth()
   const { couple } = useCouple();
   const [files, setFiles] = useState<FileList | null>(null)
   const [isUploading, setIsUploading] = useState(false)
 
   async function handleUploadFile(e: FormEvent) {
     e.preventDefault()
-    
+
     if (!files || files.length === 0) {
       toast.error('Please select a file first');
       return;
     }
-    
+
     const file = files[0]
     const allowedTypes = ['video/mp4', 'image/jpeg', 'image/png', 'image/jpg'];
-    
+
     if (!allowedTypes.includes(file.type)) {
       toast.error('File type not supported. Please upload MP4, JPEG, JPG or PNG files.');
       return;
     }
-    
+
     setIsUploading(true)
 
     try {
-      const response = await axios.post('http://localhost:3333/uploads', {
-        name: file.name,
-        contentType: file.type,
+      await api.post('uploads', {
+        file,
       }, {
         headers: {
-          'Authorization': `Bearer ${token}`, 
-          'Content-Type': 'application/json',
-        }
-      });
-
-      const { signedUrl } = response.data;
-
-      await axios.put(signedUrl, file, {
-        headers: {
-          'Content-Type': file.type,
+          "Content-Type": "multipart/form-data",
         }
       });
 
@@ -74,15 +65,15 @@ export default function Dashboard() {
 
         <div>
           <form onSubmit={handleUploadFile}>
-            <input 
-              type="file" 
-              name="file" 
+            <input
+              type="file"
+              name="file"
               accept="video/mp4,image/jpeg,image/png,image/jpg"
-              onChange={e => setFiles(e.target.files)} 
+              onChange={e => setFiles(e.target.files)}
               disabled={isUploading}
             />
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isUploading}
               className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
             >
