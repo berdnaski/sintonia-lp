@@ -15,6 +15,9 @@ import { RecentSignals } from "@/components/profile/recent-signals";
 import { NextSteps } from "@/components/profile/next-steps";
 import { SubscriptionCard } from "@/components/profile/subscription-card";
 import { ActivityHistory } from "@/components/profile/activity-history";
+import Avatar from "./_components/avatar";
+import Info from "./_components/info";
+import ConnectionScore from "./_components/connection-score";
 
 export default function ProfilePage() {
   const [signals, setSignals] = useState<SignalResponse[] | null>(null);
@@ -71,11 +74,11 @@ export default function ProfilePage() {
         <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[5%] top-12 hidden md:grid" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          <ProfileHeader
-            user={user}
-            relationshipDuration={relationshipDuration}
-            connectionScore={connectionScore}
-          />
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <Avatar user={user} />
+            <Info user={user} relationshipDuration={relationshipDuration} />
+            <ConnectionScore score={connectionScore} />
+          </div>
         </div>
       </div>
 

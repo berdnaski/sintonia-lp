@@ -9,6 +9,7 @@ interface AuthStore {
   authenticate: (user: User, token: string) => void;
   fetchUser: () => Promise<User | undefined>;
   clearUser: () => void;
+  setUser: (user: User) => void;
 }
 
 export const useAuth = create<AuthStore>((set, get) => ({
@@ -35,6 +36,9 @@ export const useAuth = create<AuthStore>((set, get) => ({
     } catch (error) {
       get().clearUser()
     }
+  },
+  setUser: (user: User) => {
+    set({ user })
   },
   clearUser: () => {
     Cookies.remove('token')
