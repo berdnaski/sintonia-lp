@@ -9,7 +9,6 @@ import { useAuth } from "@/hooks/use-auth";
 import api from "@/services/api";
 import type { SignalResponse } from "@/repositories/signals-repository";
 import { signalRepository } from "@/repositories/signals-repository";
-import { ProfileHeader } from "@/components/profile/profile-header";
 import { RelationshipMetrics } from "@/components/profile/relationship-metrics";
 import { RecentSignals } from "@/components/profile/recent-signals";
 import { NextSteps } from "@/components/profile/next-steps";
