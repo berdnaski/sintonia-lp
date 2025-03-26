@@ -151,7 +151,11 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-full h-12 rounded-xl p-0 hover:bg-gray-50">
                 <Avatar className="h-8 w-8 ring-2 ring-[#FF006F]/20">
-                  <AvatarImage src="/placeholder.svg" />
+                  <AvatarImage
+                    src={user.avatarUrl ? `${user.avatarUrl}` : "/placeholder.svg"}
+                    className="object-cover w-full h-full"
+                     alt="Profile"
+                  />
                   <AvatarFallback>
                     {user && !couple && user.name[0]}
                     {user && couple && couple.user1.name[0] + couple.user2.name[0]}
@@ -249,7 +253,11 @@ export function Header() {
 
               <div className="flex items-center gap-3 mb-6 p-3 bg-gray-50">
                 <Avatar className="h-10 w-10 ring-2 ring-[#FF006F]/20">
-                  <AvatarImage src="/placeholder.svg" />
+                  <AvatarImage
+                    src={user.avatarUrl ? `${user.avatarUrl}` : "/placeholder.svg"}
+                    className="object-cover w-full h-full"
+                    alt="Profile"
+                  />
                   <AvatarFallback>
                     {user && !couple && user.name[0]}
                     {user && couple && couple.user1.name[0] + couple.user2.name[0]}
