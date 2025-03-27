@@ -45,6 +45,16 @@ interface Couple {
   aiResponses: AIResponse[];
 }
 
+interface CoupleMetric {
+  id: string;
+  coupleId: string;
+  synchrony: number;
+  connection: number;
+  communication: number;
+  intensity: number;
+  avgTotal?: number;
+}
+
 interface Invite {
   id?: string,
   inviterId: string,

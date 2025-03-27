@@ -1,6 +1,13 @@
+import { useCouple } from "@/hooks/use-couple";
 import { motion } from "framer-motion";
 
 export default function ConnectionScore({ score }: { score: number }) {
+  const { metrics } = useCouple()
+
+  if (!metrics) {
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -25,8 +32,7 @@ export default function ConnectionScore({ score }: { score: number }) {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center flex-col">
-          <span className="text-3xl font-bold text-[#FF006F]">{score}</span>
-          <span className="text-xs text-[#353434]">Sintonia</span>
+          <span className="text-3xl font-bold text-[#FF006F]">{metrics.avgTotal ?? 0}</span>
         </div>
       </div>
       <p className="text-sm text-[#353434] mt-2">Nível de conexão</p>
