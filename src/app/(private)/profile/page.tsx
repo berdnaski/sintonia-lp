@@ -17,7 +17,7 @@ import Avatar from "./_components/avatar";
 import Info from "./_components/info";
 import ConnectionScore from "./_components/connection-score";
 import { CoupleMetrics } from "./_components/couple-metrics";
-import { PersonalInformation } from "./_components/personal-information/index";
+import { PersonalInformation } from "./_components/personal-information";
 
 export default function ProfilePage() {
   const [signals, setSignals] = useState<SignalResponse[] | null>(null);
