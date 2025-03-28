@@ -7,10 +7,11 @@ import { LucideProps } from "lucide-react";
 interface InputProps extends BaseProps {
   label?: React.ReactNode
   icon?:  React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+  children?: React.ReactNode
 }
 
 const Input = (
-  ({ name, type, label, error, icon, ...props }: InputProps) => {
+  ({ name, type, label, error, icon, children, ...props }: InputProps) => {
     const { control } = useFormContext()
 
     return  (
@@ -29,7 +30,9 @@ const Input = (
               icon={icon}
               {...props}
               {...field}
-            />
+            >
+              {children}
+            </BaseInput>
           </FormItem>
         )}
       />

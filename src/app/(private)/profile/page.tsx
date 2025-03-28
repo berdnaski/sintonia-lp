@@ -17,6 +17,7 @@ import Avatar from "./_components/avatar";
 import Info from "./_components/info";
 import ConnectionScore from "./_components/connection-score";
 import { CoupleMetrics } from "./_components/couple-metrics";
+import { PersonalInformation } from "./_components/personal-information/index";
 
 export default function ProfilePage() {
   const [signals, setSignals] = useState<SignalResponse[] | null>(null);
@@ -88,14 +89,17 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20">
-        <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 mb-8 bg-white shadow-md rounded-xl p-1">
+      <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20 overflow-x-auto">
+        <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="flex overflow-x-auto whitespace-nowrap mb-8 bg-white shadow-md rounded-xl p-1 w-full max-w-full scrollbar-hide gap-1 justify-start">
             <TabsTrigger value="overview" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Visão Geral
             </TabsTrigger>
             <TabsTrigger value="activities" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Atividades
+            </TabsTrigger>
+            <TabsTrigger value="personal_information" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
+              Informações pessoais
             </TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Configurações
@@ -126,6 +130,10 @@ export default function ProfilePage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
               <ActivityHistory />
             </motion.div>
+          </TabsContent>
+
+          <TabsContent value="personal_information">
+            <PersonalInformation />
           </TabsContent>
 
           <TabsContent value="settings">
