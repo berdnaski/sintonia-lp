@@ -5,11 +5,12 @@ import { LucideProps } from "lucide-react"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string,
-  icon?:  React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+  icon?:  React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+  children?: React.ReactNode
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, icon: Icon, ...props}, ref) => {
+  ({ className, type, error, icon: Icon, children, ...props}, ref) => {
     return (
       <div>
         <div className="relative group">
@@ -29,6 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
           />
+          {children}
         </div>
 
         {error && (

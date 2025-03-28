@@ -9,7 +9,6 @@ import { useAuth } from "@/hooks/use-auth";
 import api from "@/services/api";
 import type { SignalResponse } from "@/repositories/signals-repository";
 import { signalRepository } from "@/repositories/signals-repository";
-import { RelationshipMetrics } from "@/components/profile/relationship-metrics";
 import { RecentSignals } from "@/components/profile/recent-signals";
 import { NextSteps } from "@/components/profile/next-steps";
 import { SubscriptionCard } from "@/components/profile/subscription-card";
@@ -17,6 +16,8 @@ import { ActivityHistory } from "@/components/profile/activity-history";
 import Avatar from "./_components/avatar";
 import Info from "./_components/info";
 import ConnectionScore from "./_components/connection-score";
+import { CoupleMetrics } from "./_components/couple-metrics";
+import { PersonalInformation } from "./_components/personal-information";
 
 export default function ProfilePage() {
   const [signals, setSignals] = useState<SignalResponse[] | null>(null);
@@ -24,25 +25,21 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [relationshipDuration, setRelationshipDuration] = useState<string>("Carregando...");
   const { user } = useAuth();
-  const { couple } = useCouple();
+  const { couple, fetchMetrics } = useCouple();
 
-  useEffect(() => {
-    const fetchSignals = async () => {
-      if (couple?.id) {
-        try {
-          const signalsData = await signalRepository.getSignals(couple.id);
-          setSignals(signalsData);
-        } catch (error) {
-          console.error("Error fetching signals:", error);
-          setSignals([]);
-        }
+  const fetchSignals = async () => {
+    if (couple?.id) {
+      try {
+        const signalsData = await signalRepository.getSignals(couple.id);
+        setSignals(signalsData);
+      } catch (error) {
+        console.error("Error fetching signals:", error);
+        setSignals([]);
       }
-    };
+    }
+  };
 
-    fetchSignals();
-  }, [couple?.id]);
-
-  useEffect(() => {
+  const handleCoupleDuration = () => {
     if (couple?.createdAt) {
       const startDate = new Date(couple.createdAt);
       const now = new Date();
@@ -59,7 +56,18 @@ export default function ProfilePage() {
     } else {
       setRelationshipDuration("Relacionamento não iniciado");
     }
-  }, [couple?.createdAt]);
+  }
+
+  useEffect(() => {
+    handleCoupleDuration();
+
+    if (!couple) {
+      return
+    }
+
+    fetchSignals()
+    fetchMetrics()
+  }, [couple]);
 
   const handleRedirectToBillingPortal = async () => {
     const response = await api.get(`/portal/stripe/${user.id}`);
@@ -81,14 +89,17 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20">
-        <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 mb-8 bg-white shadow-md rounded-xl p-1">
+      <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20 overflow-x-auto">
+        <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="flex overflow-x-auto whitespace-nowrap mb-8 bg-white shadow-md rounded-xl p-1 w-full max-w-full scrollbar-hide gap-1 justify-start">
             <TabsTrigger value="overview" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Visão Geral
             </TabsTrigger>
             <TabsTrigger value="activities" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Atividades
+            </TabsTrigger>
+            <TabsTrigger value="personal_information" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
+              Informações pessoais
             </TabsTrigger>
             <TabsTrigger value="settings" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Configurações
@@ -97,7 +108,7 @@ export default function ProfilePage() {
 
           <TabsContent value="overview" className="space-y-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <RelationshipMetrics />
+              <CoupleMetrics />
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -119,6 +130,10 @@ export default function ProfilePage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
               <ActivityHistory />
             </motion.div>
+          </TabsContent>
+
+          <TabsContent value="personal_information">
+            <PersonalInformation />
           </TabsContent>
 
           <TabsContent value="settings">

@@ -13,8 +13,13 @@ export const coupleMessages: Message = {
 const resource = '/couples'
 
 export const coupleRepository = {
-  findByUser: async (userId) => {
+  findByUser: async (userId: string) => {
     const { data: response } = await api.get<Couple>(`${resource}/by-user/${userId}`)
+
+    return response
+  },
+  metrics: async (coupleId: string) => {
+    const { data: response } = await api.get<CoupleMetric>(`${resource}/${coupleId}/metrics`)
 
     return response
   }
