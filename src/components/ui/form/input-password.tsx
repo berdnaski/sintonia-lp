@@ -19,9 +19,9 @@ interface PasswordFieldProps extends  BaseProps {
 export function InputPassword({
   name = "password",
   placeholder = "Digite sua senha",
-  description,
+  ...props
 }: PasswordFieldProps) {
-  const { control, getFieldState } = useFormContext();
+  const { control } = useFormContext();
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const Icon = passwordVisibility ? EyeOffIcon : EyeIcon
   return (
@@ -38,6 +38,7 @@ export function InputPassword({
                 autoComplete="on"
                 placeholder={placeholder}
                 error={error?.message}
+                {...props}
               >
                 <button
                   tabIndex={-1}

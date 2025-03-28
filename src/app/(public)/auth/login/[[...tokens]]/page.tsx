@@ -3,7 +3,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/form/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { LockKeyhole, Mail } from "lucide-react"
@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { authRepository, LoginRequest, loginSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth"
+import { Form } from "@/components/ui/form";
+import { InputPassword } from "@/components/ui/form/input-password";
 
 export default function Login({
   params,
@@ -21,15 +23,21 @@ export default function Login({
   const router = useRouter()
   const { authenticate } = useAuth()
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginRequest>({
-    resolver: zodResolver(loginSchema)
+  const form = useForm<LoginRequest>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
   });
+
+  const { isSubmitting, errors } = form.formState
 
   const { tokens } = React.use(params)
 
   const inviteToken = tokens?.length ? tokens[0] : null
 
-  const handleLogin = handleSubmit(async (data) => {
+  const handleLogin = form.handleSubmit(async (data) => {
     try {
       const { user, token } = await authRepository.login(data)
 
@@ -41,14 +49,14 @@ export default function Login({
 
       return router.push('/dashboard')
     } catch (error) {
-      setError("root", {
+      form.setError("root", {
         message: "Email ou senha inválidos"
       })
     }
   })
 
   return (
-    <div>
+    <Form {...form}>
       <div className="flex min-h-screen w-full bg-[#FFF2F8] p-4 md:p-8">
         <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-8 items-center">
           <Card className="w-full md:w-1/2 p-8 border-none shadow-md bg-white rounded-2xl">
@@ -64,12 +72,9 @@ export default function Login({
                     Email
                   </Label>
                   <Input
-                    id="email"
                     type="email"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
                     placeholder="exemplo@email.com"
-                    {...register('email')}
-                    error={errors.email?.message}
+                    name="email"
                     icon={Mail}
                   />
                 </div>
@@ -86,13 +91,9 @@ export default function Login({
                       Esqueceu?
                     </Link>
                   </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                  <InputPassword
                     required
-                    {...register('password')}
-                    error={errors.password?.message}
+                    name="password"
                     icon={LockKeyhole}
                   />
                 </div>
@@ -139,6 +140,6 @@ export default function Login({
           </div>
         </div>
       </div>
-    </div>
+    </Form>
   );
 }
