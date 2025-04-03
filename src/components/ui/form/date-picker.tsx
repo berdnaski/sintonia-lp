@@ -26,7 +26,7 @@ export function DatePicker({ name, label, ...props }: DatePickerProps) {
             <Label htmlFor={name}>{label ?? "Selecione uma data"}</Label>
             <BaseDatePicker
               onSelect={field.onChange}
-              value={field.value}
+              value={new Date(field.value)}
               error={error?.message}
               {...props}
             />

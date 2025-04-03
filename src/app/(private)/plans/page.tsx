@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FaCircleCheck } from "react-icons/fa6"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAuth } from "@/hooks/use-auth";
 
 export default function PlansPage() {

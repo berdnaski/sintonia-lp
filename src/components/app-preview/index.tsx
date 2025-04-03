@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, Heart, Home, Settings, ImageIcon, User, MessageCircle, Calendar, ArrowRight } from 'lucide-react';
@@ -9,16 +11,15 @@ export function AppPreview() {
   const [typedText, setTypedText] = useState("");
   const [showNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
-  // Check if mobile
+
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkIfMobile);
     };
@@ -54,7 +55,7 @@ export function AppPreview() {
     { icon: User, label: "Perfil", active: false },
     { icon: Settings, label: "Ajustes", active: false },
   ];
-  
+
   const recentSignals = [
     {
       date: "02 de Março de 2025",
@@ -77,7 +78,7 @@ export function AppPreview() {
         <p className="text-gray-700">Vocês têm mantido uma boa comunicação, mas notamos uma redução de 15% nas conversas diárias.</p>
         <div className="mt-4 flex items-center gap-2">
           <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: "65%" }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -87,7 +88,7 @@ export function AppPreview() {
           <span className="text-sm font-medium text-gray-600">65%</span>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
           <div className="flex justify-between items-start mb-2">
@@ -100,7 +101,7 @@ export function AppPreview() {
             <span>+5% esta semana</span>
           </div>
         </div>
-        
+
         <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
           <div className="flex justify-between items-start mb-2">
             <h4 className="text-sm font-medium text-purple-700">Conexão</h4>
@@ -115,23 +116,23 @@ export function AppPreview() {
       </div>
     </div>
   );
-  
+
   const questionContent = (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-800">Perguntas para Reflexão</h3>
-      
+
       <div className="space-y-4">
         <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
           <p className="text-gray-800 font-medium">Como você se sente sobre a comunicação no relacionamento?</p>
           <div className="mt-3 flex gap-2">
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-all"
             >
               Satisfeito
             </motion.button>
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-all"
@@ -140,18 +141,18 @@ export function AppPreview() {
             </motion.button>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all">
           <p className="text-gray-800 font-medium">Vocês têm dedicado tempo de qualidade juntos?</p>
           <div className="mt-3 flex gap-2">
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-all"
             >
               Sim, regularmente
             </motion.button>
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-all"
@@ -163,11 +164,11 @@ export function AppPreview() {
       </div>
     </div>
   );
-  
+
   const actionContent = (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-800">Ações Recomendadas</h3>
-      
+
       <div className="space-y-4">
         <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-4 rounded-xl border border-pink-200 shadow-sm">
           <div className="flex items-start gap-3">
@@ -180,7 +181,7 @@ export function AppPreview() {
             </div>
           </div>
           <div className="mt-3 flex justify-end">
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-[#FF006F] rounded-full text-sm text-white hover:bg-[#E0005F] transition-all shadow-sm"
@@ -189,7 +190,7 @@ export function AppPreview() {
             </motion.button>
           </div>
         </div>
-        
+
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 shadow-sm">
           <div className="flex items-start gap-3">
             <div className="bg-white p-2 rounded-lg shadow-sm">
@@ -201,7 +202,7 @@ export function AppPreview() {
             </div>
           </div>
           <div className="mt-3 flex justify-end">
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 bg-blue-600 rounded-full text-sm text-white hover:bg-blue-700 transition-all shadow-sm"
@@ -217,7 +218,7 @@ export function AppPreview() {
   // Mobile version
   const MobileAppPreview = () => (
     <div className="w-full mx-auto bg-white rounded-xl shadow-[0_10px_25px_rgba(8,_112,_184,_0.1)] overflow-hidden border border-gray-100">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="flex flex-col h-[480px]"
@@ -336,7 +337,7 @@ export function AppPreview() {
                         placeholder="Descreva como você está se sentindo..."
                       />
                       {isTyping && (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -356,7 +357,7 @@ export function AppPreview() {
                         </motion.button>
                       </div>
                     </div>
-                    
+
                     {/* Just show one recent signal for mobile */}
                     <div>
                       <h3 className="text-base font-semibold text-gray-800 mb-3">Último Sinal</h3>
@@ -377,7 +378,7 @@ export function AppPreview() {
                     </div>
                   </div>
                 )}
-                
+
                 {activeTab === "insights" && (
                   <div className="space-y-4">
                     <div className="bg-gradient-to-r from-pink-50 to-purple-50 p-4 rounded-xl border border-pink-100">
@@ -385,7 +386,7 @@ export function AppPreview() {
                       <p className="text-sm text-gray-700">Vocês têm mantido uma boa comunicação, mas notamos uma redução de 15% nas conversas diárias.</p>
                       <div className="mt-3 flex items-center gap-2">
                         <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                          <motion.div 
+                          <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: "65%" }}
                             transition={{ duration: 1, delay: 0.5 }}
@@ -397,21 +398,21 @@ export function AppPreview() {
                     </div>
                   </div>
                 )}
-                
+
                 {activeTab === "perguntas" && (
                   <div className="space-y-4">
                     <h3 className="text-base font-semibold text-gray-800 mb-3">Perguntas para Reflexão</h3>
                     <div className="bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
                       <p className="text-sm text-gray-800 font-medium">Como você se sente sobre a comunicação no relacionamento?</p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <motion.button 
+                        <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className="px-3 py-1.5 bg-gray-100 rounded-full text-xs text-gray-700"
                         >
                           Satisfeito
                         </motion.button>
-                        <motion.button 
+                        <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className="px-3 py-1.5 bg-gray-100 rounded-full text-xs text-gray-700"
@@ -422,7 +423,7 @@ export function AppPreview() {
                     </div>
                   </div>
                 )}
-                
+
                 {activeTab === "acoes" && (
                   <div className="space-y-4">
                     <h3 className="text-base font-semibold text-gray-800 mb-3">Ações Recomendadas</h3>
@@ -437,7 +438,7 @@ export function AppPreview() {
                         </div>
                       </div>
                       <div className="mt-3 flex justify-end">
-                        <motion.button 
+                        <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className="px-3 py-1.5 bg-[#FF006F] rounded-full text-xs text-white"
@@ -474,7 +475,7 @@ export function AppPreview() {
   // Desktop version
   const DesktopAppPreview = () => (
     <div className="w-full mx-auto bg-white rounded-xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] overflow-hidden border border-gray-100">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="flex flex-row h-[600px]"
@@ -488,8 +489,8 @@ export function AppPreview() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
               className={`p-3 rounded-xl transition-all group flex flex-col items-center ${
-                item.active 
-                  ? "bg-pink-50 text-[#FF006F]" 
+                item.active
+                  ? "bg-pink-50 text-[#FF006F]"
                   : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
               }`}
             >
@@ -504,7 +505,7 @@ export function AppPreview() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-gray-50">
           {/* Top Metrics */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100 gap-2"
@@ -547,7 +548,7 @@ export function AppPreview() {
               >
                 Sinais do Relacionamento
               </motion.h1>
-              
+
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -637,7 +638,7 @@ export function AppPreview() {
                             placeholder="Descreva como você está se sentindo..."
                           />
                           {isTyping && (
-                            <motion.div 
+                            <motion.div
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
@@ -662,7 +663,7 @@ export function AppPreview() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="mt-8">
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">Últimos Sinais</h3>
                       <div className="space-y-4">
@@ -688,7 +689,7 @@ export function AppPreview() {
                     </div>
                   </div>
                 )}
-                
+
                 {activeTab === "insights" && insightContent}
                 {activeTab === "perguntas" && questionContent}
                 {activeTab === "acoes" && actionContent}

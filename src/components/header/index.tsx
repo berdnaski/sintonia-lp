@@ -62,7 +62,7 @@ export function Header() {
     <div>
       <aside className="hidden xl:flex fixed left-0 top-0 bottom-0 w-20 bg-white/95 backdrop-blur-sm border-r border-gray-100 flex-col items-center py-6 z-40 shadow-sm">
         <div className="mb-8">
-          <Link href="/dashboard">
+          <Link href={Routes.DASHBOARD}>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -187,7 +187,7 @@ export function Header() {
       </aside>
 
       <header className="xl:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-sm border-b border-gray-100 flex items-center justify-between px-4 z-40 shadow-sm">
-        <Link href="/dashboard">
+        <Link href={Routes.DASHBOARD}>
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF006F] to-[#FF708B] flex items-center justify-center shadow-md">
               <Heart className="h-5 w-5 text-white" />
@@ -196,8 +196,14 @@ export function Header() {
               <span className="font-semibold text-gray-800">{user.name}</span>
             )}
 
-            {user && couple && (
-              <span className="font-semibold text-gray-800">{couple.user1.name} & {couple.user2.name}</span>
+            {user && coupleName && (
+              <span className="font-semibold text-gray-800">{coupleName}</span>
+            )}
+
+            {coupleDuration && (
+              <p className="text-xs text-gray-500">
+                {`${coupleDuration} juntos`}
+              </p>
             )}
           </div>
         </Link>
@@ -235,25 +241,30 @@ export function Header() {
                     <p className="font-medium">{user.name}</p>
                   )}
 
-                  {user && couple && (
-                    <p className="font-medium">{couple.user1.name} & {couple.user2.name}</p>
+                  {user && coupleName && (
+                    <p className="font-medium">{coupleName}</p>
                   )}
-                  <p className="text-xs text-gray-500">2 anos juntos</p>
+
+                  {coupleDuration && (
+                    <p className="text-xs text-gray-500">
+                      {`${coupleDuration} juntos`}
+                    </p>
+                  )}
                 </div>
               </div>
               <nav className="space-y-1">
                 {navItems.map((item) => {
                   const isActive = pathname === item.href
                   return (
-                    <Link key={item.href} href={item.href}>
-                      <div
-                        className={`flex items-center gap-3 px-3 py-3 transition-colors
-                        ${isActive ? "bg-[#FFF2F8] text-[#FF006F]" : "text-gray-700 hover:bg-gray-50"}`}
-                      >
-                        <item.icon className={`h-5 w-5 ${isActive ? "stroke-[2.5px]" : ""}`} />
-                        <span>{item.label}</span>
-                        {item.href === "/sinais" && <Badge className="ml-auto bg-[#FF006F]">Novo</Badge>}
-                      </div>
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-3 py-3 transition-colors
+                      ${isActive ? "bg-[#FFF2F8] text-[#FF006F]" : "text-gray-700 hover:bg-gray-50"}`}
+                    >
+                      <item.icon className={`h-5 w-5 ${isActive ? "stroke-[2.5px]" : ""}`} />
+                      <span>{item.label}</span>
+                      {item.href === "/sinais" && <Badge className="ml-auto bg-[#FF006F]">Novo</Badge>}
                     </Link>
                   )
                 })}

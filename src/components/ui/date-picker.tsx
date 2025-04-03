@@ -38,7 +38,7 @@ export function DatePicker({
           <Button
             variant={"outline"}
             className={cn(
-              "w-full justify-start text-left font-normal",
+              "w-[240px] justify-start text-left font-normal",
               !value && "text-muted-foreground"
             )}
           >
@@ -56,7 +56,7 @@ export function DatePicker({
             <Calendar
               {...props}
               mode="single"
-              selected={value ?? value}
+              selected={value ?? now}
               onSelect={onSelect}
               initialFocus
               defaultMonth={value ?? now}

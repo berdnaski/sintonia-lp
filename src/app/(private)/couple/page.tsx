@@ -22,6 +22,7 @@ export default function CouplePage() {
   const [activeTab, setActiveTab] = useState("overview");
   const { couple, fetchMetrics } = useCouple();
 
+
   const fetchSignals = async () => {
     if (couple?.id) {
       try {
@@ -41,6 +42,10 @@ export default function CouplePage() {
     fetchSignals()
     fetchMetrics()
   }, [couple]);
+
+  if (!couple) {
+    return null
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">

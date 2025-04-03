@@ -206,7 +206,6 @@ const Memories = () => {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 12)
 
-  // Agrupar memórias por ano
   const memoriesByYear = memories.reduce(
     (acc, memory) => {
       const year = new Date(memory.date).getFullYear().toString()

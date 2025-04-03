@@ -1,9 +1,9 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DatePicker } from "@/components/ui/form/date-picker";
 import { Form } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
-import { useAuth } from "@/hooks/use-auth";
 import { useCouple } from "@/hooks/use-couple";
 import { useResponseMessages } from "@/hooks/use-response-messages";
 import { coupleMessages, coupleRepository, UpdateCoupleRequest, updateSchema } from "@/repositories/couple-repository";
@@ -36,6 +36,10 @@ export function CoupleInformation() {
       toastError(error, coupleMessages);
     }
   });
+
+  if (!couple) {
+    return null
+  }
 
   return (
     <Form {...form}>

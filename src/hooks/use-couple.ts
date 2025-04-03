@@ -60,34 +60,22 @@ export const useCouple = create<CoupleStore>((set, get) => ({
 
     const diff = couple && dateDiff(couple.startAt, new Date())
 
-    const getFormatOptions = (duration: Duration) => {
+    const getFormatOptions = (duration: Duration): (keyof Duration)[] => {
       if (!duration) {
         return null;
       }
 
-      if (duration.years) {
-        return 'years'
+      let result = Object.keys(duration) as (keyof Duration)[];
+
+      if (duration.years || duration.months) {
+        result = result.filter(item => !['hours', 'minutes', 'seconds'].includes(item))
       }
 
-      if (duration.months) {
-        return 'months'
-      }
-
-      if (duration.days) {
-        return 'days'
-      }
-
-      if (duration.hours) {
-        return 'hours'
-      }
-
-      if (duration.minutes) {
-        return 'minutes'
-      }
+      return result
     }
 
     return formatDuration(diff, {
-      format: [getFormatOptions(diff)],
+      format: getFormatOptions(diff),
       locale: ptBR
     })
   },
