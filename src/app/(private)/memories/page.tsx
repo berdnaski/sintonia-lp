@@ -24,11 +24,11 @@ interface Memory {
   avatarUrl?: string;
 }
 
-const MemoryCard = ({ 
-  memory, 
-  selectedMemory, 
-  onSelect 
-}: { 
+const MemoryCard = ({
+  memory,
+  selectedMemory,
+  onSelect
+}: {
   memory: Memory;
   selectedMemory: Memory | null;
   onSelect: (memory: Memory) => void;
@@ -102,16 +102,16 @@ const Memories = () => {
         setIsLoading(true);
         try {
           const memoriesData = await memoriesRepository.getMemories(couple.id);
-          
+
           const formattedMemories = memoriesData.map((memory) => ({
             id: memory.id,
             title: memory.title,
             description: memory.description,
             avatarUrl: memory.avatarUrl,
           }));
-          
+
           setMemories(formattedMemories);
-          
+
           if (formattedMemories.length > 0 && !selectedMemory) {
             setSelectedMemory(formattedMemories[0]);
           }
@@ -121,14 +121,14 @@ const Memories = () => {
           setIsLoading(false);
         }
       };
-  
+
       fetchData();
     }
   }, [couple]);
 
   const handleCreateMemory = (newMemory: Memory) => {
     setMemories(prev => [...prev, newMemory]);
-    setSelectedMemory(newMemory); 
+    setSelectedMemory(newMemory);
   };
 
   const handleSelectMemory = (memory: Memory) => {
@@ -196,9 +196,9 @@ const Memories = () => {
                 <TabsContent value="all" className="mt-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {memories.map((memory) => (
-                      <MemoryCard 
-                        key={memory.id} 
-                        memory={memory} 
+                      <MemoryCard
+                        key={memory.id}
+                        memory={memory}
                         selectedMemory={selectedMemory}
                         onSelect={handleSelectMemory}
                       />

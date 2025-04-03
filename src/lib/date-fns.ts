@@ -1,4 +1,4 @@
-import { differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds, differenceInYears, format, intervalToDuration } from 'date-fns';
+import { format, intervalToDuration } from 'date-fns';
 
 export const formatDate = (date: string | Date, dateFormat = 'dd/MM/yyyy') => {
   const parsedDate = new Date(date);
@@ -22,5 +22,4 @@ export const dateDiff = (startDate: string | Date, endDate: string | Date, unit 
       start: startDate,
       end: endDate
     });
-
 };

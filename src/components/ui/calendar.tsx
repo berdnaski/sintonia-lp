@@ -2,10 +2,64 @@
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, DropdownProps } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { ptBR } from "date-fns/locale"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./select"
+
+interface DropDownChildren {
+  props: {
+    value: string,
+    children: string,
+  }
+  disabled: boolean
+}
+
+function Dropdown(props: DropdownProps & {
+  children: DropDownChildren[]
+}) {
+  const { children, value, onChange } = props;
+  const options = children.map(item => ({
+    value: item.props.value,
+    label: item.props.children,
+    ...item
+  }))
+
+  const handleValueChange = (newValue: string) => {
+    if (onChange) {
+      const syntheticEvent = {
+        target: {
+          value: newValue
+        }
+      } as React.ChangeEvent<HTMLSelectElement>;
+
+      onChange(syntheticEvent);
+    }
+  };
+
+  return (
+    <Select value={value?.toString()} onValueChange={handleValueChange}>
+      <SelectTrigger className="justify-center pr-1">
+        <SelectValue placeholder="Selecione o ano" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {options?.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value.toString()}
+              disabled={option.disabled}
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
 
 function Calendar({
   className,
@@ -15,21 +69,23 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker>) {
   return (
     <DayPicker
+      locale={ptBR}
+      captionLayout="dropdown-buttons"
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
-        months: "flex flex-col sm:flex-row gap-2",
         month: "flex flex-col gap-4",
+        caption_dropdowns: "flex gap-1 items-center",
         caption: "flex justify-center pt-1 relative items-center w-full",
-        caption_label: "text-sm font-medium",
+        caption_label: "text-sm font-medium capitalize hidden",
         nav: "flex items-center gap-1",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
           "size-7 bg-transparent p-0 opacity-50 hover:opacity-100"
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-x-1",
+        nav_button_previous: "absolute left-0",
+        nav_button_next: "absolute right-0",
+        table: "w-full border-collapse space-x-1 flex justify-center items-center flex-col",
         head_row: "flex",
         head_cell:
           "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
@@ -66,6 +122,7 @@ function Calendar({
         IconRight: ({ className, ...props }) => (
           <ChevronRight className={cn("size-4", className)} {...props} />
         ),
+        Dropdown
       }}
       {...props}
     />
