@@ -12,7 +12,7 @@ export const uploadRepository = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post<UploadResponse>('uploads', formData, {
+    const response = await api.post<UploadResponse>(`${resource}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }

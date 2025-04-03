@@ -40,6 +40,7 @@ interface Couple {
   user1Id: string;
   user2: User;
   user2Id: string;
+  startAt: Date;
   createdAt: Date;
   signals: Signal[];
   aiResponses: AIResponse[];

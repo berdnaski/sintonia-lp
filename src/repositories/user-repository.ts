@@ -2,6 +2,15 @@ import api from "@/services/api";
 
 const resource = 'users'
 
+export const userMessages = {
+  error: {
+    default: "Algo deu errado, atualize a página e tente novamente."
+  },
+  success: {
+    updated: "Salvo com sucesso!",
+  }
+}
+
 export const userRepository = {
   me: async () => {
     const { data: response } = await api.post<User>(`${resource}/me`)

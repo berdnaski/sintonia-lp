@@ -1,7 +1,7 @@
 import { useCouple } from "@/hooks/use-couple";
 import { motion } from "framer-motion";
 
-export default function ConnectionScore({ score }: { score: number }) {
+export default function ConnectionScore() {
   const { metrics } = useCouple()
 
   if (!metrics) {
@@ -25,8 +25,8 @@ export default function ConnectionScore({ score }: { score: number }) {
             fill="none"
             stroke="#FF006F"
             strokeWidth="10"
-            strokeDasharray={`${(2 * Math.PI * 45 * score) / 100} ${
-              (2 * Math.PI * 45 * (100 - score)) / 100
+            strokeDasharray={`${(2 * Math.PI * 45 * metrics.avgTotal) / 100} ${
+              (2 * Math.PI * 45 * (100 - metrics.avgTotal)) / 100
             }`}
             strokeDashoffset={2 * Math.PI * 45 * 0.25}
           />

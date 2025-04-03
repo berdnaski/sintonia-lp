@@ -20,31 +20,28 @@ import { Badge } from "@/components/ui/badge"
 import { emitter } from "@/lib/mitt"
 import { useCouple } from "@/hooks/use-couple"
 import { useAuth } from "@/hooks/use-auth"
-import { dateDiff } from "@/lib/date-fns"
-import { Duration, formatDuration } from "date-fns"
-import { ptBR } from 'date-fns/locale'
 import { Routes } from "@/constants/routes"
-import { randomUUID } from "crypto"
 
 const navItems = [
-  { icon: Home, label: "Início", href: "/dashboard" },
-  { icon: Layers, label: "Sinais", href: "/signals" },
-  { icon: Heart, label: "Saúde", href: "/saude" },
+  { icon: Home, label: "Início", href: Routes.DASHBOARD },
+  { icon: Layers, label: "Sinais", href: Routes.SIGNALS },
+  { icon: Heart, label: "Casal", href: Routes.COUPLE },
   { icon: Image, label: "Memórias", href: "/memories" },
 ]
 
 export function Header() {
   const pathname = usePathname()
   const { user } = useAuth();
-  const { couple } = useCouple();
+  const { couple, name: coupleName, durationFormatted } = useCouple();
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const [hasNotification, setHasNotification] = useState(true)
   const hideHeaderPages = [
     "/auth/login", "/auth/register", "/auth/reset-password", Routes.INVITE_COUPLE, "auth/register-with-invite/token", "/couple/invite/accept"
   ];
+
   const shouldHideHeader = hideHeaderPages.find(route => pathname.startsWith(route));
 
-  const diff = couple && dateDiff(couple.createdAt, new Date())
+  const coupleDuration = durationFormatted()
 
   const handleLogout = () => {
     emitter.emit("logout")
@@ -56,32 +53,6 @@ export function Header() {
     { icon: Plus, label: "Convidar parceiro (a)", href: Routes.INVITE_COUPLE, hidden: !!couple, className: "items-center hover:text-pink-600 transition-all" },
     { icon: LogOut, label: "Sair", onClick: handleLogout },
   ]
-
-  const getFormatOptions = (duration: Duration) => {
-    if (!duration) {
-      return null;
-    }
-
-    if (duration.years) {
-      return 'years'
-    }
-
-    if (duration.months) {
-      return 'months'
-    }
-
-    if (duration.days) {
-      return 'days'
-    }
-
-    if (duration.hours) {
-      return 'hours'
-    }
-
-    if (duration.minutes) {
-      return 'minutes'
-    }
-  }
 
   if (!user || shouldHideHeader) {
     return null;
@@ -171,16 +142,12 @@ export function Header() {
                   )}
 
                   {user && couple && (
-                    <p className="text-sm font-medium">{couple.user1.name} & {couple.user2.name}</p>
+                    <p className="text-sm font-medium">{coupleName}</p>
                   )}
 
-                  {getFormatOptions(diff) && (
+                  {coupleDuration && (
                     <p className="text-xs text-gray-500">
-                      {formatDuration(diff, {
-                        format: [getFormatOptions(diff)],
-                        locale: ptBR
-                      })}
-                      {' '} juntos
+                      {`${coupleDuration} juntos`}
                     </p>
                   )}
                 </div>

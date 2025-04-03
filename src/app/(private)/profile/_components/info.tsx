@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 
-export default function Info({ user, relationshipDuration }: { user: { name: string; stripeSubscriptionStatus?: string }; relationshipDuration: string }) {
+export default function Info({ user }: { user: { name: string; stripeSubscriptionStatus?: string } }) {
   return (
     <div className="flex-1 text-center md:text-left">
       <h1 className="text-3xl font-bold text-[#302d2d]">{user.name}</h1>
@@ -9,13 +9,7 @@ export default function Info({ user, relationshipDuration }: { user: { name: str
       </p>
       <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
         <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
-          {relationshipDuration}
-        </Badge>
-        <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
           {user.stripeSubscriptionStatus === "active" ? "Plano Premium" : "Plano Inativo"}
-        </Badge>
-        <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
-          Comunicadora
         </Badge>
       </div>
     </div>

@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast';
 import api from "@/services/api";
 
 export default function Dashboard() {
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const { couple } = useCouple();
   const [files, setFiles] = useState<FileList | null>(null)
   const [isUploading, setIsUploading] = useState(false)
