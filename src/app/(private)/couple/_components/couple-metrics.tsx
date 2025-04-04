@@ -1,7 +1,5 @@
 import { Progress } from "@/components/ui/progress";
 import { useCouple } from "@/hooks/use-couple";
-import { coupleRepository } from "@/repositories/couple-repository";
-import { useEffect, useState } from "react";
 
 interface MetricItemProps {
   label: string;

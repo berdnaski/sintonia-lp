@@ -15,6 +15,7 @@ import { SignalsList } from "@/components/signals/signals-list"
 import type { AIResponse, SignalWithAdvice, QuestionsResponse } from "@/components/signals/types"
 import { SignalFormTab } from "@/components/signals/signal-form-tab"
 import { QuestionsTab } from "@/components/signals/question-tab"
+import withCouple from "@/layouts/with-couple"
 
 const SignalForm = () => {
   const { toastError } = useResponseMessages()
@@ -126,7 +127,6 @@ const SignalForm = () => {
         userId: user.id,
       })
 
-      // Update the questions state with the complete response from the API
       setQuestions(questions.map((q) => (q.id === questionId ? response : q)))
       toast.success("Resposta enviada com sucesso!")
     } catch (error) {
@@ -198,5 +198,5 @@ const SignalForm = () => {
   )
 }
 
-export default SignalForm
+export default withCouple(SignalForm)
 

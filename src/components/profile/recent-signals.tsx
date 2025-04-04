@@ -10,23 +10,23 @@ interface SignalsListProps {
 function SignalsList({ signals }: SignalsListProps) {
   if (!signals) {
     return (
-      <li className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
         <div className="flex-1">
           <p className="text-sm font-medium">Carregando sinais...</p>
         </div>
-      </li>
-    );
+      </div>
+    )
   }
 
   if (signals.length === 0) {
     return (
-      <li className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
         <div className="flex-1">
           <p className="text-sm font-medium">Nenhum micro-sinal detectado ainda</p>
           <p className="text-xs text-gray-500">Continue interagindo para gerar sinais</p>
         </div>
-      </li>
-    );
+      </div>
+    )
   }
 
   return (
@@ -41,7 +41,7 @@ function SignalsList({ signals }: SignalsListProps) {
           : "Data indisponível";
 
         return (
-          <li key={index} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
+          <li key={signal.id} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
             <div
               className={`w-3 h-3 mt-1 rounded-full flex-shrink-0 ${
                 signal.emotion === "feliz"

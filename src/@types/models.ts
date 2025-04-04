@@ -6,10 +6,10 @@ interface User {
   avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  subscriptionStatus: StatusPlan;
   stripeCustomerId?: string;
   stripeSubscriptionStatus?: string;
   stripeSubscriptionId?: string;
+  couple?: Couple
 }
 
 interface Signal {
@@ -36,13 +36,11 @@ interface AIResponse {
 interface Couple {
   id: string;
   relationshipStatus: string;
-  user1: User;
-  user1Id: string;
-  user2: User;
-  user2Id: string;
+  startAt: Date;
   createdAt: Date;
   signals: Signal[];
   aiResponses: AIResponse[];
+  users: User[];
 }
 
 interface CoupleMetric {
@@ -69,8 +67,6 @@ enum InviteStatus {
   Pending = "pending"
 }
 
-enum StatusPlan {
-  NoPlan = "NoPlan",
-  Activated = "Activated",
-  Canceled = "Canceled"
+enum SubscriptionStatus {
+  Active = "active",
 }

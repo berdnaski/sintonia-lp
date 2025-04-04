@@ -6,4 +6,7 @@ export const Routes = {
   INVITE_COUPLE: '/couple/invite',
   COUPLE_ACCEPT_INVITE: (token: string) => `/couple/invite/accept/${token}`,
   PROFILE: '/profile',
+  SIGNALS: '/signals',
+  COUPLE: '/couple',
+  PLANS: '/plans',
 };

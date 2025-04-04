@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/form/input";
 import { InputPassword } from "@/components/ui/form/input-password";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import { userRepository } from "@/repositories/user-repository";
+import { useResponseMessages } from "@/hooks/use-response-messages";
+import { userMessages, userRepository } from "@/repositories/user-repository";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { Save } from "lucide-react";
+import { LockKeyhole, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -30,6 +31,7 @@ export const personalInformationSchema = z.object({
 })
 
 export function PersonalInformation() {
+  const { toastError } = useResponseMessages();
   const { user, setUser } = useAuth();
 
   const form = useForm<z.infer<typeof personalInformationSchema>>({
@@ -53,9 +55,9 @@ export function PersonalInformation() {
 
       setUser(userUpdated)
 
-      toast.success("Salvo com sucesso");
+      toast.success(userMessages.success.updated);
     } catch (error) {
-      // toastError(error, inviteMessages);
+      toastError(error, userMessages);
     }
   });
 
@@ -75,7 +77,7 @@ export function PersonalInformation() {
               </Label>
               <InputPassword
                 name="password"
-                className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                icon={LockKeyhole}
               />
             </div>
 
@@ -85,7 +87,7 @@ export function PersonalInformation() {
               </Label>
               <InputPassword
                 name="confirmPassword"
-                className="h-11 pl-10 bg-white border-gray-200 focus:border-pink-500 focus:ring-pink-500 rounded-lg"
+                icon={LockKeyhole}
               />
             </div>
 

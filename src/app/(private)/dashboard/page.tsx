@@ -9,8 +9,8 @@ import { toast } from 'react-hot-toast';
 import api from "@/services/api";
 
 export default function Dashboard() {
-  const { user, token } = useAuth()
-  const { couple } = useCouple();
+  const { user } = useAuth()
+  const { couple, name: coupleName } = useCouple();
   const [files, setFiles] = useState<FileList | null>(null)
   const [isUploading, setIsUploading] = useState(false)
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
     <div className="p-4 sm:p-6 max-w-[1500px] mx-auto">
       <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Olá,{' '}
         {user && !couple && user.name}
-        {user && couple && `${couple.user1.name} & ${couple.user2.name}`}
+        {user && couple && `${coupleName}`}
       </h1>
 
       <h2 className="text-lg text-gray-600 mb-6">Veja como está o seu relacionamento hoje</h2>

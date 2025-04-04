@@ -1,78 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DecorativeDots, DecorativeGrid } from "@/components/decorative";
-import { useCouple } from "@/hooks/use-couple";
 import { useAuth } from "@/hooks/use-auth";
 import api from "@/services/api";
-import type { SignalResponse } from "@/repositories/signals-repository";
-import { signalRepository } from "@/repositories/signals-repository";
-import { RecentSignals } from "@/components/profile/recent-signals";
-import { NextSteps } from "@/components/profile/next-steps";
 import { SubscriptionCard } from "@/components/profile/subscription-card";
-import { ActivityHistory } from "@/components/profile/activity-history";
 import Avatar from "./_components/avatar";
 import Info from "./_components/info";
-import ConnectionScore from "./_components/connection-score";
-import { CoupleMetrics } from "./_components/couple-metrics";
 import { PersonalInformation } from "./_components/personal-information";
 
 export default function ProfilePage() {
-  const [signals, setSignals] = useState<SignalResponse[] | null>(null);
-  const [connectionScore, setConnectionScore] = useState(78);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [relationshipDuration, setRelationshipDuration] = useState<string>("Carregando...");
+  const [activeTab, setActiveTab] = useState("personal_information");
   const { user } = useAuth();
-  const { couple, fetchMetrics } = useCouple();
-
-  const fetchSignals = async () => {
-    if (couple?.id) {
-      try {
-        const signalsData = await signalRepository.getSignals(couple.id);
-        setSignals(signalsData);
-      } catch (error) {
-        console.error("Error fetching signals:", error);
-        setSignals([]);
-      }
-    }
-  };
-
-  const handleCoupleDuration = () => {
-    if (couple?.createdAt) {
-      const startDate = new Date(couple.createdAt);
-      const now = new Date();
-      const diffTime = Math.abs(now.getTime() - startDate.getTime());
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const diffMonths = Math.floor(diffDays / 30);
-
-      const duration =
-        diffMonths > 0
-          ? `${diffMonths} ${diffMonths === 1 ? "mês" : "meses"}`
-          : `${diffDays} ${diffDays === 1 ? "dia" : "dias"}`;
-
-      setRelationshipDuration(duration);
-    } else {
-      setRelationshipDuration("Relacionamento não iniciado");
-    }
-  }
-
-  useEffect(() => {
-    handleCoupleDuration();
-
-    if (!couple) {
-      return
-    }
-
-    fetchSignals()
-    fetchMetrics()
-  }, [couple]);
 
   const handleRedirectToBillingPortal = async () => {
     const response = await api.get(`/portal/stripe/${user.id}`);
     window.location.href = response.data;
-  };
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -83,8 +29,7 @@ export default function ProfilePage() {
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <Avatar user={user} />
-            <Info user={user} relationshipDuration={relationshipDuration} />
-            <ConnectionScore score={connectionScore} />
+            <Info user={user} />
           </div>
         </div>
       </div>
@@ -92,12 +37,6 @@ export default function ProfilePage() {
       <div className="flex-1 max-w-5xl mx-auto w-full px-4 -mt-10 relative z-20 overflow-x-auto">
         <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab}>
           <TabsList className="flex overflow-x-auto whitespace-nowrap mb-8 bg-white shadow-md rounded-xl p-1 w-full max-w-full scrollbar-hide gap-1 justify-start">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
-              Visão Geral
-            </TabsTrigger>
-            <TabsTrigger value="activities" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
-              Atividades
-            </TabsTrigger>
             <TabsTrigger value="personal_information" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Informações pessoais
             </TabsTrigger>
@@ -105,32 +44,6 @@ export default function ProfilePage() {
               Configurações
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <CoupleMetrics />
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
-                <RecentSignals signals={signals} />
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
-                <NextSteps activities={[
-                  { text: "Exercício de comunicação não-verbal", type: "Atividade", date: "Hoje" },
-                  { text: "Conversa sobre expectativas futuras", type: "Diálogo", date: "Amanhã" },
-                  { text: "Análise de padrões de comunicação", type: "Insight", date: "Em 3 dias" }
-                ]} />
-              </motion.div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="activities">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <ActivityHistory />
-            </motion.div>
-          </TabsContent>
 
           <TabsContent value="personal_information">
             <PersonalInformation />
