@@ -17,13 +17,7 @@ import { cn } from "@/lib/utils";
 import { MemoriesModal } from "@/components/memories/memories-modal";
 import { memoriesRepository, } from "@/repositories/memories-repository";
 import withCouple from "@/layouts/with-couple";
-
-interface Memory {
-  id: string;
-  title: string;
-  description: string;
-  avatarUrl?: string;
-}
+import { formatDate } from "@/lib/date-fns";
 
 const MemoryCard = ({
   memory,
@@ -59,7 +53,6 @@ const MemoryCard = ({
 );
 
 const Memories = () => {
-  const { user } = useAuth();
   const { couple } = useCouple();
   const [memories, setMemories] = useState<Memory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,53 +61,17 @@ const Memories = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showOpenModal, setShowOpenModal] = useState(false);
 
-  {selectedMemory && (
-    <div className="w-full lg:w-[400px] bg-white rounded-2xl shadow-md border border-[#FF006F]/10 overflow-hidden sticky top-6 self-start">
-      <div className="relative h-[350px] w-full group">
-        <Image
-          src={selectedMemory.avatarUrl || "/placeholder.svg"}
-          alt={selectedMemory.title}
-          fill
-          sizes="(max-width: 1080px) 100vw, 400px"
-          className="object-cover"
-        />
-      </div>
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <h2 className="text-2xl font-bold text-[#302d2d]">
-            {selectedMemory.title}
-          </h2>
-        </div>
-
-        <p className="text-[#353434] text-lg mb-6">
-          {selectedMemory.description}
-        </p>
-
-        <div className="flex items-center text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-          <Calendar className="h-5 w-5 mr-2 text-[#FF006F]" />
-        </div>
-      </div>
-    </div>
-  )}
-
   useEffect(() => {
     if (couple) {
       const fetchData = async () => {
         setIsLoading(true);
         try {
-          const memoriesData = await memoriesRepository.getMemories(couple.id);
+          const memories = await memoriesRepository.getMemories(couple.id);
 
-          const formattedMemories = memoriesData.map((memory) => ({
-            id: memory.id,
-            title: memory.title,
-            description: memory.description,
-            avatarUrl: memory.avatarUrl,
-          }));
+          setMemories(memories);
 
-          setMemories(formattedMemories);
-
-          if (formattedMemories.length > 0 && !selectedMemory) {
-            setSelectedMemory(formattedMemories[0]);
+          if (memories.length > 0 && !selectedMemory) {
+            setSelectedMemory(memories[0]);
           }
         } catch (error) {
           console.error("Erro ao carregar memórias:", error);
@@ -243,6 +200,7 @@ const Memories = () => {
 
                   <div className="flex items-center text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
                     <Calendar className="h-5 w-5 mr-2 text-[#FF006F]" />
+                    {formatDate(selectedMemory.createdAt)}
                   </div>
                 </div>
               </div>

@@ -25,7 +25,7 @@ export const memoriesMessages = {
     INVALID_DATA: "Dados inválidos",
     UNAUTHORIZED: "Não autorizado",
     DEFAULT: "Erro ao processar a requisição",
-    default: "Erro inesperado" 
+    default: "Erro inesperado"
   }
 };
 
@@ -40,12 +40,9 @@ export const memoriesRepository = {
   },
 
   getMemories: async (coupleId: string) => {
-    try {
-      const { data } = await api.get<MemoriesResponse[]>(`/memories/${coupleId}`);
-      return data;
-    } catch (err) {
-      throw new Error('Erro ao carregar as memórias');
-    }
+    const { data } = await api.get<Memory[]>(`/memories/${coupleId}`);
+
+    return data;
   },
 };
 

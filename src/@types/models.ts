@@ -62,6 +62,14 @@ interface Invite {
   expiresIn: number,
 }
 
+interface Memory {
+  id: string;
+  title: string;
+  description: string;
+  avatarUrl?: string;
+  createdAt: Date
+}
+
 enum InviteStatus {
   Active = "active",
   Pending = "pending"
