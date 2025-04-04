@@ -9,7 +9,7 @@ export function RecentSignals() {
         <h2 className="font-bold text-lg">Sinais recentes</h2>
         <ChevronRight className="h-5 w-5 text-gray-400" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col justify-between h-full">
         <div className="space-y-2 mb-4">
           <div className="p-2 bg-gray-50 rounded text-sm">"Menos tempo juntos ultimamente"</div>
           <div className="p-2 bg-gray-50 rounded text-sm">"Conversa ficou mais curta"</div>

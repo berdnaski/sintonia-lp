@@ -1,8 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
+import { questionsRepository } from "@/repositories/questions-repository";
 import { ChevronRight } from "lucide-react"
+import { useEffect, useState } from "react";
 
 export function PendingQuestions() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [questions, setQuestions] = useState<Question[]>([])
+  const { user } = useAuth()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const questions = await questionsRepository.findAllQuestions(user.id, {
+          perPage: 3
+        });
+
+        setQuestions(questions);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row mb-2">
@@ -11,9 +36,9 @@ export function PendingQuestions() {
       </CardHeader>
       <CardContent>
         <div className="space-y-2 mb-4">
-          <div className="p-2 bg-gray-50 rounded text-sm">"Menos tempo juntos ultimamente"</div>
-          <div className="p-2 bg-gray-50 rounded text-sm">"Conversa ficou mais curta"</div>
-          <div className="p-2 bg-gray-50 rounded text-sm">"Menos demonstrações de carinho"</div>
+          {questions.map(question => (
+            <div className="p-2 bg-gray-50 rounded text-sm">"{question.question}"</div>
+          ))}
         </div>
         <Button className="w-full">Responder</Button>
       </CardContent>

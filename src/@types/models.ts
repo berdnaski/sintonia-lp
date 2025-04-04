@@ -70,6 +70,29 @@ interface Memory {
   createdAt: Date
 }
 
+interface Paginate<T> {
+  data: T[],
+  meta: {
+    total: number,
+    page: number,
+    perPage: number,
+    lastPage: number,
+  }
+}
+
+interface Question {
+  id: string;
+  coupleId: string;
+  userId: string;
+  user?: User;
+  couple?: Couple;
+  question: string;
+  answer: string | null;
+  wasAnswered: boolean;
+  createdAt: Date;
+  updatedAt: Date
+}
+
 enum InviteStatus {
   Active = "active",
   Pending = "pending"
