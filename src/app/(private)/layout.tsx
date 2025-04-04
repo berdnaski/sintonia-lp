@@ -9,7 +9,6 @@ import { useEffect } from "react"
 
 export default function PrivateLayout({ children }: { children: React.ReactNode}) {
   const { user, fetchUser, clearUser } = useAuth();
-  const { setCouple } = useCouple();
   const router = useRouter()
 
   useEffect(() => {

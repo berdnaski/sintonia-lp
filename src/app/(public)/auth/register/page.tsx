@@ -37,6 +37,7 @@ export default function Register() {
 
       router.push('/plans')
     } catch (error) {
+      console.log(error)
       if (error instanceof AxiosError) {
         if (error?.response?.data.message === "Email already in use") {
           form.setError("email", {

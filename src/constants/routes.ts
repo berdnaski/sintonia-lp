@@ -8,4 +8,5 @@ export const Routes = {
   PROFILE: '/profile',
   SIGNALS: '/signals',
   COUPLE: '/couple',
+  PLANS: '/plans',
 };
