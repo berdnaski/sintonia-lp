@@ -50,7 +50,7 @@ export function CoupleInformation() {
               <DatePicker
                 name="startAt"
                 label="Inicio do relacionamento"
-                toMonth={new Date()}
+                endMonth={new Date()}
               />
             </div>
 

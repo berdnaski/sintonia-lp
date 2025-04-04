@@ -1,19 +1,20 @@
 "use client";
 
-import { ChevronRight, Bell } from "lucide-react"
+import { ChevronRight, Bell, Heart } from "lucide-react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Memories from "./_components/memories";
+import { DailySummary } from "./_components/daily-summary";
+import { PendingQuestions } from "./_components/pending-questions";
+import { RecentSignals } from "./_components/recent-signals";
 
 export default function Dashboard() {
   return (
     <div className="max-w-7xl mx-auto min-h-screen">
       <div className="flex justify-between items-center p-4 border-b mt-4">
         <div className="flex items-center gap-1">
-          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-            </svg>
+          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+            <Heart color="#FFFFFF" />
           </div>
           <span className="text-green-500 text-sm font-medium">Sintonia: 85%</span>
         </div>
@@ -64,51 +65,9 @@ export default function Dashboard() {
       </div>
 
       <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <Card>
-          <CardHeader className="font-bold text-lg">Resumo Diário</CardHeader>
-          <CardContent>
-            <div className="mb-4">
-              <h3 className="font-medium text-sm mb-1">Padrões Detectados</h3>
-              <p className="text-sm">Diminuição de interação e menor troca de carinho.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-sm mb-1">Ação recomendada</h3>
-              <p className="text-sm">
-                Marquem um tempo juntos sem distrações - pode ser um café, um passeio ou só uma conversa sem pressa.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex justify-between flex-row mb-2">
-            <h2 className="font-bold text-lg">Perguntas pendentes</h2>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 mb-4">
-              <div className="p-2 bg-gray-50 rounded text-sm">"Menos tempo juntos ultimamente"</div>
-              <div className="p-2 bg-gray-50 rounded text-sm">"Conversa ficou mais curta"</div>
-              <div className="p-2 bg-gray-50 rounded text-sm">"Menos demonstrações de carinho"</div>
-            </div>
-            <Button className="w-full">Responder</Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex justify-between flex-row mb-2">
-            <h2 className="font-bold text-lg">Sinais recentes</h2>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 mb-4">
-              <div className="p-2 bg-gray-50 rounded text-sm">"Menos tempo juntos ultimamente"</div>
-              <div className="p-2 bg-gray-50 rounded text-sm">"Conversa ficou mais curta"</div>
-              <div className="p-2 bg-gray-50 rounded text-sm">"Menos demonstrações de carinho"</div>
-            </div>
-            <Button className="w-full">Ver Mais</Button>
-          </CardContent>
-        </Card>
+        <DailySummary />
+        <PendingQuestions />
+        <RecentSignals />
       </div>
 
       <Memories />
