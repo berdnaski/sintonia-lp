@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { MemoriesModal } from "@/components/memories/memories-modal";
 import { memoriesRepository, } from "@/repositories/memories-repository";
-import withSubscription from "@/layouts/with-subscription";
+import withCouple from "@/layouts/with-couple";
 
 interface Memory {
   id: string;
@@ -259,4 +259,4 @@ const Memories = () => {
   );
 };
 
-export default withSubscription(Memories);
+export default withCouple(Memories);
