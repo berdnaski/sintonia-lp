@@ -6,6 +6,8 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MemoriesSkeleton } from "./skeletons/memories-skeleton";
+import Link from "next/link";
+import { Routes } from "@/constants/routes";
 
 export default function Memories() {
   const { couple } = useCouple();
@@ -36,9 +38,11 @@ export default function Memories() {
 
   return (
     <Card className="mt-4">
-      <CardHeader className="flex flex-row items-center gap-2 mb-4">
-        <h2 className="font-bold text-lg">Memórias</h2>
-        <ChevronRight className="h-5 w-5 text-gray-400" />
+      <CardHeader>
+        <Link href={Routes.MEMORIES} className="flex flex-row items-center gap-2 mb-4 group">
+          <h2 className="font-bold text-lg">Memórias</h2>
+          <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+        </Link>
       </CardHeader>
       <CardContent className="flex gap-4 overflow-x-auto pb-4">
         {memories.map((item) => (
