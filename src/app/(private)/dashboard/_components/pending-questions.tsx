@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { questionsRepository } from "@/repositories/questions-repository";
 import { ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react";
+import { CardSkeleton } from "./skeletons/card-skeleton";
 
 export function PendingQuestions() {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,6 +29,10 @@ export function PendingQuestions() {
     fetchData();
   }, []);
 
+  if (isLoading) {
+    return <CardSkeleton />
+  }
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row mb-2">
@@ -37,7 +42,7 @@ export function PendingQuestions() {
       <CardContent>
         <div className="space-y-2 mb-4">
           {questions.map(question => (
-            <div className="p-2 bg-gray-50 rounded text-sm">"{question.question}"</div>
+            <div key={question.id} className="p-2 bg-gray-50 rounded text-sm">"{question.question}"</div>
           ))}
         </div>
         <Button className="w-full">Responder</Button>
