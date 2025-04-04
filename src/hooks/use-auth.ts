@@ -2,6 +2,7 @@ import { setAPIAuthToken } from "@/services/api";
 import { create } from "zustand"
 import Cookies from "js-cookie";
 import { userRepository } from "@/repositories/user-repository";
+import { useCouple } from "./use-couple";
 
 interface AuthStore {
   user: User | null;
@@ -19,6 +20,9 @@ export const useAuth = create<AuthStore>((set, get) => ({
     setAPIAuthToken(token)
     Cookies.set('token', token)
 
+    const { setCouple } = useCouple.getState()
+    setCouple(user.couple)
+
     set({ user, token })
   },
   fetchUser: async () => {
@@ -29,6 +33,10 @@ export const useAuth = create<AuthStore>((set, get) => ({
         setAPIAuthToken(token)
         const user = await userRepository.me()
         set({ user, token })
+
+        const { setCouple } = useCouple.getState()
+        setCouple(user.couple)
+
         return user
       } else {
         get().clearUser()

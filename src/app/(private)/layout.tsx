@@ -9,7 +9,6 @@ import { useEffect } from "react"
 
 export default function PrivateLayout({ children }: { children: React.ReactNode}) {
   const { user, fetchUser, clearUser } = useAuth();
-  const { fetchCouple } = useCouple();
   const router = useRouter()
 
   useEffect(() => {
@@ -27,8 +26,6 @@ export default function PrivateLayout({ children }: { children: React.ReactNode}
       router.push(Routes.LOGIN())
       return;
     }
-
-    fetchCouple()
   }, [user])
 
   if (!user) {

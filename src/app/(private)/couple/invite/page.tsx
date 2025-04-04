@@ -8,6 +8,7 @@ import VerifyInvite from "../../couple/invite/_components/verify-invite";
 import { useRouter } from "next/navigation";
 import { useCouple } from "@/hooks/use-couple";
 import { Routes } from "@/constants/routes";
+import withSubscription from "@/layouts/with-subscription";
 
 const steps = [
   {
@@ -20,7 +21,7 @@ const steps = [
   }
 ]
 
-export default function InviteCouple() {
+function InviteCouple() {
   const { couple } = useCouple();
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -83,3 +84,5 @@ export default function InviteCouple() {
     </div>
   );
 }
+
+export default withSubscription(InviteCouple)

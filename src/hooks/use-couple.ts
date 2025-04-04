@@ -80,7 +80,9 @@ export const useCouple = create<CoupleStore>((set, get) => ({
     })
   },
   setCouple:  (couple: Couple) => {
-    set({ couple, name: `${couple.user1.name} & ${couple.user2.name}` })
+    const name = couple?.users ? `${couple.users[0].name} & ${couple.users[1].name}` : null
+
+    set({ couple, name })
   },
   cleanCouple:  () => {
     set({ couple: null, metrics: null })

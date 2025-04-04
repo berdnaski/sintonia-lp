@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DecorativeDots, DecorativeGrid } from "@/components/decorative";
 import { useCouple } from "@/hooks/use-couple";
-import { useAuth } from "@/hooks/use-auth";
 import type { SignalResponse } from "@/repositories/signals-repository";
 import { signalRepository } from "@/repositories/signals-repository";
 import { RecentSignals } from "@/components/profile/recent-signals";
@@ -15,13 +14,12 @@ import { ActivityHistory } from "@/components/profile/activity-history";
 import Info from "./_components/info";
 import ConnectionScore from "./_components/connection-score";
 import { CoupleInformation } from "./_components/couple-information";
+import withCouple from "@/layouts/with-couple";
 
-
-export default function CouplePage() {
+function CouplePage() {
   const [signals, setSignals] = useState<SignalResponse[] | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const { couple, fetchMetrics } = useCouple();
-
 
   const fetchSignals = async () => {
     if (couple?.id) {
@@ -42,10 +40,6 @@ export default function CouplePage() {
     fetchSignals()
     fetchMetrics()
   }, [couple]);
-
-  if (!couple) {
-    return null
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -109,3 +103,5 @@ export default function CouplePage() {
     </div>
   );
 }
+
+export default withCouple(CouplePage);

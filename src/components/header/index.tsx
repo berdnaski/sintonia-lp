@@ -129,7 +129,7 @@ export function Header() {
                   />
                   <AvatarFallback>
                     {user && !couple && user.name[0]}
-                    {user && couple && couple.user1.name[0] + couple.user2.name[0]}
+                    {user && couple && couple.users[0].name[0] + couple.users[1].name[0]}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -233,7 +233,7 @@ export function Header() {
                   />
                   <AvatarFallback>
                     {user && !couple && user.name[0]}
-                    {user && couple && couple.user1.name[0] + couple.user2.name[0]}
+                    {user && couple && couple.users[0].name[0] + couple.users[1].name[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div>
