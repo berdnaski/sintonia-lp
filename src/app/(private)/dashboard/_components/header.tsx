@@ -47,24 +47,15 @@ export function Header() {
   }
 
   return (
-    <div className="flex justify-between items-center p-4 border-b mt-4 bg-white rounded-md md:mt-20 lg:mt-4">
+    <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-6 p-4 border-b bg-transparent lg:bg-white rounded-md mt-20 lg:mt-4">
       {items.map(item => (
-        <div key={`${item.label}-${item.value}`} className="flex items-center gap-1">
+        <div key={`${item.label}-${item.value}`} className="flex items-center gap-1 bg-white p-4 rounded-md w-full">
           <div className={cn("w-7 h-7 rounded-full flex items-center justify-center", item.bg)}>
             {item.icon}
           </div>
           <span className={cn("text-sm font-medium", item.text)}>{`${item.label}: ${item.value}%`}</span>
         </div>
       ))}
-
-      <div className="flex items-center gap-1">
-        <div className="relative">
-          <Bell className="h-5 w-5 text-amber-500" />
-          <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-            1
-          </span>
-        </div>
-      </div>
     </div>
   )
 }

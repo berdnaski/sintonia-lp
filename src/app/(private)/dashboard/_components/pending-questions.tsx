@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { useAuth } from "@/hooks/use-auth"
 import { questionsRepository } from "@/repositories/questions-repository"
-import { ChevronRight, MessageCircle } from "lucide-react"
+import { ChevronRight, HelpCircle, MessageCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 import { CardSkeleton } from "./skeletons/card-skeleton"
+import Link from "next/link"
+import { PendingQuestionsEmpty } from "./empty/pending-questions-empty"
 
 interface Question {
   id: string
@@ -17,6 +19,7 @@ interface Question {
 export function PendingQuestions() {
   const [isLoading, setIsLoading] = useState(false)
   const [questions, setQuestions] = useState<Question[]>([])
+  const hasQuestion = questions.length > 0
   const { user } = useAuth()
 
   useEffect(() => {
@@ -48,24 +51,31 @@ export function PendingQuestions() {
         <ChevronRight className="h-5 w-5 text-gray-400" />
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 mb-4">
-          {questions.map((question) => (
-            <div key={question.id} className="rounded overflow-hidden border border-gray-100">
-              <div className="p-3 bg-gray-50 text-sm font-medium">"{question.question}"</div>
+        {hasQuestion ? (
+          <>
+            <div className="space-y-4 mb-4">
+              {questions.map((question) => (
+                <div key={question.id} className="rounded overflow-hidden border border-gray-100">
+                  <div className="p-3 bg-gray-50 text-sm font-medium">"{question.question}"</div>
 
-              {question.answer ? (
-                <div className="p-3 bg-white border-t border-gray-100">
-                  <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                    <MessageCircle className="h-3.5 w-3.5" />
-                    <span>Resposta:</span>
-                  </div>
-                  <p className="text-sm text-gray-700">{question.answer}</p>
+                  {question.answer ? (
+                    <div className="p-3 bg-white border-t border-gray-100">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        <span>Resposta:</span>
+                      </div>
+                      <p className="text-sm text-gray-700">{question.answer}</p>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              ))}
             </div>
-          ))}
-        </div>
-        <Button className="w-full">{questions.some((q) => !q.answer) ? "Responder" : "Ver todas as perguntas"}</Button>
+            <Button className="w-full">{questions.some((q) => !q.answer) ? "Responder" : "Ver todas as perguntas"}</Button>
+          </>
+        ) : (
+          <PendingQuestionsEmpty />
+        )}
+
       </CardContent>
     </Card>
   )

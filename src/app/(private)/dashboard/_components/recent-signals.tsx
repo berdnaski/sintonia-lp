@@ -8,11 +8,13 @@ import { signalMessages, signalRepository } from "@/repositories/signals-reposit
 import { ChevronRight } from "lucide-react"
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { RecentSignalsEmpty } from "./empty/recent-signals-empty";
 
 export function RecentSignals() {
   const { couple } = useCouple();
   const [signals, setSignals] = useState([]);
   const { toastError } = useResponseMessages()
+  const hasSignals = signals.length > 0
 
   useEffect(() => {
     const fetchSignals = async () => {
@@ -46,16 +48,23 @@ export function RecentSignals() {
         <ChevronRight className="h-5 w-5 text-gray-400" />
       </CardHeader>
       <CardContent className="flex flex-col justify-between h-full">
-        <div className="space-y-2 mb-4">
-        {signals.map((signal, index) => (
-          <div key={index} className="p-2 bg-gray-50 rounded text-sm">
-            {signal.note}
-          </div>
-        ))}
-        </div>
-        <Link href={Routes.SIGNALS}>
-          <Button className="w-full">Ver Mais</Button>
-        </Link>
+        {hasSignals ? (
+          <>
+            <div className="space-y-2 mb-4">
+              {signals.map((signal, index) => (
+                <div key={index} className="p-2 bg-gray-50 rounded text-sm">
+                  {signal.note}
+                </div>
+              ))}
+            </div>
+            <Link href={Routes.SIGNALS}>
+              <Button className="w-full">Ver Mais</Button>
+            </Link>
+          </>
+        ) : (
+          <RecentSignalsEmpty />
+        )}
+
       </CardContent>
     </Card>
   )

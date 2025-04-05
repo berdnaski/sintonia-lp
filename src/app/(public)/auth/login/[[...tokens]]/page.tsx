@@ -57,9 +57,9 @@ export default function Login({
 
   return (
     <Form {...form}>
-  <div className="flex min-h-screen w-full items-center justify-center bg-[#FFF2F8] p-4 md:p-8">
-    <div className="flex flex-col w-full mx-auto gap-8 items-center">
-    <Card className="flex h-auto w-full md:w-xl p-8 border-none shadow-md bg-white rounded-2xl">
+      <div className="flex min-h-screen w-full items-center justify-center bg-[#FFF2F8] p-4 md:p-8">
+        <div className="flex flex-col w-full mx-auto gap-8 items-center">
+          <Card className="flex h-auto w-full md:w-xl p-8 border-none shadow-md bg-white rounded-2xl">
             <div className="space-y-6 max-w-md mx-auto">
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold text-gray-900">Bem-vindo de volta</h1>

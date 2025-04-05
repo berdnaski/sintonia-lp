@@ -8,11 +8,14 @@ import { useEffect, useState } from "react";
 import { MemoriesSkeleton } from "./skeletons/memories-skeleton";
 import Link from "next/link";
 import { Routes } from "@/constants/routes";
+import { cn } from "@/lib/utils";
+import { MemoriesEmpty } from "./empty/memories-empty";
 
 export default function Memories() {
   const { couple } = useCouple();
   const [memories, setMemories] = useState<Memory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const hasMemories = memories.length > 0
 
   useEffect(() => {
     if (couple) {
@@ -39,15 +42,15 @@ export default function Memories() {
   }
 
   return (
-    <Card className="mt-4">
+    <Card className="my-4">
       <CardHeader>
         <Link href={Routes.MEMORIES} className="flex flex-row items-center gap-2 mb-4 group">
           <h2 className="font-bold text-lg">Memórias</h2>
           <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
         </Link>
       </CardHeader>
-      <CardContent className="flex gap-4 overflow-x-auto pb-4">
-        {memories.map((item) => (
+      <CardContent className={cn("overflow-x-auto pb-4", hasMemories && "flex gap-4 ")}>
+        {hasMemories ? memories.map((item) => (
           <div key={item.id} className="relative min-w-[150px] h-[150px] rounded-lg overflow-hidden">
             <Image
               src={item.avatarUrl}
@@ -61,7 +64,9 @@ export default function Memories() {
               <p className="text-white text-xs">{formatDate(item.createdAt)}</p>
             </div>
           </div>
-        ))}
+        )) : (
+          <MemoriesEmpty />
+        )}
       </CardContent>
     </Card>
   )
