@@ -16,6 +16,12 @@ import type { AIResponse, SignalWithAdvice, QuestionsResponse } from "@/componen
 import { SignalFormTab } from "@/components/signals/signal-form-tab"
 import { QuestionsTab } from "@/components/signals/question-tab"
 import withCouple from "@/layouts/with-couple"
+import { useSearchParams } from "next/navigation"
+
+export enum EnumTabs {
+  signals = 'signals',
+  questions = 'questions'
+}
 
 const SignalForm = () => {
   const { toastError } = useResponseMessages()
@@ -25,9 +31,14 @@ const SignalForm = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true)
   const [questions, setQuestions] = useState<QuestionsResponse[]>([])
-  const [activeTab, setActiveTab] = useState("signal")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const searchParams = useSearchParams()
 
+  const searchTab = searchParams.get('tab') as EnumTabs
+
+  const [activeTab, setActiveTab] = useState(Object.values(EnumTabs).includes(searchTab) ? searchTab : EnumTabs.signals)
+
+  console.log(activeTab)
   useEffect(() => {
     const fetchQuestions = async () => {
       if (user && couple) {
@@ -165,27 +176,27 @@ const SignalForm = () => {
               <h2 className="text-xl font-semibold text-[#302d2d]">Compartilhar & Aprender</h2>
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs value={activeTab} onValueChange={(tab: EnumTabs) => setActiveTab(tab)} className="w-full">
               <TabsList className="grid grid-cols-2 mb-6 bg-[#F1DDE6]/30 p-1 rounded-lg">
                 <TabsTrigger
-                  value="signal"
-                  className="data-[state=active]:bg-[#F1DDE6] data-[state=active]:text-[#B42A76] rounded-md py-2 text-sm"
+                  value={EnumTabs.signals}
+                  className="data-[state=active]:bg-[#F1DDE6] data-[state=active]:text-[#B42A76] rounded-md text-sm"
                 >
                   Registrar Sinal
                 </TabsTrigger>
                 <TabsTrigger
-                  value="questions"
-                  className="data-[state=active]:bg-[#F1DDE6] data-[state=active]:text-[#B42A76] rounded-md py-2 text-sm"
+                  value={EnumTabs.questions}
+                  className="data-[state=active]:bg-[#F1DDE6] data-[state=active]:text-[#B42A76] rounded-md text-sm"
                 >
                   Perguntas & Respostas
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="signal" className="mt-0">
+              <TabsContent value={EnumTabs.signals} className="mt-0">
                 <SignalFormTab onSubmit={handleCreateSignal} isSubmitting={isSubmitting} />
               </TabsContent>
 
-              <TabsContent value="questions" className="mt-0">
+              <TabsContent value={EnumTabs.questions} className="mt-0">
                 <QuestionsTab
                   questions={questions}
                   isLoadingQuestions={isLoadingQuestions}

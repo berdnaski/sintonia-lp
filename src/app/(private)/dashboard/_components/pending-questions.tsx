@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 import { CardSkeleton } from "./skeletons/card-skeleton"
 import Link from "next/link"
 import { PendingQuestionsEmpty } from "./empty/pending-questions-empty"
+import { Routes } from "@/constants/routes"
+import { EnumTabs } from "../../signals/page"
 
 interface Question {
   id: string
@@ -46,9 +48,11 @@ export function PendingQuestions() {
 
   return (
     <Card>
-      <CardHeader className="flex justify-between flex-row mb-2">
-        <h2 className="font-bold text-lg">Perguntas pendentes</h2>
-        <ChevronRight className="h-5 w-5 text-gray-400" />
+      <CardHeader>
+        <Link href={`${Routes.SIGNALS}/?tab=${EnumTabs.questions}`} className="flex justify-between flex-row mb-2 group">
+          <h2 className="font-bold text-lg">Perguntas pendentes</h2>
+          <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+        </Link>
       </CardHeader>
       <CardContent>
         {hasQuestion ? (
