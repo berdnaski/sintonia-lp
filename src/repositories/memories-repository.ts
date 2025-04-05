@@ -1,5 +1,6 @@
 import { z } from "zod";
 import api from "@/services/api";
+import { PaginateParams } from "@/@types";
 
 export const memoriesSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
@@ -15,7 +16,7 @@ export interface MemoriesResponse {
   id: string;
   title: string;
   description: string;
-  avatarUrl: string; 
+  avatarUrl: string;
 }
 
 export const memoriesMessages = {
@@ -39,14 +40,16 @@ export const memoriesRepository = {
     return response.data;
   },
 
-  getMemories: async (coupleId: string, limit: number = 8, page: number = 1) => {
-    const { data } = await api.get<Memory[]>(`/memories/${coupleId}`, {
+  getMemories: async (coupleId: string, params = {} as PaginateParams) => {
+    const { perPage = 8, page = 1} = params
+
+    const { data } = await api.get<Paginate<Memory>>(`/memories/${coupleId}`, {
       params: {
-        limit,
+        perPage,
         page,
       },
     });
-  
+
     return data;
   }
 };

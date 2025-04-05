@@ -20,9 +20,11 @@ export default function Memories() {
         setIsLoading(true);
 
         try {
-          const memories = await memoriesRepository.getMemories(couple.id, 7);
+          const memories = await memoriesRepository.getMemories(couple.id, {
+            perPage: 7
+          });
 
-          setMemories(memories);
+          setMemories(memories.data);
         } finally {
           setIsLoading(false);
         }

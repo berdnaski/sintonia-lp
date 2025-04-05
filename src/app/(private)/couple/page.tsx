@@ -17,15 +17,18 @@ import { CoupleInformation } from "./_components/couple-information";
 import withCouple from "@/layouts/with-couple";
 
 function CouplePage() {
-  const [signals, setSignals] = useState<SignalResponse[] | null>(null);
+  const [signals, setSignals] = useState<Signal[]>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const { couple, fetchMetrics } = useCouple();
 
   const fetchSignals = async () => {
     if (couple?.id) {
       try {
-        const signalsData = await signalRepository.getSignals(couple.id);
-        setSignals(signalsData);
+        const signalsData = await signalRepository.getSignals(couple.id, {
+          perPage: 4
+        });
+
+        setSignals(signalsData.data);
       } catch (error) {
         setSignals([]);
       }

@@ -82,7 +82,7 @@ export function MemoriesModal({
     } finally {
       setIsSubmitting(false);
     }
-  }, [user, couple, selectedFile, onCreateMemory, onClose, reset, toastError]); // Changed dependency array
+  }, [user, couple, selectedFile, onCreateMemory, onClose, reset, toastError]);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;

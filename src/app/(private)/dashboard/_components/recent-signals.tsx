@@ -14,7 +14,6 @@ export function RecentSignals() {
   const [signals, setSignals] = useState([]);
   const { toastError } = useResponseMessages()
 
-  console.log({signals})
   useEffect(() => {
     const fetchSignals = async () => {
       if (couple?.id) {

@@ -70,14 +70,16 @@ interface Memory {
   createdAt: Date
 }
 
+interface Meta {
+  total: number,
+  page: number,
+  perPage: number,
+  lastPage: number,
+}
+
 interface Paginate<T> {
   data: T[],
-  meta: {
-    total: number,
-    page: number,
-    perPage: number,
-    lastPage: number,
-  }
+  meta: Meta
 }
 
 interface Question {

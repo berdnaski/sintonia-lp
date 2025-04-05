@@ -11,6 +11,7 @@ import { MemoriesModal } from "@/components/memories/memories-modal"
 import { memoriesRepository } from "@/repositories/memories-repository"
 import withCouple from "@/layouts/with-couple"
 import { formatDate } from "@/lib/date-fns"
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 const MemoryCard = ({
   memory,
@@ -53,22 +54,24 @@ const Memories = () => {
   const [showOpenModal, setShowOpenModal] = useState(false)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(false)
+  const [meta, setMeta] = useState<Meta>({} as Meta)
 
   useEffect(() => {
     if (couple) {
       const fetchData = async () => {
         setIsLoading(true)
         try {
-          const memories = await memoriesRepository.getMemories(couple.id, 8, page)
+          const memories = await memoriesRepository.getMemories(couple.id, {
+            page
+          })
 
-          setMemories(memories)
-          setHasMore(memories.length === 8)
+          setMemories(memories.data)
+          setMeta(memories.meta)
+          setHasMore(page === memories.meta.lastPage)
 
-          if (memories.length > 0 && !selectedMemory) {
+          if (memories.data.length > 0 && !selectedMemory) {
             setSelectedMemory(memories[0])
           }
-        } catch (error) {
-          console.error("Erro ao carregar memórias:", error)
         } finally {
           setIsLoading(false)
         }
@@ -92,8 +95,25 @@ const Memories = () => {
     setShowOpenModal(true)
   }
 
-  const handleCloseModal = () => {
-    setShowOpenModal(false)
+  const handlePreviusPage = () => {
+    if (page === 1) {
+      return
+    }
+
+    setPage((prev) => Math.max(prev - 1, 1))
+  }
+
+  const handleNextPage = () => {
+    if (page === meta.lastPage) {
+      return
+    }
+
+    setPage((prev) => Math.max(prev - 1, 1))
+  }
+
+
+  if (!memories) {
+    return null
   }
 
   return (
@@ -180,69 +200,23 @@ const Memories = () => {
               </div>
             )}
           </div>
-          <div className="mt-8 flex justify-center items-center">
-            <div className="inline-flex items-center bg-white rounded-xl shadow-md border border-[#FF006F]/20 overflow-hidden">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                className={cn(
-                  "h-10 px-4 flex items-center justify-center transition-all",
-                  page === 1
-                    ? "bg-gray-50 text-gray-400 cursor-not-allowed"
-                    : "text-[#FF006F] hover:bg-[#F1DDE6]/50 active:bg-[#F1DDE6]",
-                )}
-                aria-label="Página anterior"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-1"
-                >
-                  <path d="m15 18-6-6 6-6" />
-                </svg>
-                <span className="text-sm font-medium">Anterior</span>
-              </button>
 
-              <div className="h-10 px-4 flex items-center justify-center bg-[#F1DDE6]/30 border-x border-[#FF006F]/10">
-                <span className="text-sm font-medium text-[#B42A76]">Página {page}</span>
-              </div>
-
-              <button
-                disabled={!hasMore}
-                onClick={() => setPage((prev) => prev + 1)}
-                className={cn(
-                  "h-10 px-4 flex items-center justify-center transition-all",
-                  !hasMore
-                    ? "bg-gray-50 text-gray-400 cursor-not-allowed"
-                    : "text-[#FF006F] hover:bg-[#F1DDE6]/50 active:bg-[#F1DDE6]",
-                )}
-                aria-label="Próxima página"
-              >
-                <span className="text-sm font-medium">Próxima</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ml-1"
-                >
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
-              </button>
-            </div>
-          </div>
+          <Pagination className="justify-end mt-6">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  disabled={page === 1}
+                  onClick={handlePreviusPage}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext
+                  disabled={page === meta.lastPage}
+                  onClick={handleNextPage}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       </div>
       <MemoriesModal
