@@ -101,7 +101,7 @@ export function MemoriesModal({
 
         <form onSubmit={handleSubmit(handleCreateMemory)}>
           <div className="space-y-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="title">Título</Label>
               <Input {...register("title")} />
               {errors.title && (
@@ -109,7 +109,7 @@ export function MemoriesModal({
               )}
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="description">Descrição</Label>
               <Textarea {...register("description")} />
               {errors.description && (
@@ -117,7 +117,7 @@ export function MemoriesModal({
               )}
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="avatar">Insira Fotos</Label>
               <Controller
                 name="avatar"

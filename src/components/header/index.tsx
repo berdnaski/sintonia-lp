@@ -192,19 +192,21 @@ export function Header() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF006F] to-[#FF708B] flex items-center justify-center shadow-md">
               <Heart className="h-5 w-5 text-white" />
             </div>
-            {user && !couple && (
-              <span className="font-semibold text-gray-800">{user.name}</span>
-            )}
+            <div className="flex flex-col">
+              {user && !couple && (
+                <span className="font-semibold text-gray-800">{user.name}</span>
+              )}
 
-            {user && coupleName && (
-              <span className="font-semibold text-gray-800">{coupleName}</span>
-            )}
+              {user && coupleName && (
+                <span className="font-semibold text-gray-800">{coupleName}</span>
+              )}
 
-            {coupleDuration && (
-              <p className="text-xs text-gray-500">
-                {`${coupleDuration} juntos`}
-              </p>
-            )}
+              {coupleDuration && (
+                <p className="text-xs text-gray-500">
+                  {`${coupleDuration} juntos`}
+                </p>
+              )}
+            </div>
           </div>
         </Link>
 

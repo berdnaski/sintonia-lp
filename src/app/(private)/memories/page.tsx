@@ -12,6 +12,7 @@ import { memoriesRepository } from "@/repositories/memories-repository"
 import withCouple from "@/layouts/with-couple"
 import { formatDate } from "@/lib/date-fns"
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { MemoriesEmpty } from "../dashboard/_components/empty/memories-empty"
 
 const MemoryCard = ({
   memory,
@@ -24,18 +25,17 @@ const MemoryCard = ({
 }) => (
   <div
     className={cn(
-      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full",
+      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full w-36",
       selectedMemory?.id === memory.id ? "ring-2 ring-[#FF006F] ring-offset-2" : "",
     )}
     onClick={() => onSelect(memory)}
   >
-    <div className="relative h-40 w-full">
+    <div className="relative h-48 w-36">
       <Image
         src={memory.avatarUrl || "/placeholder.svg"}
         alt={memory.title}
         fill
-        sizes="(max-width: 1080px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover transition-transform duration-500 hover:scale-110"
+        className="object-cover object-center transition-transform duration-500 hover:scale-110 h-full"
       />
     </div>
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-3">
@@ -55,14 +55,17 @@ const Memories = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(false)
   const [meta, setMeta] = useState<Meta>({} as Meta)
+  const perPage = 30
 
   useEffect(() => {
+    console.log('featch')
     if (couple) {
       const fetchData = async () => {
         setIsLoading(true)
         try {
           const memories = await memoriesRepository.getMemories(couple.id, {
-            page
+            page,
+            perPage
           })
 
           setMemories(memories.data)
@@ -87,8 +90,12 @@ const Memories = () => {
   }
 
   const handleSelectMemory = (memory: Memory) => {
-    setSelectedMemory(memory)
-    setCurrentImageIndex(0)
+    if (selectedMemory?.id === memory.id) {
+      setSelectedMemory(null)
+    } else {
+      setSelectedMemory(memory)
+      setCurrentImageIndex(0)
+    }
   }
 
   const handleOpenModal = () => {
@@ -108,26 +115,19 @@ const Memories = () => {
       return
     }
 
-    setPage((prev) => Math.max(prev - 1, 1))
+    setPage((prev) => Math.max(prev + 1, meta.lastPage))
   }
-
 
   if (!memories) {
     return null
   }
 
   return (
-    <div className="w-full min-h-screen bg-gray-50">
-      <div className="fixed left-0 top-0 h-full w-16 bg-white shadow-md flex flex-col items-center py-8 gap-8 z-10">
-        <div className="w-10 h-10 rounded-full bg-[#F1DDE6] flex items-center justify-center">
-          <Heart className="text-[#FF006F] h-5 w-5" />
-        </div>
-      </div>
-
-      <div className="pl-16 w-full">
+    <div className="w-full min-h-screen bg-gray-50 mt-16 xl:mt-0">
+      <div className="md:pl-16 w-full ">
         <div className="max-w-[1800px] mx-auto p-6">
           <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 bg-white rounded-2xl shadow-md border border-[#FF006F]/10 p-6">
+            <div className="flex-1 h-min bg-white rounded-2xl shadow-md border border-[#FF006F]/10 p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div className="flex items-center">
                   <div className="w-12 h-12 rounded-full bg-[#F1DDE6] flex items-center justify-center mr-4">
@@ -144,17 +144,8 @@ const Memories = () => {
               </div>
 
               <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
-                <TabsList className="w-[30%] max-w-md bg-[#F1DDE6]/30 p-1 rounded-lg">
-                  <TabsTrigger
-                    value="all"
-                    className="data-[state=active]:bg-[#F1DDE6] data-[state=active]:text-[#B42A76] rounded-md py-2 text-sm"
-                  >
-                    Todas as Memórias
-                  </TabsTrigger>
-                </TabsList>
-
                 <TabsContent value="all" className="mt-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <div className="flex flex-wrap gap-6">
                     {memories.map((memory) => (
                       <MemoryCard
                         key={memory.id}
@@ -164,7 +155,9 @@ const Memories = () => {
                       />
                     ))}
                     {memories.length === 0 && !isLoading && (
-                      <div className="col-span-full text-center py-8 text-gray-500">Nenhuma memória encontrada</div>
+                      <div className="flex justify-center items-center w-full col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">
+                        <MemoriesEmpty />
+                      </div>
                     )}
                     {isLoading && (
                       <div className="col-span-full text-center py-8 text-gray-500">Carregando memórias...</div>
@@ -172,6 +165,23 @@ const Memories = () => {
                   </div>
                 </TabsContent>
               </Tabs>
+
+              <Pagination className="justify-end mt-6">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      disabled={page === 1}
+                      onClick={handlePreviusPage}
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext
+                      disabled={page === meta.lastPage}
+                      onClick={handleNextPage}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
 
             {selectedMemory && (
@@ -182,7 +192,7 @@ const Memories = () => {
                     alt={selectedMemory.title}
                     fill
                     sizes="(max-width: 1200px) 100vw, 400px"
-                    className="object-cover"
+                    className="object-cover object-center"
                   />
                 </div>
                 <div className="p-6">
@@ -200,23 +210,6 @@ const Memories = () => {
               </div>
             )}
           </div>
-
-          <Pagination className="justify-end mt-6">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  disabled={page === 1}
-                  onClick={handlePreviusPage}
-                />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  disabled={page === meta.lastPage}
-                  onClick={handleNextPage}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
         </div>
       </div>
       <MemoriesModal
