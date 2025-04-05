@@ -1,8 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
+import { useCouple } from "@/hooks/use-couple";
+import { signalRepository } from "@/repositories/signals-repository";
 import { ChevronRight } from "lucide-react"
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function RecentSignals() {
+  const { couple } = useCouple();
+  const { user } = useAuth();
+  const [signals, setSignals] = useState([]);
+
+  useEffect(() => {
+    const fetchSignals = async () => {
+      if (couple?.id) {
+        try {
+          const signalsData = await signalRepository.getSignals(couple.id, 3);
+
+          setSignals(signalsData);
+        } catch (err) {
+          console.error("Error ao carregar os sinais", err);
+        }
+      }
+    }
+
+    fetchSignals();
+  }, [couple])
+
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row mb-2">
@@ -11,11 +37,15 @@ export function RecentSignals() {
       </CardHeader>
       <CardContent className="flex flex-col justify-between h-full">
         <div className="space-y-2 mb-4">
-          <div className="p-2 bg-gray-50 rounded text-sm">"Menos tempo juntos ultimamente"</div>
-          <div className="p-2 bg-gray-50 rounded text-sm">"Conversa ficou mais curta"</div>
-          <div className="p-2 bg-gray-50 rounded text-sm">"Menos demonstrações de carinho"</div>
+        {signals.map((signal, index) => (
+          <div key={index} className="p-2 bg-gray-50 rounded text-sm">
+            {signal.note}
+          </div>
+        ))}
         </div>
-        <Button className="w-full">Ver Mais</Button>
+        <Link href={'/signals'}>
+          <Button className="w-full">Ver Mais</Button>
+        </Link>
       </CardContent>
     </Card>
   )

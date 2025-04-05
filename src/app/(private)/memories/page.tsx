@@ -1,39 +1,30 @@
-"use client";
+"use client"
 
-import type React from "react";
-
-import { useState, useEffect } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import { useCouple } from "@/hooks/use-couple";
-import {
-  Heart,
-  Calendar,
-  Plus,
-} from "lucide-react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { MemoriesModal } from "@/components/memories/memories-modal";
-import { memoriesRepository, } from "@/repositories/memories-repository";
-import withCouple from "@/layouts/with-couple";
-import { formatDate } from "@/lib/date-fns";
+import { useState, useEffect } from "react"
+import { useCouple } from "@/hooks/use-couple"
+import { Heart, Calendar, Plus } from "lucide-react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/lib/utils"
+import { MemoriesModal } from "@/components/memories/memories-modal"
+import { memoriesRepository } from "@/repositories/memories-repository"
+import withCouple from "@/layouts/with-couple"
+import { formatDate } from "@/lib/date-fns"
 
 const MemoryCard = ({
   memory,
   selectedMemory,
-  onSelect
+  onSelect,
 }: {
-  memory: Memory;
-  selectedMemory: Memory | null;
-  onSelect: (memory: Memory) => void;
+  memory: Memory
+  selectedMemory: Memory | null
+  onSelect: (memory: Memory) => void
 }) => (
   <div
     className={cn(
       "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full",
-      selectedMemory?.id === memory.id
-        ? "ring-2 ring-[#FF006F] ring-offset-2"
-        : ""
+      selectedMemory?.id === memory.id ? "ring-2 ring-[#FF006F] ring-offset-2" : "",
     )}
     onClick={() => onSelect(memory)}
   >
@@ -50,57 +41,60 @@ const MemoryCard = ({
       <p className="text-white text-sm font-medium">{memory.title}</p>
     </div>
   </div>
-);
+)
 
 const Memories = () => {
-  const { couple } = useCouple();
-  const [memories, setMemories] = useState<Memory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
-  const [activeTab, setActiveTab] = useState("all");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showOpenModal, setShowOpenModal] = useState(false);
+  const { couple } = useCouple()
+  const [memories, setMemories] = useState<Memory[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
+  const [activeTab, setActiveTab] = useState("all")
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [showOpenModal, setShowOpenModal] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
 
   useEffect(() => {
     if (couple) {
       const fetchData = async () => {
-        setIsLoading(true);
+        setIsLoading(true)
         try {
-          const memories = await memoriesRepository.getMemories(couple.id);
+          const memories = await memoriesRepository.getMemories(couple.id, 8, page)
 
-          setMemories(memories);
+          setMemories(memories)
+          setHasMore(memories.length === 8)
 
           if (memories.length > 0 && !selectedMemory) {
-            setSelectedMemory(memories[0]);
+            setSelectedMemory(memories[0])
           }
         } catch (error) {
-          console.error("Erro ao carregar memórias:", error);
+          console.error("Erro ao carregar memórias:", error)
         } finally {
-          setIsLoading(false);
+          setIsLoading(false)
         }
-      };
+      }
 
-      fetchData();
+      fetchData()
     }
-  }, [couple]);
+  }, [couple, page])
 
   const handleCreateMemory = (newMemory: Memory) => {
-    setMemories(prev => [...prev, newMemory]);
-    setSelectedMemory(newMemory);
-  };
+    setMemories((prev) => [...prev, newMemory])
+    setSelectedMemory(newMemory)
+  }
 
   const handleSelectMemory = (memory: Memory) => {
-    setSelectedMemory(memory);
-    setCurrentImageIndex(0);
-  };
+    setSelectedMemory(memory)
+    setCurrentImageIndex(0)
+  }
 
   const handleOpenModal = () => {
-    setShowOpenModal(true);
-  };
+    setShowOpenModal(true)
+  }
 
   const handleCloseModal = () => {
-    setShowOpenModal(false);
-  };
+    setShowOpenModal(false)
+  }
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
@@ -120,28 +114,16 @@ const Memories = () => {
                     <Heart className="text-[#FF006F] h-6 w-6" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold text-[#302d2d]">
-                      Álbum de Memórias
-                    </h1>
-                    <p className="text-gray-500">
-                      Reviva os momentos especiais do seu relacionamento
-                    </p>
+                    <h1 className="text-3xl font-bold text-[#302d2d]">Álbum de Memórias</h1>
+                    <p className="text-gray-500">Reviva os momentos especiais do seu relacionamento</p>
                   </div>
                 </div>
-                <Button
-                  onClick={handleOpenModal}
-                  className="bg-[#FF006F] hover:bg-[#D80057] text-white"
-                >
+                <Button onClick={handleOpenModal} className="bg-[#FF006F] hover:bg-[#D80057] text-white">
                   <Plus className="h-4 w-4 mr-2" /> Adicionar Memória
                 </Button>
               </div>
 
-              <Tabs
-                defaultValue="all"
-                value={activeTab}
-                onValueChange={setActiveTab}
-                className="w-full mb-8"
-              >
+              <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
                 <TabsList className="w-[30%] max-w-md bg-[#F1DDE6]/30 p-1 rounded-lg">
                   <TabsTrigger
                     value="all"
@@ -162,14 +144,10 @@ const Memories = () => {
                       />
                     ))}
                     {memories.length === 0 && !isLoading && (
-                      <div className="col-span-full text-center py-8 text-gray-500">
-                        Nenhuma memória encontrada
-                      </div>
+                      <div className="col-span-full text-center py-8 text-gray-500">Nenhuma memória encontrada</div>
                     )}
                     {isLoading && (
-                      <div className="col-span-full text-center py-8 text-gray-500">
-                        Carregando memórias...
-                      </div>
+                      <div className="col-span-full text-center py-8 text-gray-500">Carregando memórias...</div>
                     )}
                   </div>
                 </TabsContent>
@@ -189,14 +167,10 @@ const Memories = () => {
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
-                    <h2 className="text-2xl font-bold text-[#302d2d]">
-                      {selectedMemory.title}
-                    </h2>
+                    <h2 className="text-2xl font-bold text-[#302d2d]">{selectedMemory.title}</h2>
                   </div>
 
-                  <p className="text-[#353434] text-lg mb-6">
-                    {selectedMemory.description}
-                  </p>
+                  <p className="text-[#353434] text-lg mb-6">{selectedMemory.description}</p>
 
                   <div className="flex items-center text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
                     <Calendar className="h-5 w-5 mr-2 text-[#FF006F]" />
@@ -206,6 +180,69 @@ const Memories = () => {
               </div>
             )}
           </div>
+          <div className="mt-8 flex justify-center items-center">
+            <div className="inline-flex items-center bg-white rounded-xl shadow-md border border-[#FF006F]/20 overflow-hidden">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                className={cn(
+                  "h-10 px-4 flex items-center justify-center transition-all",
+                  page === 1
+                    ? "bg-gray-50 text-gray-400 cursor-not-allowed"
+                    : "text-[#FF006F] hover:bg-[#F1DDE6]/50 active:bg-[#F1DDE6]",
+                )}
+                aria-label="Página anterior"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mr-1"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span className="text-sm font-medium">Anterior</span>
+              </button>
+
+              <div className="h-10 px-4 flex items-center justify-center bg-[#F1DDE6]/30 border-x border-[#FF006F]/10">
+                <span className="text-sm font-medium text-[#B42A76]">Página {page}</span>
+              </div>
+
+              <button
+                disabled={!hasMore}
+                onClick={() => setPage((prev) => prev + 1)}
+                className={cn(
+                  "h-10 px-4 flex items-center justify-center transition-all",
+                  !hasMore
+                    ? "bg-gray-50 text-gray-400 cursor-not-allowed"
+                    : "text-[#FF006F] hover:bg-[#F1DDE6]/50 active:bg-[#F1DDE6]",
+                )}
+                aria-label="Próxima página"
+              >
+                <span className="text-sm font-medium">Próxima</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="ml-1"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <MemoriesModal
@@ -214,7 +251,8 @@ const Memories = () => {
         onCreateMemory={handleCreateMemory}
       />
     </div>
-  );
-};
+  )
+}
 
-export default withCouple(Memories);
+export default withCouple(Memories)
+

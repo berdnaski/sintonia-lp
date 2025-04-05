@@ -15,7 +15,7 @@ export interface MemoriesResponse {
   id: string;
   title: string;
   description: string;
-  avatarUrl: string; // Changed from file to avatarUrl to match backend
+  avatarUrl: string; 
 }
 
 export const memoriesMessages = {
@@ -39,11 +39,16 @@ export const memoriesRepository = {
     return response.data;
   },
 
-  getMemories: async (coupleId: string) => {
-    const { data } = await api.get<Memory[]>(`/memories/${coupleId}`);
-
+  getMemories: async (coupleId: string, limit: number = 8, page: number = 1) => {
+    const { data } = await api.get<Memory[]>(`/memories/${coupleId}`, {
+      params: {
+        limit,
+        page,
+      },
+    });
+  
     return data;
-  },
+  }
 };
 
 

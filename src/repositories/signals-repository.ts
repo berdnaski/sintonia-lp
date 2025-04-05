@@ -72,7 +72,7 @@ export const signalRepository = {
           order: 'desc'  
         },
       });
-      return limit ? signals.slice(0, limit) : signals; // Only slice if limit is provided
+      return limit ? signals.slice(0, limit) : signals;
     } catch (error) {
       console.error('Error fetching signals:', error);
       return [];

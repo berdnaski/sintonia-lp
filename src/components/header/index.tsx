@@ -36,7 +36,7 @@ export function Header() {
   const [isHovered, setIsHovered] = useState<string | null>(null)
   const [hasNotification, setHasNotification] = useState(true)
   const hideHeaderPages = [
-    "/auth/login", "/auth/register", "/auth/reset-password", Routes.INVITE_COUPLE, "auth/register-with-invite/token", "/couple/invite/accept"
+    "/auth/login", "/auth/register", "/auth/reset-password", Routes.INVITE_COUPLE, "auth/register-with-invite/token", "/couple/invite/accept", "/plans"
   ];
 
   const shouldHideHeader = hideHeaderPages.find(route => pathname.startsWith(route));
