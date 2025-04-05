@@ -1,26 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Routes } from "@/constants/routes";
 import { useAuth } from "@/hooks/use-auth";
 import { useCouple } from "@/hooks/use-couple";
-import { signalRepository } from "@/repositories/signals-repository";
+import { useResponseMessages } from "@/hooks/use-response-messages";
+import { signalMessages, signalRepository } from "@/repositories/signals-repository";
 import { ChevronRight } from "lucide-react"
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function RecentSignals() {
   const { couple } = useCouple();
-  const { user } = useAuth();
   const [signals, setSignals] = useState([]);
+  const { toastError } = useResponseMessages()
 
+  console.log({signals})
   useEffect(() => {
     const fetchSignals = async () => {
       if (couple?.id) {
         try {
-          const signalsData = await signalRepository.getSignals(couple.id, 3);
+          const signals = await signalRepository.getSignals(couple.id, {
+            perPage: 3,
+            page: 1
+          });
 
-          setSignals(signalsData);
+          console.log(signals)
+
+          setSignals(signals.data);
         } catch (err) {
-          console.error("Error ao carregar os sinais", err);
+          toastError(err, signalMessages)
         }
       }
     }
@@ -28,6 +36,9 @@ export function RecentSignals() {
     fetchSignals();
   }, [couple])
 
+  if (!signals) {
+    return null
+  }
 
   return (
     <Card>
@@ -43,7 +54,7 @@ export function RecentSignals() {
           </div>
         ))}
         </div>
-        <Link href={'/signals'}>
+        <Link href={Routes.SIGNALS}>
           <Button className="w-full">Ver Mais</Button>
         </Link>
       </CardContent>

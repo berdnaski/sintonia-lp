@@ -33,8 +33,8 @@ const SignalForm = () => {
       if (user && couple) {
         setIsLoadingQuestions(true)
         try {
-          const questionsData = await questionsRepository.findAllQuestions(user.id)
-          setQuestions(questionsData)
+          const questions = await questionsRepository.findAllQuestions(user.id)
+          setQuestions(questions)
         } catch (error) {
           console.error("Erro ao carregar as perguntas", error)
         } finally {
@@ -51,15 +51,17 @@ const SignalForm = () => {
       const fetchData = async () => {
         setIsLoading(true)
         try {
-          const signalsData = await signalRepository.getSignals(couple.id, 3)
+          const { data: signalsData} = await signalRepository.getSignals(couple.id, {
+            perPage: 3
+          })
 
           if (signalsData.length > 0) {
             const signalIds = signalsData.map((signal) => signal.id)
-            const aiResponsesData = await signalRepository.getAiResponse(couple.id, undefined, signalIds)
+            const aiResponsesData = await signalRepository.getAiResponse(couple.id, signalIds)
 
             const signalsWithAI = signalsData.map((signal) => ({
               ...signal,
-              advice: aiResponsesData.find((ai: AIResponse) => ai.signalId === signal.id)?.advice || null,
+              advice: aiResponsesData.data.find((ai: AIResponse) => ai.signalId === signal.id)?.advice || null,
             }))
 
             setSignals(signalsWithAI)
@@ -96,14 +98,16 @@ const SignalForm = () => {
       toast.success("Sinal enviado com sucesso!")
 
       if (couple) {
-        const signalsData = await signalRepository.getSignals(couple.id, 3)
+        const { data: signalsData } = await signalRepository.getSignals(couple.id, {
+          perPage: 3
+        })
 
         const signalIds = signalsData.map((signal) => signal.id)
-        const aiResponsesData = await signalRepository.getAiResponse(couple.id, undefined, signalIds)
+        const aiResponsesData = await signalRepository.getAiResponse(couple.id, signalIds)
 
         const signalsWithAI = signalsData.map((signal) => ({
           ...signal,
-          advice: aiResponsesData.find((ai: AIResponse) => ai.signalId === signal.id)?.advice || null,
+          advice: aiResponsesData.data.find((ai: AIResponse) => ai.signalId === signal.id)?.advice || null,
         }))
 
         setSignals(signalsWithAI)
