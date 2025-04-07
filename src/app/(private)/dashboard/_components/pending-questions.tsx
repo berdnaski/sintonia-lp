@@ -24,6 +24,8 @@ export function PendingQuestions() {
   const hasQuestion = questions.length > 0
   const { user } = useAuth()
 
+  const hasPendingQuestion = questions.some((q) => !q.answer)
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
@@ -55,13 +57,13 @@ export function PendingQuestions() {
         </Link>
       </CardHeader>
       <CardContent>
-        {hasQuestion ? (
+        {hasPendingQuestion ? (
           <>
             <div className="space-y-4 mb-4">
               {questions.map((question) => (
                 <div key={question.id} className="rounded overflow-hidden border border-gray-100">
                   <div className="p-3 bg-gray-50 text-sm font-medium">"{question.question}"</div>
-
+  
                   {question.answer ? (
                     <div className="p-3 bg-white border-t border-gray-100">
                       <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
@@ -74,14 +76,15 @@ export function PendingQuestions() {
                 </div>
               ))}
             </div>
-            <Button className="w-full">{questions.some((q) => !q.answer) ? "Responder" : "Ver todas as perguntas"}</Button>
+            <Button className="w-full">
+              {hasPendingQuestion ? "Responder" : "Ver todas as perguntas"}
+            </Button>
           </>
         ) : (
           <PendingQuestionsEmpty />
         )}
-
       </CardContent>
     </Card>
-  )
+  )  
 }
 

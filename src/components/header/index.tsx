@@ -60,7 +60,7 @@ export function Header() {
 
   return (
     <div>
-      <aside className="hidden xl:flex fixed left-0 top-0 bottom-0 w-20 bg-white/95 backdrop-blur-sm border-r border-gray-100 flex-col items-center py-6 z-40 shadow-sm">
+      <aside className="hidden xl:flex md:fixed left-0 top-0 bottom-0 w-20 bg-white/95 backdrop-blur-sm border-r border-gray-100 flex-col items-center py-6 z-40 shadow-sm">
         <div className="mb-8">
           <Link href={Routes.DASHBOARD}>
             <motion.div

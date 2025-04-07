@@ -17,9 +17,9 @@ export default function Info() {
         <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
           {coupleDurationFormatted ? coupleDurationFormatted : "Relacionamento não iniciado"}
         </Badge>
-        <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
+        {/* <Badge className="bg-[#FF006F]/10 text-[#FF006F] hover:bg-[#FF006F]/20">
           Comunicadora
-        </Badge>
+        </Badge> */}
       </div>
     </div>
   );

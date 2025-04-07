@@ -5,12 +5,9 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DecorativeDots, DecorativeGrid } from "@/components/decorative";
 import { useCouple } from "@/hooks/use-couple";
-import type { SignalResponse } from "@/repositories/signals-repository";
 import { signalRepository } from "@/repositories/signals-repository";
 import { RecentSignals } from "@/components/profile/recent-signals";
-import { NextSteps } from "@/components/profile/next-steps";
 import { CoupleMetrics } from "./_components/couple-metrics";
-import { ActivityHistory } from "@/components/profile/activity-history";
 import Info from "./_components/info";
 import ConnectionScore from "./_components/connection-score";
 import { CoupleInformation } from "./_components/couple-information";
@@ -50,7 +47,7 @@ function CouplePage() {
         <DecorativeGrid variant="pink" size="md" position="left" className="top-0 opacity-30" />
         <DecorativeDots variant="pink" rows={3} cols={3} className="absolute right-[5%] top-12 hidden md:grid" />
 
-        <div className="max-w-5xl mx-auto relative z-10 px-4">
+        <div className="max-w-5xl mx-auto relative z-10 px-4 mt-[6rem] md:mt-0">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <Info />
             <ConnectionScore />
@@ -64,9 +61,9 @@ function CouplePage() {
             <TabsTrigger value="overview" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Visão Geral
             </TabsTrigger>
-            <TabsTrigger value="activities" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
+            {/* <TabsTrigger value="activities" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Atividades
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="couple_information" className="data-[state=active]:bg-[#FF006F] data-[state=active]:text-white">
               Informações do casal
             </TabsTrigger>
@@ -77,26 +74,26 @@ function CouplePage() {
               <CoupleMetrics />
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-[6rem]">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
                 <RecentSignals signals={signals} />
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+              {/* <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
                 <NextSteps activities={[
                   { text: "Exercício de comunicação não-verbal", type: "Atividade", date: "Hoje" },
                   { text: "Conversa sobre expectativas futuras", type: "Diálogo", date: "Amanhã" },
                   { text: "Análise de padrões de comunicação", type: "Insight", date: "Em 3 dias" }
                 ]} />
-              </motion.div>
+              </motion.div> */}
             </div>
           </TabsContent>
 
-          <TabsContent value="activities">
+          {/* <TabsContent value="activities">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
               <ActivityHistory />
             </motion.div>
-          </TabsContent>
+          </TabsContent> */}
 
           <TabsContent value="couple_information">
             <CoupleInformation />
