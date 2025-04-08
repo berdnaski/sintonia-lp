@@ -1,3 +1,4 @@
+import { PaginateParams } from "@/@types";
 import { QuestionsResponse } from "@/components/signals/types";
 import { Message } from "@/hooks/use-response-messages";
 import api from "@/services/api";
@@ -19,9 +20,12 @@ export interface IUpdateQuestion {
 }
 
 export const questionsRepository = {
-  findAllQuestions: async (userId: string) => {
-    const { data } = await api.get<QuestionsResponse[]>(`${resource}/all/${userId}`)
-    return data.map(question => ({
+  findAllQuestions: async (userId: string, params = {} as PaginateParams) => {
+    const { data: response } = await api.get<Paginate<Question>>(`${resource}/all/${userId}`, {
+      params
+    })
+
+    return response.data.map(question => ({
       ...question,
       createdAt: new Date(question.createdAt),
       updatedAt: new Date(question.updatedAt)

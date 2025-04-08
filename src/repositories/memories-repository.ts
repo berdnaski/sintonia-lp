@@ -1,5 +1,6 @@
 import { z } from "zod";
 import api from "@/services/api";
+import { PaginateParams } from "@/@types";
 
 export const memoriesSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
@@ -15,7 +16,7 @@ export interface MemoriesResponse {
   id: string;
   title: string;
   description: string;
-  avatarUrl: string; // Changed from file to avatarUrl to match backend
+  avatarUrl: string;
 }
 
 export const memoriesMessages = {
@@ -25,7 +26,7 @@ export const memoriesMessages = {
     INVALID_DATA: "Dados inválidos",
     UNAUTHORIZED: "Não autorizado",
     DEFAULT: "Erro ao processar a requisição",
-    default: "Erro inesperado" 
+    default: "Erro inesperado"
   }
 };
 
@@ -39,14 +40,18 @@ export const memoriesRepository = {
     return response.data;
   },
 
-  getMemories: async (coupleId: string) => {
-    try {
-      const { data } = await api.get<MemoriesResponse[]>(`/memories/${coupleId}`);
-      return data;
-    } catch (err) {
-      throw new Error('Erro ao carregar as memórias');
-    }
-  },
+  getMemories: async (coupleId: string, params = {} as PaginateParams) => {
+    const { perPage = 8, page = 1} = params
+
+    const { data } = await api.get<Paginate<Memory>>(`/memories/${coupleId}`, {
+      params: {
+        perPage,
+        page,
+      },
+    });
+
+    return data;
+  }
 };
 
 

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCouple } from "@/hooks/use-couple";
 import { Routes } from "@/constants/routes";
 import withSubscription from "@/layouts/with-subscription";
+import { useCoupleInvite } from "@/hooks/use-couple-invite";
 
 const steps = [
   {
@@ -25,13 +26,24 @@ function InviteCouple() {
   const { couple } = useCouple();
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const { verifyIfAlreadyExistsPendingInvite } = useCoupleInvite();
   const percentagePerStep = 100 / steps.length;
   const [progressWidth, setProgressWidth] = useState(0);
+
+  const handleverifyIfAlreadyExistsPendingInvite = async () => {
+    const invite = verifyIfAlreadyExistsPendingInvite()
+
+    if (invite) {
+      setStep(2)
+    }
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgressWidth(percentagePerStep);
     }, 300);
+
+    handleverifyIfAlreadyExistsPendingInvite()
 
     return () => clearTimeout(timer);
   }, []);
@@ -44,8 +56,7 @@ function InviteCouple() {
 
   const handleNextStep = () => {
     if (step === steps.length) {
-      router.push("/dashboard");
-      return;
+      return router.push(Routes.DASHBOARD);
     }
 
     setStep(step + 1);

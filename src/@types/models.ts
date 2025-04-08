@@ -62,6 +62,39 @@ interface Invite {
   expiresIn: number,
 }
 
+interface Memory {
+  id: string;
+  title: string;
+  description: string;
+  avatarUrl?: string;
+  createdAt: Date
+}
+
+interface Meta {
+  total: number,
+  page: number,
+  perPage: number,
+  lastPage: number,
+}
+
+interface Paginate<T> {
+  data: T[],
+  meta: Meta
+}
+
+interface Question {
+  id: string;
+  coupleId: string;
+  userId: string;
+  user?: User;
+  couple?: Couple;
+  question: string;
+  answer: string | null;
+  wasAnswered: boolean;
+  createdAt: Date;
+  updatedAt: Date
+}
+
 enum InviteStatus {
   Active = "active",
   Pending = "pending"

@@ -45,6 +45,11 @@ export const inviteRepository = {
 
     return response;
   },
+  findByInviter: async (id: string) => {
+    const { data: response} = await api.get<Invite>(`${resource}/by-inviter/${id}`);
+
+    return response;
+  },
   acceptInvite: async (token: string) => {
     const { data: response} = await api.post<InviteResponse>(`${resource}/accept/${token}`);
 

@@ -63,6 +63,7 @@ export function MemoriesModal({
       }
 
       setIsSubmitting(true)
+
       try {
         const formData = new FormData()
         formData.append("title", data.title)
@@ -212,9 +213,9 @@ export function MemoriesModal({
                   <button
                     type="button"
                     onClick={handleRemoveImage}
-                    className="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow-md hover:bg-pink-50 transition-colors duration-200"
+                    className="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow-md hover:bg-pink-50 transition-colors duration-200 cursor-pointer"
                   >
-                    <X className="w-5 h-5 text-pink-600" />
+                    <X className="w-5 h-5 text-pink-600 cursor-pointer" />
                   </button>
                 </div>
               )}

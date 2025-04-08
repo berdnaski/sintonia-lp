@@ -13,9 +13,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ptBR } from "date-fns/locale"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, PropsBase } from "react-day-picker"
 
-export type DatePickerProps = Omit<React.ComponentProps<typeof DayPicker>, 'mode'> & {
+export type DatePickerProps = Omit<PropsBase, 'mode' | 'required'> & {
   value?: Date
   label?: string,
   onSelect?: () => void
@@ -54,14 +54,12 @@ export function DatePicker({
         >
           <div className="rounded-md w-full">
             <Calendar
-              {...props}
               mode="single"
               selected={value ?? now}
               onSelect={onSelect}
-              initialFocus
               defaultMonth={value ?? now}
-              toYear={now.getFullYear()}
-              fromYear={now.getFullYear() - 80}
+              startMonth={new Date(now.getFullYear() - 80)}
+              {...props}
             />
           </div>
         </PopoverContent>

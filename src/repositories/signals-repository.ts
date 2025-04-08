@@ -1,8 +1,9 @@
+import { PaginateParams } from "@/@types";
 import api from "@/services/api";
 import { z } from "zod";
 
 export const signalSchema = z.object({
-  userId: z.string().optional(), 
+  userId: z.string().optional(),
   coupleId: z.string().optional(),
   emotion: z.string().min(1, {
     message: "Por favor, selecione uma emoção"
@@ -21,7 +22,7 @@ export interface SignalResponse {
   userId: string;
   coupleId: string;
   emotion: string;
-  note: string | null;
+  note?: string | null;
   advice: string | null;
   createdAt: Date;
 }
@@ -62,39 +63,33 @@ export const signalRepository = {
     return response;
   },
 
-  getSignals: async (coupleId: string, limit?: number) => {
-    try {
-      const { data: signals } = await api.get<SignalResponse[]>(`${resource}`, {
-        params: {
-          coupleId,
-          limit,
-          orderBy: 'createdAt',
-          order: 'desc'  
-        },
-      });
-      return limit ? signals.slice(0, limit) : signals; // Only slice if limit is provided
-    } catch (error) {
-      console.error('Error fetching signals:', error);
-      return [];
-    }
+  getSignals: async (coupleId: string, params = {} as PaginateParams) => {
+    const { page = 1, perPage = 8 } = params
+
+    const { data: signals } = await api.get<Paginate<Signal>>(`${resource}/couple/${coupleId}`, {
+      params: {
+        perPage,
+        page,
+        orderBy: 'createdAt',
+        order: 'desc'
+      },
+    });
+
+    return signals;
   },
 
-  getAiResponse: async (coupleId: string, limit?: number, signalIds?: string[]) => {
-    try {
-      const { data: aiResponse } = await api.get<AIResponse[]>(`/ai-responses/${coupleId}`, {
-        params: {
-          coupleId,
-          limit,
-          signalIds: signalIds ? signalIds.join(',') : undefined,
-          orderBy: 'createdAt',
-          order: 'desc'
-        }
-      });
-      return aiResponse;
-    } catch (error) {
-      return [];
-    }
+  getAiResponse: async (coupleId: string, signalIds?: string[], params = {} as PaginateParams) => {
+    const { data: aiResponse } = await api.get<Paginate<AIResponse>>(`/ai-responses/${coupleId}`, {
+      params: {
+        params,
+        signalIds: signalIds ? signalIds.join(',') : undefined,
+        orderBy: 'createdAt',
+        order: 'desc'
+      }
+    });
+
+    return aiResponse;
   }
-  
+
 };
 

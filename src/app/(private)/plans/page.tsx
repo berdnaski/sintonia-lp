@@ -50,7 +50,7 @@ export default function PlansPage() {
   return (
     <main className="pt-[90px] min-h-screen bg-gradient-to-b from-white to-[#FFF2F8]/30">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-12 pt-12">
+        <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-[#B42A76] font-bold mb-4">
             Escolha seu plano Sintonia
           </h1>

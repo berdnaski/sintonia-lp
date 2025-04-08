@@ -18,3 +18,8 @@ export type IToken = {
   accessToken: string;
   refreshToken?: string;
 };
+
+export type PaginateParams = {
+  perPage?: number
+  page?: number
+}
