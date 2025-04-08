@@ -31,7 +31,7 @@ const MemoryCard = ({
 }) => (
   <div
     className={cn(
-      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full w-[140px] sm:w-36",
+      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full min-w-36 lg:w-autow-full col-span-2 md:col-span-1",
       selectedMemory?.id === memory.id ? "ring-2 ring-[#FF006F] ring-offset-2" : "",
     )}
     onClick={() => onSelect(memory)}
@@ -151,7 +151,7 @@ const Memories = () => {
 
               <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
                 <TabsContent value="all" className="mt-6">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:flex flex-wrap gap-3 lg:gap-6">
                     {memories.map((memory) => (
                       <MemoryCard
                         key={memory.id}
