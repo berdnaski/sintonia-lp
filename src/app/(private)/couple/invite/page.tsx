@@ -31,7 +31,7 @@ function InviteCouple() {
   const [progressWidth, setProgressWidth] = useState(0);
 
   const handleverifyIfAlreadyExistsPendingInvite = async () => {
-    const invite = verifyIfAlreadyExistsPendingInvite()
+    const invite = await verifyIfAlreadyExistsPendingInvite()
 
     if (invite) {
       setStep(2)
