@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 
 interface VerifyInviteProps {
@@ -10,25 +11,19 @@ export default function VerifyInvite({
 }: VerifyInviteProps) {
   return (
     <div className="space-y-8">
-      <div className="space-y-6">
-        <div className="flex flex-col items-center justify-center text-center space-y-6">
-          <h1 className="font-bold text-3xl">Falta pouco!</h1>
-          <h2 className="text-[#FF5FA4] font-semibold text-xl">
+      <div className="p-6 flex flex-col items-center text-center space-y-4">
+        <CheckCircle className="w-16 h-16 text-pink-500 mb-2" />
+
+        <h1 className="text-2xl font-bold text-gray-900">Convite enviado!</h1>
+
+        <div className="space-y-3">
+          <p className="text-pink-500 font-medium text-lg">Fale para seu parceiro aceitar o convite</p>
+
+          <p className="text-gray-600">
             Aqui começa o caminho para a Sintonia, entre o casal. Onde a união e entendimento é o principal.
-          </h2>
+          </p>
         </div>
       </div>
-
-
-      <Button
-        type="submit"
-        className="w-full h-11 bg-pink-500 hover:cursor-pointer hover:bg-pink-600 text-white rounded-lg transition-colors"
-        onClick={onNextStep}
-      >
-        <span className="flex items-center justify-center gap-2">
-          Prosseguir
-        </span>
-      </Button>
     </div>
   )
 }
