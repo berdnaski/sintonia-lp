@@ -1,19 +1,9 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
-
-@custom-variant dark (&:is(.dark *));
-
-
 body {
   font-family: 'Onest', sans-serif;
   background-color: #FFF2F8;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 
 @layer base {
   :root {
