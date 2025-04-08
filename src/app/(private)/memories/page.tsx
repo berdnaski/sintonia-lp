@@ -5,13 +5,19 @@ import { useCouple } from "@/hooks/use-couple"
 import { Heart, Calendar, Plus } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 import { MemoriesModal } from "@/components/memories/memories-modal"
 import { memoriesRepository } from "@/repositories/memories-repository"
 import withCouple from "@/layouts/with-couple"
 import { formatDate } from "@/lib/date-fns"
-import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 import { MemoriesEmpty } from "../dashboard/_components/empty/memories-empty"
 
 const MemoryCard = ({
@@ -25,12 +31,12 @@ const MemoryCard = ({
 }) => (
   <div
     className={cn(
-      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full w-36",
+      "relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md h-full w-[140px] sm:w-36",
       selectedMemory?.id === memory.id ? "ring-2 ring-[#FF006F] ring-offset-2" : "",
     )}
     onClick={() => onSelect(memory)}
   >
-    <div className="relative h-48 w-36">
+    <div className="relative h-48 w-full">
       <Image
         src={memory.avatarUrl || "/placeholder.svg"}
         alt={memory.title}
@@ -58,14 +64,14 @@ const Memories = () => {
   const perPage = 30
 
   useEffect(() => {
-    console.log('featch')
+    console.log("featch")
     if (couple) {
       const fetchData = async () => {
         setIsLoading(true)
         try {
           const memories = await memoriesRepository.getMemories(couple.id, {
             page,
-            perPage
+            perPage,
           })
 
           setMemories(memories.data)
@@ -125,16 +131,16 @@ const Memories = () => {
   return (
     <div className="w-full min-h-screen bg-gray-50 mt-16 xl:mt-0">
       <div className="md:pl-16 w-full ">
-        <div className="max-w-[1800px] mx-auto p-6">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <div className="max-w-[1800px] mx-auto p-6 sm:p-6">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
             <div className="flex-1 h-min bg-white rounded-2xl shadow-md border border-[#FF006F]/10 p-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-8">
                 <div className="flex items-center">
                   <div className="w-12 h-12 rounded-full bg-[#F1DDE6] flex items-center justify-center mr-4">
                     <Heart className="text-[#FF006F] h-6 w-6" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-bold text-[#302d2d]">Álbum de Memórias</h1>
+                    <h1 className="text-3xl sm:text-3xl font-bold text-[#302d2d]">Álbum de Memórias</h1>
                     <p className="text-gray-500">Reviva os momentos especiais do seu relacionamento</p>
                   </div>
                 </div>
@@ -145,7 +151,7 @@ const Memories = () => {
 
               <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
                 <TabsContent value="all" className="mt-6">
-                  <div className="flex flex-wrap gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
                     {memories.map((memory) => (
                       <MemoryCard
                         key={memory.id}
@@ -166,27 +172,21 @@ const Memories = () => {
                 </TabsContent>
               </Tabs>
 
-              <Pagination className="justify-end mt-6">
+              <Pagination className="justify-center sm:justify-end mt-4 sm:mt-6">
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious
-                      disabled={page === 1}
-                      onClick={handlePreviusPage}
-                    />
+                    <PaginationPrevious disabled={page === 1} onClick={handlePreviusPage} />
                   </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext
-                      disabled={page === meta.lastPage}
-                      onClick={handleNextPage}
-                    />
+                    <PaginationNext disabled={page === meta.lastPage} onClick={handleNextPage} />
                   </PaginationItem>
                 </PaginationContent>
               </Pagination>
             </div>
 
             {selectedMemory && (
-              <div className="w-full lg:w-[400px] bg-white rounded-2xl shadow-md border border-[#FF006F]/10 overflow-hidden sticky top-6 self-start">
-                <div className="relative h-[350px] w-full group">
+              <div className="w-full lg:w-[400px] bg-white rounded-2xl shadow-md border border-[#FF006F]/10 overflow-hidden lg:sticky top-6 self-start mt-4 lg:mt-0">
+                <div className="relative h-[250px] sm:h-[350px] w-full group">
                   <Image
                     src={selectedMemory.avatarUrl || "/placeholder.svg"}
                     alt={selectedMemory.title}
