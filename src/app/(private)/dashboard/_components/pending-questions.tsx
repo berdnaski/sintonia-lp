@@ -56,14 +56,14 @@ export function PendingQuestions() {
           <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-gray-500" />
         </Link>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col justify-between h-full">
         {hasPendingQuestion ? (
           <>
             <div className="space-y-4 mb-4">
               {questions.map((question) => (
                 <div key={question.id} className="rounded overflow-hidden border border-gray-100">
                   <div className="p-3 bg-gray-50 text-sm font-medium">"{question.question}"</div>
-  
+
                   {question.answer ? (
                     <div className="p-3 bg-white border-t border-gray-100">
                       <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
@@ -76,8 +76,10 @@ export function PendingQuestions() {
                 </div>
               ))}
             </div>
-            <Button className="w-full">
-              {hasPendingQuestion ? "Responder" : "Ver todas as perguntas"}
+            <Button className="w-full" asChild>
+              <Link href={`${Routes.SIGNALS}/?tab=${EnumTabs.questions}`}>
+                {hasPendingQuestion ? "Responder" : "Ver todas as perguntas"}
+              </Link>
             </Button>
           </>
         ) : (
@@ -85,6 +87,6 @@ export function PendingQuestions() {
         )}
       </CardContent>
     </Card>
-  )  
+  )
 }
 
