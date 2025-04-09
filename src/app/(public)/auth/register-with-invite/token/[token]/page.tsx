@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { LockKeyhole, Mail } from "lucide-react"
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { authMessages, authRepository, RegisterWithInviteRequest, registerWithInviteSchema } from "@/repositories/auth-repository"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth"
@@ -17,18 +17,14 @@ import { inviteMessages } from "@/repositories/invite-couple-repository"
 import { Routes } from "@/constants/routes"
 import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
-export default function RegisterWithInvite({
-  params,
-}: {
-  params: {
-    token: string
-  }
-}) {
+export default function RegisterWithInvite()
+ {
   const router = useRouter()
   const { authenticate } = useAuth()
   const { toastError } = useResponseMessages()
   const { invite, verifyIfInvitedAlreadyExists, findInviteByToken } = useCoupleInvite()
-  const inviteToken = params.token
+  const params = useParams();
+  const inviteToken = params.token as string;
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterWithInviteRequest>({
     resolver: zodResolver(registerWithInviteSchema),
   });
