@@ -18,22 +18,20 @@ import { Routes } from "@/constants/routes"
 import { useCoupleInvite } from "@/hooks/use-couple-invite"
 
 export default function RegisterWithInvite({
-  params
+  params,
 }: {
   params: {
-    id: string
+    token: string
   }
 }) {
   const router = useRouter()
   const { authenticate } = useAuth()
   const { toastError } = useResponseMessages()
   const { invite, verifyIfInvitedAlreadyExists, findInviteByToken } = useCoupleInvite()
+  const inviteToken = params.token
   const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<RegisterWithInviteRequest>({
     resolver: zodResolver(registerWithInviteSchema),
   });
-
-  // @ts-ignore:next-line
-  const { token: inviteToken } = React.use(params)
 
   const validateInvite = async () => {
     try {
