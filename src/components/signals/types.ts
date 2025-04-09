@@ -1,13 +1,20 @@
-import type { SignalResponse } from "@/repositories/signals-repository"
-
 export type AIResponse = {
   signalId: string
   advice: string
 }
 
-export type SignalWithAdvice = SignalResponse & {
+export type SignalWithAdvice = {
+  id: string
+  userId: string
+  coupleId: string
+  emotion: string
+  note?: string
+  createdAt: Date
+  user: User
+  couple: Couple
   advice: string | null
 }
+
 
 export interface QuestionCardProps {
   question: QuestionsResponse
