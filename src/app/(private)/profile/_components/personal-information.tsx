@@ -1,6 +1,5 @@
-import { ActivityHistory } from "@/components/profile/activity-history";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/form/input";
 import { InputPassword } from "@/components/ui/form/input-password";
