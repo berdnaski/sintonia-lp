@@ -1,10 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, MessageCircle } from "lucide-react";
-import type { SignalResponse } from "@/repositories/signals-repository";
 
 interface SignalsListProps {
-  signals: SignalResponse[] | null;
+  signals: Signal[] | null;
 }
 
 function SignalsList({ signals }: SignalsListProps) {
@@ -65,7 +64,7 @@ function SignalsList({ signals }: SignalsListProps) {
   );
 }
 
-export function RecentSignals({ signals }: { signals: SignalResponse[] | null }) {
+export function RecentSignals({ signals }: { signals: Signal[] | null }) {
   return (
     <Card>
       <CardHeader>

@@ -14,7 +14,7 @@ import { CoupleInformation } from "./_components/couple-information";
 import withCouple from "@/layouts/with-couple";
 
 function CouplePage() {
-  const [signals, setSignals] = useState<Signal[]>(null);
+  const [signals, setSignals] = useState<Signal[] | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const { couple, fetchMetrics } = useCouple();
 

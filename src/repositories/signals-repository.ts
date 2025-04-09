@@ -17,16 +17,6 @@ export const signalSchema = z.object({
 
 export type SignalRequest = z.infer<typeof signalSchema>
 
-export interface SignalResponse {
-  id: string;
-  userId: string;
-  coupleId: string;
-  emotion: string;
-  note?: string | null;
-  advice: string | null;
-  createdAt: Date;
-}
-
 export const signalMessages = {
   error: {
     "user_not_found": "Usuário não encontrado. Verifique o ID do usuário.",
@@ -59,7 +49,7 @@ export interface AIResponse {
 
 export const signalRepository = {
   createSignal: async (data: SignalRequest) => {
-    const { data: response } = await api.post<SignalResponse>(`${resource}`, data);
+    const { data: response } = await api.post<Signal[]>(`${resource}`, data);
     return response;
   },
 
