@@ -10,7 +10,7 @@ import { CardSkeleton } from "./skeletons/card-skeleton"
 import Link from "next/link"
 import { PendingQuestionsEmpty } from "./empty/pending-questions-empty"
 import { Routes } from "@/constants/routes"
-import { EnumTabs } from "../../signals/page"
+import { EnumTabs } from "@/constants/enum-tabs"
 
 interface Question {
   id: string
