@@ -17,11 +17,7 @@ import { SignalFormTab } from "@/components/signals/signal-form-tab"
 import { QuestionsTab } from "@/components/signals/question-tab"
 import withCouple from "@/layouts/with-couple"
 import { useSearchParams } from "next/navigation"
-
-export enum EnumTabs {
-  signals = 'signals',
-  questions = 'questions'
-}
+import { EnumTabs } from "@/constants/enum-tabs"
 
 const SignalForm = () => {
   const { toastError } = useResponseMessages()
