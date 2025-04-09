@@ -1,7 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel } from ".";
-import { RadioGroup, RadioGroupItem, RadioGroupProps } from "../radio-group";
 import { cn } from "@/lib/utils";
+import { RadioGroup, RadioGroupItem } from "../radio-group";
+import type { RadioGroupProps } from "@radix-ui/react-radio-group";
 
 interface Option {
   value: string
