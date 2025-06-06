@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useCouple } from "@/hooks/use-couple"
-import { Heart, Calendar, Plus } from "lucide-react"
+import { Heart, Calendar, Plus, Delete } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
@@ -19,6 +19,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { MemoriesEmpty } from "../dashboard/_components/empty/memories-empty"
+import toast from "react-hot-toast"
 
 const MemoryCard = ({
   memory,
@@ -94,6 +95,26 @@ const Memories = () => {
     setMemories((prev) => [...prev, newMemory])
     setSelectedMemory(newMemory)
   }
+
+  const handleDeleteMemory = async (id: string) => {
+    if (!selectedMemory) return;
+    
+    try {
+      await memoriesRepository.deleteMemory(id);
+      
+      // Remove memory from state
+      setMemories((prev) => prev.filter((memory) => memory.id !== id));
+      
+      // Clear selected memory if it was deleted
+      if (selectedMemory.id === id) {
+        setSelectedMemory(null);
+      }
+      
+      toast.success("Memória excluída com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao excluir memória");
+    }
+  };
 
   const handleSelectMemory = (memory: Memory) => {
     if (selectedMemory?.id === memory.id) {
@@ -202,9 +223,19 @@ const Memories = () => {
 
                   <p className="text-[#353434] text-lg mb-6">{selectedMemory.description}</p>
 
-                  <div className="flex items-center text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                    <Calendar className="h-5 w-5 mr-2 text-[#FF006F]" />
-                    {formatDate(selectedMemory.createdAt)}
+                  <div className="flex items-center justify-between text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                    <div className="flex items-center">
+                      <Calendar className="h-5 w-5 mr-2 text-[#FF006F]" />
+                      {formatDate(selectedMemory.createdAt)}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => handleDeleteMemory(selectedMemory.id)}
+                    >
+                      <Delete className="h-5 w-5" />
+                    </Button>
                   </div>
                 </div>
               </div>

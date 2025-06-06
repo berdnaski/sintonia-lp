@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useCouple } from "@/hooks/use-couple";
 import { memoriesRepository } from "@/repositories/memories-repository";
 import { formatDate } from "@/lib/date-fns";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Delete } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MemoriesSkeleton } from "./skeletons/memories-skeleton";

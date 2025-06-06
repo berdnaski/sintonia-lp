@@ -30,6 +30,11 @@ export const memoriesMessages = {
   }
 };
 
+const deleteMemory = async (id: string) => {
+  const response = await api.delete(`/memories/${id}`);
+  return response.data;
+};
+
 export const memoriesRepository = {
   createMemory: async (data: FormData) => {
     const response = await api.post("/memories", data, {
@@ -51,7 +56,8 @@ export const memoriesRepository = {
     });
 
     return data;
-  }
+  }, 
+  deleteMemory,
 };
 
 
