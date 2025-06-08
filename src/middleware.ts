@@ -6,6 +6,7 @@ const publicRoutes = [
   { path: '/auth/login', whenAuthenticated: 'redirect' },
   { path: '/auth/login/:id', whenAuthenticated: 'redirect' },
   { path: '/auth/reset-password', whenAuthenticated: 'redirect' },
+  { path: '/auth/reset-password/:token', whenAuthenticated: 'redirect' },
   { path: '/auth/register-with-invite/token/:id', whenAuthenticated: 'redirect' },
   { path: '/', whenAuthenticated: 'redirect' },
 ];
