@@ -12,10 +12,12 @@ import toast from "react-hot-toast";
 
 interface InviteFormProps {
   onNextStep: () => void;
+  onPrevStep: () => void;
 }
 
 export default function InviteForm({
-  onNextStep
+  onNextStep,
+  onPrevStep
 }: InviteFormProps) {
   const { toastError} = useResponseMessages();
 

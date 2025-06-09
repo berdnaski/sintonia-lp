@@ -63,6 +63,14 @@ function InviteCouple() {
     setProgressWidth(progressWidth + percentagePerStep);
   }
 
+  const handlePrevStep = () => {
+    if (step === 1) {
+      return;
+    }
+    setStep(step - 1);
+    setProgressWidth(progressWidth - percentagePerStep);
+  }
+
   return (
     <div
       className="flex min-h-screen items-center justify-center w-full p-4 md:p-8"
@@ -87,7 +95,8 @@ function InviteCouple() {
             </div>
 
             { React.createElement(steps.find(s => s.id === step).component, {
-                onNextStep: handleNextStep
+                onNextStep: handleNextStep,
+                onPrevStep: handlePrevStep,
             })}
           </div>
         </Card>

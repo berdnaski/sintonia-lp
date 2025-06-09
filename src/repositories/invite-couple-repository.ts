@@ -55,6 +55,9 @@ export const inviteRepository = {
 
     return response;
   },
+  cancelInvite: async (userId: string) => {
+    await api.delete(`${resource}/by-inviter/${userId}`);
+  }
 };
 
 

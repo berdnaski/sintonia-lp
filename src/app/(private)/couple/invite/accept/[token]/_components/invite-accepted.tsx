@@ -4,10 +4,12 @@ import Link from "next/link";
 
 interface InviteAcceptedProps {
   onNextStep: () => void;
+  onPrevStep: () => void;
 }
 
 export default function InviteAccepted({
-  onNextStep
+  onNextStep,
+  onPrevStep
 }: InviteAcceptedProps) {
   const { fetchCouple } = useCouple()
 

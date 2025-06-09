@@ -11,10 +11,12 @@ import toast from "react-hot-toast";
 
 interface AcceptInviteProps {
   onNextStep: () => void;
+  onPrevStep: () => void;
 }
 
 export default function AcceptInvite({
-  onNextStep
+  onNextStep,
+  onPrevStep,
 }: AcceptInviteProps) {
   const { toastError } = useResponseMessages()
   const [isSubmitting, setIsSubmitting] = useState(false)
