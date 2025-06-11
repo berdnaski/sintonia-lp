@@ -46,7 +46,7 @@ export function DailySummary() {
   if (isLoading) {
     return (
       <Card className="overflow-hidden border-none shadow-md">
-        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100 pb-2">
+        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100">
           <CardTitle className="flex items-center gap-2 text-lg font-bold">
             <BookOpen className="h-5 w-5 text-pink-500" />
             Resumo Diário
@@ -69,7 +69,7 @@ export function DailySummary() {
   if (error) {
     return (
       <Card className="overflow-hidden border-none shadow-md">
-        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100 pb-2">
+        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100">
           <CardTitle className="flex items-center gap-2 text-lg font-bold">
             <BookOpen className="h-5 w-5 text-pink-500" />
             Resumo Diário
@@ -94,7 +94,7 @@ export function DailySummary() {
   if (!summary) {
     return (
       <Card className="overflow-hidden border-none shadow-md">
-        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100 pb-2">
+        <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100">
           <CardTitle className="flex items-center gap-2 text-lg font-bold">
             <BookOpen className="h-5 w-5 text-pink-500" />
             Resumo Diário
@@ -127,7 +127,7 @@ export function DailySummary() {
 
   return (
     <Card className="overflow-hidden border-none shadow-md">
-      <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100 pb-2">
+      <CardHeader className="bg-gradient-to-r from-pink-100 to-purple-100">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-lg font-bold">
             <BookOpen className="h-5 w-5 text-pink-500" />
