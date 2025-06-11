@@ -73,6 +73,11 @@ export default function Memories() {
                   width={150}
                   height={150}
                   className="object-cover w-full h-full"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,..." 
+                  sizes="150px"
+                  quality={75}
                 />
               ) : (
                 <div className="bg-gray-100 w-full h-full flex items-center justify-center text-gray-400 text-sm">

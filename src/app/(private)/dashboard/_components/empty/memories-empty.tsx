@@ -16,9 +16,6 @@ export function MemoriesEmpty() {
       <p className="text-gray-500 mb-6 max-w-xs">
         Comece a registrar momentos especiais para criar sua coleção de memórias
       </p>
-      <Button asChild>
-        <Link href={Routes.MEMORIES}>Criar memória</Link>
-      </Button>
     </div>
   )
 }

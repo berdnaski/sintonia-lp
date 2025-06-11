@@ -10,4 +10,5 @@ export const Routes = {
   COUPLE: '/couple',
   PLANS: '/plans',
   MEMORIES: '/memories',
+  PROBLEM_REPORT: 'https://chat.whatsapp.com/IXAvsYhEAvj9SA5vFGWiZw'
 };

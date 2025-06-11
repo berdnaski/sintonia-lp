@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Bell, Home, Layers, Heart, Image, User, Settings, LogOut, Menu, Plus } from "lucide-react"
+import { Bell, Home, Layers, Heart, Image, User, Settings, LogOut, Menu, Plus, Info } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -22,6 +22,7 @@ import { useCouple } from "@/hooks/use-couple"
 import { useAuth } from "@/hooks/use-auth"
 import { Routes } from "@/constants/routes"
 import { Separator } from "@/components/ui/separator"
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { icon: Home, label: "Início", href: Routes.DASHBOARD },
@@ -32,6 +33,7 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname()
+  const router = useRouter();
   const { user } = useAuth()
   const { couple, name: coupleName, durationFormatted } = useCouple()
   const [isHovered, setIsHovered] = useState<string | null>(null)
@@ -156,8 +158,18 @@ export function Header() {
                   {user && couple && <p className="text-sm font-medium">{coupleName}</p>}
 
                   {coupleDuration && <p className="text-xs text-gray-500">{`${coupleDuration} juntos`}</p>}
+
+                  <a
+                    href={Routes.PROBLEM_REPORT}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 text-xs text-red-500 hover:underline self-start cursor-pointer"
+                  >
+                    Relatar problema
+                  </a>
                 </div>
               </DropdownMenuLabel>
+ 
               <DropdownMenuSeparator />
               {dropdownMenuItem.map(({ icon: Icon, ...item }) => {
                 if (item.hidden) {
@@ -188,11 +200,6 @@ export function Header() {
               })}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Button variant="ghost" size="icon" className="w-full h-12 rounded-xl relative hover:bg-gray-50">
-            <Bell className="h-5 w-5 text-gray-500" />
-            {hasNotification && <span className="absolute top-2 right-2 w-2 h-2 bg-[#FF006F] rounded-full" />}
-          </Button>
         </div>
       </aside>
 

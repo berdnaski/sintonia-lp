@@ -10,6 +10,7 @@ interface User {
   stripeSubscriptionStatus?: string;
   stripeSubscriptionId?: string;
   couple?: Couple
+  coupleId?: string;
 }
 
 interface Signal {

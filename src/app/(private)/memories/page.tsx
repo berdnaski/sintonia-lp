@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/pagination"
 import { MemoriesEmpty } from "../dashboard/_components/empty/memories-empty"
 import toast from "react-hot-toast"
+import { useInView } from 'react-intersection-observer';
 
 const MemoryCard = ({
   memory,
@@ -43,6 +44,10 @@ const MemoryCard = ({
         alt={memory.title}
         fill
         className="object-cover object-center transition-transform duration-500 hover:scale-110 h-full"
+        loading="lazy"
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkMj4xLy4vLi4+QT5APj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj7/2wBDAR"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     </div>
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-3">
@@ -52,6 +57,7 @@ const MemoryCard = ({
 )
 
 const Memories = () => {
+  const { ref, inView } = useInView();
   const { couple } = useCouple()
   const [memories, setMemories] = useState<Memory[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -63,6 +69,12 @@ const Memories = () => {
   const [hasMore, setHasMore] = useState(false)
   const [meta, setMeta] = useState<Meta>({} as Meta)
   const perPage = 30
+
+  useEffect(() => {
+    if (inView && !isLoading && !hasMore) {
+      setPage(prev => prev + 1);
+    }
+  }, [inView, isLoading, hasMore]);
 
   useEffect(() => {
     console.log("featch")
@@ -166,7 +178,7 @@ const Memories = () => {
                   </div>
                 </div>
                 <Button onClick={handleOpenModal} className="bg-[#FF006F] hover:bg-[#D80057] text-white">
-                  <Plus className="h-4 w-4 mr-2" /> Adicionar Memória
+                  <Plus className="h-4 w-4" /> Criar Memória
                 </Button>
               </div>
 

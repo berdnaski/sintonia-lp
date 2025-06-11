@@ -12,13 +12,17 @@ function Dashboard() {
     <div className="max-w-7xl mx-auto min-h-screen px-4">
       <Header />
 
-      <div className="py-4 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <main>
+      <div className="py-4 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 items-start">
         <DailySummary />
-        <PendingQuestions />
-        <RecentSignals />
+        <div className="space-y-4">
+          <PendingQuestions />
+          <RecentSignals />
+        </div>
       </div>
 
       <Memories />
+    </main>
     </div>
   );
 }
